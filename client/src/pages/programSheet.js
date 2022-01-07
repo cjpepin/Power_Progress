@@ -16,7 +16,7 @@ export default function App() {
         if(!localStorage.getItem('block')){
             return;
         }
-        const req = await fetch('http://localhost:1337/api/get_sheet', {
+        const req = await fetch('https://powerprogress.herokuapp.com/api/get_sheet', {
                 headers: {
                     'x-access-token': localStorage.getItem('token'),
                     'block': localStorage.getItem('block')

@@ -105,7 +105,7 @@ const Dashboard = () => {
         if(lbsorkg == ''){
           lbsorkg = 'lb';
         }
-        const response = await fetch('http://localhost:1337/api/new_lift', {
+        const response = await fetch('https://powerprogress.herokuapp.com/api/new_lift', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -160,7 +160,7 @@ const Dashboard = () => {
       return csvRows.join('\n','');
     }
     async function toCSV() {
-      const req = await fetch('http://localhost:1337/api/getCSV', {
+      const req = await fetch('https://powerprogress.herokuapp.com/api/getCSV', {
         headers: {
             'x-access-token': localStorage.getItem('token')
         }
@@ -182,7 +182,7 @@ const Dashboard = () => {
     }
 
     async function getLifts() {
-        const req = await fetch('http://localhost:1337/api/get_lift', {
+        const req = await fetch('https://powerprogress.herokuapp.com/api/get_lift', {
             headers: {
                 'x-access-token': localStorage.getItem('token')
             }
