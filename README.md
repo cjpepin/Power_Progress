@@ -6,13 +6,16 @@ PowerProgress is a MERN stack app designed to help lifters and coaches find a on
 
 Currently the primary objective is functionality, simple security faetures will be added soon. Additionall github pages/aws link will be posted soon hopefully.
 
-## 1/1/2021
+## 1/1/2022
 
 Uploading a MERN stack app to Heroku/github pages/aws is a lot more challenging than I'd originally hoped. Current next steps are adding google sheets/mongodb communication and functionality
 
+## 1/7/2022
+
+Ended up using a JS library to store program sheets in. Sheets are able to be updated on the user and server end, as well as perform basic spreadsheet functions. The data is able to converted directly into a visualized form in the user's "block" page.
+
 ### Goals
 
-1. Connect MongoDB Atlas to google sheets by using Google App and MongoDB stitch.
-2. Back to front functionality. A change on the app should change the sheet and a change in the sheet should change the app.
-3. Differentiation of top sets and working sets. A boolean parameter in the exercises document will help with this. Try differentiating with highlight colors as a marker.
-4. Make database updates more specific. Multiple weeks of programming can happen in a single sheet, should not add duplicate workouts. Find a way to either track specifc workouts, or just check for uniqueness. Using explicite weeks could help differentiate greately as week-to-week comparisons can sometimes be the same and get confused as the same entry.
+1. Adding a coaches form of the site where a coach can track the data of multiple lifters given certain credentials to access their data.
+2. Make the addition of data more streamlined.
+3. Add more functionality to the sheet itself/make it look more appealing.
