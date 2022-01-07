@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en-US">
+	<head>
+		<!-- meta block -->
+		<title>Localization - DHTMLX Spreadsheet</title>
+		<meta name="description" content="">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" charset="utf-8">
+		
+		<link rel="shortcut icon" href="./common/favicon/favicon.ico" type="image/x-icon" />
+		<link rel="icon" href="./common/favicon/icon-16.png" sizes="16x16" />
+		<link rel="icon" href="./common/favicon/icon-32.png" sizes="32x32" />
+		<link rel="icon" href="./common/favicon/icon-48.png" sizes="48x48" />
+		<link rel="icon" href="./common/favicon/icon-96.png" sizes="96x96" />
+		<link rel="icon" href="./common/favicon/icon-144.png" sizes="144x144" />
+		<!-- end meta block -->
+		<script type="text/javascript" src="../codebase/spreadsheet.js?v=4.2.0"></script>
+		<link rel="stylesheet" href="../codebase/spreadsheet.css?v=4.2.0">
+		<link rel="stylesheet" href="./common/index.css?v=4.2.0">
+		<!-- custom sample head -->
+		<script src="./common/data.js?v=4.2.0"></script>
+		<style>
+			.dhx_sample-container__widget {
+				max-width: 100%;
+				height: calc(100% - 121px);
+			}
+		</style>
+	</head>
+	<body>
+		<header class="dhx_sample-header">
+			<div class="dhx_sample-header__main">
+				<nav class="dhx_sample-header__breadcrumbs">
+					<ul class="dhx_sample-header-breadcrumbs">
+						<li class="dhx_sample-header-breadcrumbs__item">
+							<a href="./index.html" class="dhx_sample-header-breadcrumbs__link">Back to Spreadsheet samples</a>
+						</li>
+					</ul>
+				</nav>
+				<h1 class="dhx_sample-header__title">
+					<div class="dhx_sample-header__content">
+						Localization
+					</div>
+				</h1>
+			</div>
+		</header>
+		<section class="dhx_sample-controls">
+			<label
+				class="dhx_form-group dhx_radiobutton dhx_form-group--inline dhx_form-group--no-message-holder dhx_sample-input__wrapper--pl-16"
+			>
+				<input
+					type="radio"
+					checked
+					name="lang"
+					id="en"
+					class="dhx_radiobutton__input"
+				/>
+				<span class="dhx_radiobutton__visual-input"></span>
+				<span class="dhx_sample-label">English</span>
+			</label>
+			<label
+				class="dhx_form-group dhx_radiobutton dhx_form-group--inline dhx_form-group--no-message-holder dhx_sample-input__wrapper--pl-16"
+			>
+				<input
+					type="radio"
+					name="lang"
+					id="ru"
+					class="dhx_radiobutton__input"
+				/>
+				<span class="dhx_radiobutton__visual-input"></span>
+				<span class="dhx_sample-label">Russian</span>
+			</label>
+		</section>
+		<div class="dhx_sample-container__widget" id="spreadsheet"></div>
+		<script>
+			let spreadsheet = new dhx.Spreadsheet("spreadsheet");
+			spreadsheet.parse(short_dataset);
+
+			document.querySelector("#en").addEventListener("change", function () {
+				dhx.i18n.setLocale("spreadsheet", {
+					undo: "Undo",
+					redo: "Redo",
+					textColor: "Text color",
+					backgroundColor: "Background color",
+					bold: "Bold",
+					italic: "Italic",
+
+					lockCell: "Lock cell",
+					unlockCell: "Unlock cell",
+
+					format: "Format",
+					numberFormat: "Number format",
+					edit: "Edit",
+					clear: "Clear",
+					clearValue: "Clear value",
+					clearStyles: "Clear styles",
+					clearAll: "Clear all",
+
+					insert: "Insert",
+					columns: "Columns",
+					rows: "Rows",
+					addColumn: "Add column",
+					removeColumn: "Remove column",
+					addRow: "Add row",
+					removeRow: "Remove row",
+
+					underline: "Underline",
+					align: "Align",
+					left: "Left",
+					right: "Right",
+					center: "Center",
+
+					help: "Help",
+
+					common: "Common",
+					number: "Number",
+					currency: "Currency",
+					percent: "Percent",
+					text: "Text"
+				});
+
+				spreadsheet.destructor();
+				spreadsheet = new dhx.Spreadsheet("spreadsheet");
+				spreadsheet.parse(short_dataset);
+			});
+
+			document.querySelector("#ru").addEventListener("change", function () {
+				dhx.i18n.setLocale("spreadsheet", {
+					undo: "Отменить",
+					redo: "Применить",
+					textColor: "Цвет текста",
+					backgroundColor: "Цвет фона",
+					bold: "Жирный",
+					italic: "Курсив",
+
+					lockCell: "Блокировать ячейку",
+					unlockCell: "Разблокировать ячейку",
+
+					format: "Формат",
+					numberFormat: "Формат",
+					edit: "Редактировать",
+					clear: "Очистить",
+					clearValue: "Очистить значение",
+					clearStyles: "Очистить стили",
+					clearAll: "Очистить все",
+
+					insert: "Вставка",
+					columns: "Столбцы",
+					rows: "Строки",
+					addColumn: "Добавить столбец",
+					removeColumn: "Удалить столбец",
+					addRow: "Добавить строку",
+					removeRow: "Удалить строку",
+
+					underline: "Подчеркнутый",
+
+					align: "Выровнять",
+					left: "по левому краю",
+					right: "по правому краю",
+					center: "по центру",
+					help: "Помощь",
+
+					common: "Общий",
+					number: "Числовой",
+					currency: "Денежный",
+					percent: "Процентный",
+					text: "Текст"
+				});
+
+				spreadsheet.destructor();
+				spreadsheet = new dhx.Spreadsheet("spreadsheet", {
+					currencySymbol: "р. ",
+					separators: {
+						group: ".",
+						decimal: ",",
+					},
+				});
+				spreadsheet.parse(short_dataset);
+			});
+		</script>
+	</body>
+</html>

@@ -1,0 +1,232 @@
+Version 4.1.3 (November 29, 2021)
+----------------------------
+
+### New functionality
+
+- Support for date, financial, information, regex, and other functions
+- Support for boolean operators
+- The ability to resize rows from UI
+- New Vertical align button is added into the toolbar
+- The ability to set the active sheet via the setActiveSheet() method
+- The ability to remove selection from the specified cells via the removeSelectedCell() method of the Selection object
+- The ability to clear a spreadsheet or its sheet via the clear() or clearSheet() method correspondingly
+- New events are added: beforeClear, afterClear, beforeSheetClear, afterSheetClear
+- The ability to define the format of dates in the spreadsheet via the dateFormat property
+- Date format is added to default number formats
+
+### Updates
+
+- Extended list of locale options
+- Extended list of math and string functions
+- The Align block of the Spreadsheet toolbar is updated. Check the details in the Migration article
+- The parse() and serialize() methods are updated. New rows and cols attributes of the sheet object allows saving the state of the row height and column width for each sheet.
+
+### Fixes
+
+- Issue with the CTRL-X shortcut key
+- Issue which caused the script error to appear when editing a cell in the spreadsheet with hidden editing bar
+
+Version 4.1.3 (August 31, 2021)
+----------------------------
+
+### Fixes
+
+- Fix the incorrect behavior of the undo operation when reverting the row/column after its removing
+- Fix the incorrect work of the "mask" property specified in the number format object
+- Fix the issue which caused empty cells/rows at the top of the selection to be trimmed after pasting the data from Excel to the spreadsheet
+- Fix the issue which caused the cells the absolute formula refers to not being marked
+- Fix the issue with the "afterSelectionSet" event which caused the event to occur twice after a range of cells is selected
+- Fix the issue with TypeScript definitions
+- Fix the issues with the "text" number format
+
+Version 4.1.2 (June 3, 2021)
+----------------------------
+
+### Fixes
+
+- Fix the incorrect auto-filling of the cells that contain math functions when applying auto-filling to several columns at once
+- Fix the issue that caused the selected cell not to become unselected after the next click on this cell using "Ctrl + click"
+- Fix the issue with applying the math formula to the cell after choosing the formula with the help of key navigation
+- Fix the issue with locking/unlocking the cells if they are selected using "Ctrl + Click"
+- Fix the issue with the "serialize()" method that caused "0" values not to be serialized
+- Fix the issue with the auto adjustment of the width of the column after clicking on the header border between the columns
+- Fix the issue with the display of zero values in the edit line
+- Fix the issue with the editing of long content of the cell
+- Fix the issue with the export of the spreadsheet into the Excel file
+- Fix the issues with incorrect behavior of the horizontal scrollbar and display of columns when working with the spreadsheet that contains a lot of columns
+- Fix the script error that appears after using key navigation in the empty spreadsheet
+
+Version 4.1.1 (April 14, 2021)
+----------------------------
+
+### Fixes
+
+- Fix the issue with TypeScript definitions
+- Fix the issues with absolute references
+- Fix the issues appeared when working with data loaded from the file with the ".xlsx" extension
+- Fix the issue with incorrect pasting of the data copied from the Excel file
+- Fix the issue that caused the wrong result to return when summing float numbers
+
+Version 4.1.0 (March 24, 2021)
+----------------------------
+
+### New functionality
+
+- The ability to work with multiple sheets in the spreadsheet
+- New "multiSheets" configuration option is added
+- The ability to use cross-references in multiple sheets
+- The ability to load several sheets into the spreadsheet at once
+- New methods for working with multiple sheets are added: "addSheet()", "removeSheet()", "getActiveSheet()", "getSheets()"
+- New events are added: "BeforeSheetAdd", "AfterSheetAdd", BeforeSheetChange, AfterSheetChange, "BeforeSheetRemove", "AfterSheetRemove", "BeforeSheetRename", "AfterSheetRename"
+- The ability to get the formula of a cell via the "getFormula()" method
+
+### Updates
+
+- The format of the "cell" parameter of the "getValue()", "setValue()", "getStyle()", "setStyle()", "getFormat()", "setFormat()", "isLocked()", "lock()", "unlock()" methods is updated. Now the reference to a cell, or a range of cells can contain the name of the tab.
+
+Version 4.0.5 (February 03, 2021)
+----------------------------
+
+### Fixes
+
+- Fix the performance issue
+- Fix the script error that happened when the user reverted the latest action in the cell
+- Fix the script error thrown after calling the destructor
+- Fix the issue that caused values from a range of cell to be truncated after inserting into a single cell
+- Fix the issue with recognition of the format of a cell after the cell is cut and then pasted for a second time
+
+Version 4.0.4 (January 12, 2020)
+----------------------------
+
+### Fixes
+
+- Fix the incorrect work of the "SUM" function when working with more than 2 numbers
+- Fix the issue with initialization of the spreadsheet after calling "destructor()"
+- Fix the issue with types
+
+Version 4.0.3 (December 28, 2020)
+----------------------------
+
+### Fixes
+
+- Fix the issue with setting the format for the value of a cell within a data set
+- Fix the error that occurred when attaching the spreadsheet to the layout
+- Fix the issue which caused the formula set for a cell not being editing after the result was calculated
+- Fix the incorrect work of the setFocusedCell() method
+- Fix the incorrect behavior of focus when working with formulas
+- Fix the issue with selecting a range of cells using the "ctrl" key
+- Fix the incorrect work of Math functions
+- Fix the issue with the SUM() formula when selecting it via the popup and a mouse click
+- Fix the issue with adding a range of cells via "ctrl+click" to a cell with a formula
+
+Version 4.0.2 (December 21, 2020)
+----------------------------
+
+### Fixes
+
+- Fix the incorrect behavior of key navigation when creating 2 or more spreadsheet objects on the page
+- Fix issue with the error thrown from the types.d.ts file
+- Fix issues with copying and pasting a range of cells
+
+Version 4.0.1 (December 02, 2020)
+----------------------------
+
+### Fixes
+
+- The incorrect displaying of the tooltips when hovering over the Undo/Redo buttons in the toolbar
+- The issue which happened when removing the last column of the spreadsheet after importing the data bigger than the size of the spreadsheet
+- The issue with the setSelectedCell() method which caused the formula of the selected cell not to be shown in the formula bar
+- The incorrect generation of the typescript definitions
+- The visual issue with the alignment of the cell content
+- The issue with serializing of empty cells or cells with zero value
+
+Version 4.0.0 (October 2020)
+----------------------------
+
+### New functionality
+
+- Math functions
+- TypeScript Support
+- The ability to freeze columns on the left side of the spreadsheet via the leftSplit configuration property
+- The Text format for displaying the content of a cell as text is added to default number formats
+- The ability to select multiple scattered ranges of cells by using "Ctrl+Shift+Left Click" combination
+
+### Fixes
+
+- Fix the incorrect work of the colorpicker when applying the background color to the range of cells
+- Fix the incorrect parsing of numbers when importing Excel files
+- Fix the issue which caused all data copied from a Google or Excel table to be inserted into one cell of the spreadsheet
+- Fix the incorrect work of the editLine:false property that caused the edit operation to finish with an error in the console
+- Fix the issue with the AfterValueChange event which caused the event to be called twice
+
+Version 3.1.4 (September 2019)
+----------------------------
+
+### Fixes
+- Styles fixes
+
+Version 3.1.3 (September 2019)
+----------------------------
+
+### Fixes
+- Issue with focus on a cell when Spreadsheet is attached to Layout
+
+Version 3.1.2 (March 2019)
+----------------------------
+
+### Fixes
+- Issue with underlining right-aligned text
+- Issues with text styles in Excel export
+
+Version 3.1.1 (March 2019)
+----------------------------
+
+### Fixes
+- Issues with export to Excel
+
+Version 3.1.0 (March 2019)
+----------------------------
+
+### New functionality
+
+- Import data in the Excel format
+- Export data to an Excel file
+- Number formatting
+- Auto filling of cells
+
+### Updates
+- Hotkeys behavior in a range of cells
+
+### Fixes
+- Issues with hotkeys on the active cell
+
+Version 3.0.3 (December 2018)
+----------------------------
+
+### Fixes
+- Incorrect behavior in the custom read-only mode
+- Issues with methods of removing a column/row
+- Issues with loss of focus on the edit line
+- Issues with hotkeys on the active cell
+
+Version 3.0.2 (December 2018)
+----------------------------
+
+### Fixes
+- Issues with hotkeys behavior
+- Issues with placement of the selection handle
+- Issues with loss of focus on the active cell
+- Incorrect behavior of selection on the active cell
+- Incorrect behavior of hotkeys on the active cell
+- Incorrect behavior of scrolling by arrow keys
+
+Version 3.0.1 (November 2018)
+----------------------------
+
+### Fixes
+- Incorrect behavior of the undo operation
+- Incorrect behavior of the cut-paste operation on a group of cells
+
+Version 3.0 (October 2018)
+----------------------------
+

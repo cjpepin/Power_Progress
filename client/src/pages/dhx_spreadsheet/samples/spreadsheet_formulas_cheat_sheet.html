@@ -1,0 +1,1903 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+	<!-- meta block -->
+	<title>Formulas cheat sheet - DHTMLX Spreadsheet</title>
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" charset="utf-8">
+
+	<link rel="shortcut icon" href="./common/favicon/favicon.ico" type="image/x-icon" />
+	<link rel="icon" href="./common/favicon/icon-16.png" sizes="16x16" />
+	<link rel="icon" href="./common/favicon/icon-32.png" sizes="32x32" />
+	<link rel="icon" href="./common/favicon/icon-48.png" sizes="48x48" />
+	<link rel="icon" href="./common/favicon/icon-96.png" sizes="96x96" />
+	<link rel="icon" href="./common/favicon/icon-144.png" sizes="144x144" />
+	<!-- end meta block -->
+	<script type="text/javascript" src="../codebase/spreadsheet.js?v=4.2.0"></script>
+	<link rel="stylesheet" href="../codebase/spreadsheet.css?v=4.2.0">
+
+	<link rel="stylesheet" href="./common/index.css?v=4.2.0">
+	<!-- custom sample head -->
+	<style>
+		.dhx_sample-container__widget {
+			max-width: 100%;
+			height: calc(100% - 61px);
+		}
+	</style>
+</head>
+
+<body>
+	<header class="dhx_sample-header">
+		<div class="dhx_sample-header__main">
+			<nav class="dhx_sample-header__breadcrumbs">
+				<ul class="dhx_sample-header-breadcrumbs">
+					<li class="dhx_sample-header-breadcrumbs__item">
+						<a href="./index.html" class="dhx_sample-header-breadcrumbs__link">Back to Spreadsheet
+							samples</a>
+					</li>
+				</ul>
+			</nav>
+			<h1 class="dhx_sample-header__title">
+				<div class="dhx_sample-header__content">
+					Formulas cheat sheet
+				</div>
+			</h1>
+		</div>
+	</header>
+	<div class="dhx_sample-container__widget" id="spreadsheet"></div>
+
+	<script>
+		var spreadsheet = new dhx.Spreadsheet("spreadsheet");
+		spreadsheet.parse({
+			sheets: [
+				{
+					name: "Math",
+					data: [
+						{ cell: "A1", css: "header", format: "common", value: "Formula name" },
+						{
+							cell: "B1",
+							css: "header",
+							format: "common",
+							value: "Formula example",
+						},
+						{
+							cell: "C1",
+							css: "header",
+							format: "common",
+							value: "Data for formula",
+						},
+						{ cell: "A2", css: "subheader", format: "common", value: "Math" },
+
+						{ cell: "A3", css: "header", format: "common", value: "ABS" },
+						{ cell: "B3", format: "common", value: "=ABS(C3)" },
+						{ cell: "C3", format: "number", value: -5 },
+
+						{ cell: "A4", css: "header", format: "common", value: "ACOS" },
+						{ cell: "B4", format: "common", value: "=ACOS(C4)" },
+						{ cell: "C4", format: "number", value: 0.5 },
+
+						{ cell: "A5", css: "header", format: "common", value: "ACOSH" },
+						{ cell: "B5", format: "common", value: "=ACOSH(C5)" },
+						{ cell: "C5", format: "number", value: 3 },
+
+						{ cell: "A6", css: "header", format: "common", value: "ACOT" },
+						{ cell: "B6", format: "common", value: "=ACOT(C6)" },
+						{ cell: "C6", format: "number", value: 2 },
+
+						{ cell: "A7", css: "header", format: "common", value: "ACOTH" },
+						{ cell: "B7", format: "common", value: "=ACOTH(C7)" },
+						{ cell: "C7", format: "number", value: 6 },
+
+						{ cell: "A8", css: "header", format: "common", value: "ADD" },
+						{ cell: "B8", format: "common", value: "=ADD(C8;D8)" },
+						{ cell: "C8", format: "number", value: 1 },
+						{ cell: "D8", format: "number", value: 100 },
+
+						{ cell: "A9", css: "header", format: "common", value: "ARABIC" },
+						{ cell: "B9", format: "common", value: "=ARABIC(C9)" },
+						{ cell: "C9", format: "common", value: "LVII" },
+
+						{ cell: "A10", css: "header", format: "common", value: "ASIN" },
+						{ cell: "B10", format: "common", value: "=ASIN(C10)" },
+						{ cell: "C10", format: "number", value: -0.5 },
+
+						{ cell: "A11", css: "header", format: "common", value: "ASINH" },
+						{ cell: "B11", format: "common", value: "=ASINH(C11)" },
+						{ cell: "C11", format: "number", value: 10 },
+
+						{ cell: "A12", css: "header", format: "common", value: "ATAN" },
+						{ cell: "B12", format: "common", value: "=ATAN(C12)" },
+						{ cell: "C12", format: "number", value: 1 },
+
+						{ cell: "A13", css: "header", format: "common", value: "ATAN2" },
+						{ cell: "B13", format: "common", value: "=ATAN2(C13;D13)" },
+						{ cell: "C13", format: "number", value: 1 },
+						{ cell: "D13", format: "number", value: 1 },
+
+						{ cell: "A14", css: "header", format: "common", value: "ATANH" },
+						{ cell: "B14", format: "common", value: "=ATANH(C14)" },
+						{ cell: "C14", format: "number", value: 0.76 },
+
+						{ cell: "A15", css: "header", format: "common", value: "AVERAGE" },
+						{ cell: "B15", format: "common", value: "=AVERAGE(C15;D15)" },
+						{ cell: "C15", format: "number", value: 5 },
+						{ cell: "D15", format: "number", value: 15 },
+
+						{ cell: "A16", css: "header", format: "common", value: "BASE" },
+						{ cell: "B16", format: "common", value: "=BASE(C16;D16)" },
+						{ cell: "C16", format: "number", value: 7 },
+						{ cell: "D16", format: "number", value: 2 },
+
+						{ cell: "A17", css: "header", format: "common", value: "CEILING" },
+						{ cell: "B17", format: "common", value: "=CEILING(C17;D17)" },
+						{ cell: "C17", format: "number", value: 2.5 },
+						{ cell: "D17", format: "number", value: 1 },
+
+						{ cell: "A18", css: "header", format: "common", value: "COMBIN" },
+						{ cell: "B18", format: "common", value: "=COMBIN(C18;D18)" },
+						{ cell: "C18", format: "number", value: 8 },
+						{ cell: "D18", format: "number", value: 2 },
+
+						{ cell: "A19", css: "header", format: "common", value: "COMBINA" },
+						{ cell: "B19", format: "common", value: "=COMBINA(C19;D19)" },
+						{ cell: "C19", format: "number", value: 4 },
+						{ cell: "D19", format: "number", value: 3 },
+
+						{ cell: "A20", css: "header", format: "common", value: "COS" },
+						{ cell: "B20", format: "common", value: "=COS(C20)" },
+						{ cell: "C20", format: "number", value: 1.021 },
+
+						{ cell: "A21", css: "header", format: "common", value: "COSH" },
+						{ cell: "B21", format: "common", value: "=COSH(C21)" },
+						{ cell: "C21", format: "number", value: 4 },
+
+						{ cell: "A22", css: "header", format: "common", value: "COT" },
+						{ cell: "B22", format: "common", value: "=COT(C22)" },
+						{ cell: "C22", format: "number", value: 30 },
+
+						{ cell: "A23", css: "header", format: "common", value: "COTH" },
+						{ cell: "B23", format: "common", value: "=COTH(C23)" },
+						{ cell: "C23", format: "number", value: 2 },
+
+						{ cell: "A24", css: "header", format: "common", value: "COUNT" },
+						{ cell: "B24", format: "common", value: "=COUNT(C24;D24)" },
+						{ cell: "C24", format: "number", value: 5 },
+						{ cell: "D24", format: "common", value: "some text" },
+
+						{ cell: "A25", css: "header", format: "common", value: "COUNTA" },
+						{ cell: "B25", format: "common", value: "=COUNTA(C25;D25)" },
+						{ cell: "C25", format: "number", value: 5 },
+						{ cell: "D25", format: "common", value: "some text" },
+
+						{ cell: "A26", css: "header", format: "common", value: "COUNTBLANK" },
+						{ cell: "B26", format: "common", value: "=COUNTBLANK(C26;D26)" },
+						{ cell: "C26", format: "number", value: 0 },
+
+						{ cell: "A27", css: "header", format: "common", value: "CSC" },
+						{ cell: "B27", format: "common", value: "=CSC(C27)" },
+						{ cell: "C27", format: "number", value: 15 },
+
+						{ cell: "A28", css: "header", format: "common", value: "CSCH" },
+						{ cell: "B28", format: "common", value: "=CSCH(C28)" },
+						{ cell: "C28", format: "number", value: 1.5 },
+
+						{ cell: "A29", css: "header", format: "common", value: "DECIMAL" },
+						{ cell: "B29", format: "common", value: "=DECIMAL(C29;D29)" },
+						{ cell: "C29", format: "number", value: 111 },
+						{ cell: "D29", format: "number", value: 2 },
+
+						{ cell: "A30", css: "header", format: "common", value: "DEGREES" },
+						{ cell: "B30", format: "common", value: "=DEGREES(C30)" },
+						{ cell: "C30", format: "number", value: 5 },
+
+						{ cell: "A31", css: "header", format: "common", value: "DIVIDE" },
+						{ cell: "B31", format: "common", value: "=DIVIDE(C31;D31)" },
+						{ cell: "C31", format: "number", value: 4 },
+						{ cell: "D31", format: "number", value: 2 },
+
+						{ cell: "A32", css: "header", format: "common", value: "EQ" },
+						{ cell: "B32", format: "common", value: '=IF(C32=D32,"Yes","No")' },
+						{ cell: "C32", format: "number", value: 3 },
+						{ cell: "D32", format: "number", value: 3 },
+
+						{ cell: "A33", css: "header", format: "common", value: "EVEN" },
+						{ cell: "B33", format: "common", value: "=EVEN(C33)" },
+						{ cell: "C33", format: "number", value: 5.7 },
+
+						{ cell: "A34", css: "header", format: "common", value: "FACT" },
+						{ cell: "B34", format: "common", value: "=FACT(C34)" },
+						{ cell: "C34", format: "number", value: 5 },
+
+						{ cell: "A35", css: "header", format: "common", value: "FACTDOUBLE" },
+						{ cell: "B35", format: "common", value: "=FACTDOUBLE(C35)" },
+						{ cell: "C35", format: "number", value: 6 },
+
+						{ cell: "A36", css: "header", format: "common", value: "FLOOR" },
+						{ cell: "B36", format: "common", value: "=FLOOR(C36;D36)" },
+						{ cell: "C36", format: "number", value: 3.7 },
+						{ cell: "D36", format: "number", value: 2 },
+
+						{ cell: "A37", css: "header", format: "common", value: "GCD" },
+						{ cell: "C37", format: "number", value: 60 },
+						{ cell: "D37", format: "number", value: 36 },
+						{ cell: "B37", format: "common", value: "=GCD(C37;D37)" },
+
+						{ cell: "A38", css: "header", format: "common", value: "GT" },
+						{ cell: "B38", format: "common", value: '=IF(C38>D38,"Yes","No")' },
+						{ cell: "C38", format: "number", value: 2 },
+						{ cell: "D38", format: "number", value: 3 },
+
+						{ cell: "A39", css: "header", format: "common", value: "GTE" },
+						{ cell: "B39", format: "common", value: '=IF(C39>=D39,"Yes","No")' },
+						{ cell: "C39", format: "number", value: 3 },
+						{ cell: "D39", format: "number", value: 3 },
+
+						{ cell: "A40", css: "header", format: "common", value: "INT" },
+						{ cell: "B40", format: "common", value: "=INT(C40)" },
+						{ cell: "C40", format: "number", value: 5.7 },
+
+						{ cell: "A41", css: "header", format: "common", value: "LN" },
+						{ cell: "B41", format: "common", value: "=LN(C41)" },
+						{ cell: "C41", format: "number", value: 86 },
+
+						{ cell: "A42", css: "header", format: "common", value: "LOG" },
+						{ cell: "B42", format: "common", value: "=LOG(C42)" },
+						{ cell: "C42", format: "number", value: 10 },
+
+						{ cell: "A43", css: "header", format: "common", value: "LOG10" },
+						{ cell: "B43", format: "common", value: "=LOG10(C43)" },
+						{ cell: "C43", format: "number", value: 10 },
+
+						{ cell: "A44", css: "header", format: "common", value: "LT" },
+						{ cell: "B44", format: "common", value: '=IF(C44<D44,"Yes","No")' },
+						{ cell: "C44", format: "number", value: 2 },
+						{ cell: "D44", format: "number", value: 3 },
+
+						{ cell: "A45", css: "header", format: "common", value: "LTE" },
+						{ cell: "B45", format: "common", value: '=IF(C45<=D45,"Yes","No")' },
+						{ cell: "C45", format: "number", value: 3 },
+						{ cell: "D45", format: "number", value: 3 },
+
+						{ cell: "A46", css: "header", format: "common", value: "MAX" },
+						{ cell: "B46", format: "common", value: "=MAX(C46;D46)" },
+						{ cell: "C46", format: "number", value: 5 },
+						{ cell: "D46", format: "number", value: 15 },
+
+						{ cell: "A47", css: "header", format: "common", value: "MIN" },
+						{ cell: "B47", format: "common", value: "=MIN(C47;D47)" },
+						{ cell: "C47", format: "number", value: 5 },
+						{ cell: "D47", format: "number", value: 2 },
+
+						{ cell: "A48", css: "header", format: "common", value: "MINUS" },
+						{ cell: "B48", format: "common", value: "=MINUS(C48;D48)" },
+						{ cell: "C48", format: "number", value: 1 },
+						{ cell: "D48", format: "number", value: 100 },
+
+						{ cell: "A49", css: "header", format: "common", value: "MOD" },
+						{ cell: "B49", format: "common", value: "=MOD(C49;D49)" },
+						{ cell: "C49", format: "number", value: 3 },
+						{ cell: "D49", format: "number", value: 2 },
+
+						{ cell: "A50", css: "header", format: "common", value: "MROUND" },
+						{ cell: "B50", format: "common", value: "=MROUND(C50;D50)" },
+						{ cell: "C50", format: "number", value: 10 },
+						{ cell: "D50", format: "number", value: 3 },
+
+						{ cell: "A51", css: "header", format: "common", value: "MULTINOMIAL" },
+						{ cell: "B51", format: "common", value: "=MULTINOMIAL(C51;D51)" },
+						{ cell: "C51", format: "number", value: 2 },
+						{ cell: "D51", format: "number", value: 3 },
+
+						{ cell: "A52", css: "header", format: "common", value: "MULTIPLY" },
+						{ cell: "B52", format: "common", value: "=MULTIPLY(C52;D52)" },
+						{ cell: "C52", format: "number", value: 2 },
+						{ cell: "D52", format: "number", value: 2 },
+
+						{ cell: "A53", css: "header", format: "common", value: "NE" },
+						{ cell: "B53", format: "common", value: '=IF(C53 != D53,"Yes","No")' },
+						{ cell: "C53", format: "number", value: 3 },
+						{ cell: "D53", format: "number", value: 3 },
+
+						{ cell: "A55", css: "header", format: "common", value: "ODD" },
+						{ cell: "B55", format: "common", value: "=ODD(C55)" },
+						{ cell: "C55", format: "number", value: 5 },
+
+						{ cell: "A56", css: "header", format: "common", value: "PI" },
+						{ cell: "B56", format: "common", value: "=PI()" },
+
+						{ cell: "A57", css: "header", format: "common", value: "POW" },
+						{ cell: "B57", format: "common", value: "=POW(C57;D57)" },
+						{ cell: "C57", format: "number", value: 5 },
+						{ cell: "D57", format: "number", value: 2 },
+
+						{ cell: "A58", css: "header", format: "common", value: "POWER" },
+						{ cell: "B58", format: "common", value: "=POWER(C58;D58)" },
+						{ cell: "C58", format: "number", value: 5 },
+						{ cell: "D58", format: "number", value: 2 },
+
+						{ cell: "A59", css: "header", format: "common", value: "PRODUCT" },
+						{ cell: "B59", format: "common", value: "=PRODUCT(C59;D59)" },
+						{ cell: "C59", format: "number", value: 5 },
+						{ cell: "D59", format: "number", value: 2 },
+
+						{ cell: "A60", css: "header", format: "common", value: "QUOTIENT" },
+						{ cell: "B60", format: "common", value: "=QUOTIENT(C60;D60)" },
+						{ cell: "C60", format: "number", value: 5 },
+						{ cell: "D60", format: "number", value: 2 },
+
+						{ cell: "A61", css: "header", format: "common", value: "RADIANS" },
+						{ cell: "B61", format: "common", value: "=LOG10(C61)" },
+						{ cell: "C61", format: "number", value: 270 },
+
+						{ cell: "A62", css: "header", format: "common", value: "RAND" },
+						{ cell: "B62", format: "common", value: "=RAND()" },
+
+						{ cell: "A63", css: "header", format: "common", value: "RANDBETWEEN" },
+						{ cell: "B63", format: "common", value: "=RANDBETWEEN(C63;D63)" },
+						{ cell: "C63", format: "number", value: 1 },
+						{ cell: "D63", format: "number", value: 100 },
+
+						{ cell: "A64", css: "header", format: "common", value: "ROMAN" },
+						{ cell: "B64", format: "common", value: "=ROMAN(C64)" },
+						{ cell: "C64", format: "number", value: 10 },
+
+						{ cell: "A65", css: "header", format: "common", value: "ROUND" },
+						{ cell: "B65", format: "common", value: "=ROUND(C65;D65)" },
+						{ cell: "C65", format: "number", value: 5.73758 },
+						{ cell: "D65", format: "number", value: 2 },
+
+						{ cell: "A66", css: "header", format: "common", value: "ROUNDDOWN" },
+						{ cell: "B66", format: "common", value: "=ROUNDDOWN(C66;D66)" },
+						{ cell: "C66", format: "number", value: 5.73758 },
+						{ cell: "D66", format: "number", value: 2 },
+
+						{ cell: "A67", css: "header", format: "common", value: "ROUNDUP" },
+						{ cell: "B67", format: "common", value: "=ROUNDUP(C67;D67)" },
+						{ cell: "C67", format: "number", value: 5.78658 },
+						{ cell: "D67", format: "number", value: 2 },
+
+						{ cell: "A68", css: "header", format: "common", value: "SEC" },
+						{ cell: "B68", format: "common", value: "=SEC(C68)" },
+						{ cell: "C68", format: "number", value: 45 },
+
+						{ cell: "A69", css: "header", format: "common", value: "SECH" },
+						{ cell: "B69", format: "common", value: "=SECH(C69)" },
+						{ cell: "C69", format: "number", value: 45 },
+
+						{ cell: "A70", css: "header", format: "common", value: "SIN" },
+						{ cell: "B70", format: "common", value: "=SIN(C70)" },
+						{ cell: "C70", format: "number", value: 30 },
+
+						{ cell: "A71", css: "header", format: "common", value: "SQRT" },
+						{ cell: "B71", format: "common", value: "=SQRT(C71)" },
+						{ cell: "C71", format: "number", value: 5 },
+
+						{ cell: "A72", css: "header", format: "common", value: "SQRTPI" },
+						{ cell: "B72", format: "common", value: "=SQRTPI(C72)" },
+						{ cell: "C72", format: "number", value: 1 },
+
+						{ cell: "A73", css: "header", format: "common", value: "STDEV" },
+						{ cell: "B73", format: "common", value: "=STDEV(C73;D73)" },
+						{ cell: "C73", format: "number", value: 5 },
+						{ cell: "D73", format: "number", value: 2 },
+
+						{ cell: "A74", css: "header", format: "common", value: "STDEVA" },
+						{ cell: "B74", format: "common", value: "=STDEVA(C74;D74)" },
+						{ cell: "C74", format: "number", value: 5 },
+						{ cell: "D74", format: "number", value: 2 },
+
+						{ cell: "A75", css: "header", format: "common", value: "STDEVP" },
+						{ cell: "B75", format: "common", value: "=STDEVP(C75;D75)" },
+						{ cell: "C75", format: "number", value: 5 },
+						{ cell: "D75", format: "number", value: 2 },
+
+						{ cell: "A76", css: "header", format: "common", value: "STDEVPA" },
+						{ cell: "B76", format: "common", value: "=STDEVPA(C76;D76)" },
+						{ cell: "C76", format: "number", value: 5 },
+						{ cell: "D76", format: "number", value: 2 },
+
+						{ cell: "A77", css: "header", format: "common", value: "SUBTOTAL" },
+						{ cell: "B77", format: "common", value: "=SUBTOTAL(C77;D77:F77)" },
+						{ cell: "C77", format: "common", value: 9 },
+						{ cell: "D77", format: "number", value: 115 },
+						{ cell: "E77", format: "number", value: 10 },
+						{ cell: "F77", format: "number", value: 90 },
+
+						{ cell: "A78", css: "header", format: "common", value: "SUM" },
+						{ cell: "B78", format: "common", value: "=SUM(C78;D78)" },
+						{ cell: "C78", format: "number", value: 5 },
+						{ cell: "D78", format: "number", value: 2 },
+
+						{ cell: "A79", css: "header", format: "common", value: "SUMPRODUCT" },
+						{ cell: "B79", format: "common", value: "=SUMPRODUCT(C78:C80;D78:D80)" },
+						{ cell: "C79", format: "number", value: 5 },
+						{ cell: "D79", format: "number", value: 2 },
+
+						{ cell: "A80", css: "header", format: "common", value: "SUMSQ" },
+						{ cell: "B80", format: "common", value: "=SUMSQ(C80;D80)" },
+						{ cell: "C80", format: "number", value: 5 },
+						{ cell: "D80", format: "number", value: 2 },
+
+						{ cell: "A81", css: "header", format: "common", value: "SUMX2MY2" },
+						{ cell: "B81", format: "common", value: "=SUMX2MY2(C78:C81;D78:D81)" },
+						{ cell: "C81", format: "number", value: 5 },
+						{ cell: "D81", format: "number", value: 2 },
+
+						{ cell: "A82", css: "header", format: "common", value: "SUMX2PY2" },
+						{ cell: "B82", format: "common", value: "=SUMX2PY2(C78:C82;D78:D82)" },
+						{ cell: "C82", format: "number", value: 5 },
+						{ cell: "D82", format: "number", value: 2 },
+
+						{ cell: "A83", css: "header", format: "common", value: "SUMXMY2" },
+						{ cell: "B83", format: "common", value: "=SUMXMY2(C78:C82;D78:D82)" },
+						{ cell: "C83", format: "number", value: 5 },
+						{ cell: "D83", format: "number", value: 2 },
+
+						{ cell: "A84", css: "header", format: "common", value: "TAN" },
+						{ cell: "B84", format: "common", value: "=TAN(C84)" },
+						{ cell: "C84", format: "number", value: 0.785 },
+
+						{ cell: "A85", css: "header", format: "common", value: "TANH" },
+						{ cell: "B85", format: "common", value: "=TANH(C85)" },
+						{ cell: "C85", format: "number", value: 0.5 },
+
+						{ cell: "A86", css: "header", format: "common", value: "TRUNC" },
+						{ cell: "B86", format: "common", value: "=TRUNC(C86)" },
+						{ cell: "C86", format: "number", value: 5.64 },
+
+						{ cell: "A87", css: "header", format: "common", value: "VAR" },
+						{ cell: "B87", format: "common", value: "=VAR(C87:F87)" },
+						{ cell: "C87", format: "number", value: 5 },
+						{ cell: "D87", format: "number", value: 2 },
+						{ cell: "E87", format: "number", value: 5 },
+						{ cell: "F87", format: "number", value: 2 },
+
+						{ cell: "A88", css: "header", format: "common", value: "VARA" },
+						{ cell: "B88", format: "common", value: "=VARA(C88:F88)" },
+						{ cell: "C88", format: "number", value: 5 },
+						{ cell: "D88", format: "number", value: 2 },
+						{ cell: "E88", format: "number", value: 5 },
+						{ cell: "F88", format: "number", value: 2 },
+
+						{ cell: "A89", css: "header", format: "common", value: "VARP" },
+						{ cell: "B89", format: "common", value: "=VARP(C89:F89)" },
+						{ cell: "C89", format: "number", value: 5 },
+						{ cell: "D89", format: "number", value: 2 },
+						{ cell: "E89", format: "number", value: 5 },
+						{ cell: "F89", format: "number", value: 2 },
+
+						{ cell: "A90", css: "header", format: "common", value: "VARPA" },
+						{ cell: "B90", format: "common", value: "=VARPA(C90;D90)" },
+						{ cell: "C90", format: "number", value: 5 },
+						{ cell: "D90", format: "number", value: 2 },
+					],
+				},
+				{
+					name: "Financial",
+					data: [
+						{ cell: "A1", css: "header", format: "common", value: "Formula name" },
+						{
+							cell: "B1",
+							css: "header",
+							format: "common",
+							value: "Formula example",
+						},
+						{
+							cell: "C1",
+							css: "header",
+							format: "common",
+							value: "Data for formula",
+						},
+						{ cell: "A2", css: "subheader", format: "common", value: "Financial" },
+
+						{ cell: "A3", css: "header", format: "common", value: "ACCRINT" },
+						{
+							cell: "B3",
+							format: "common",
+							value: "=ACCRINT(C3;D3;E3;F3;G3;H3)",
+						},
+						{
+							cell: "C3",
+							format: "number",
+							value: 39508,
+						},
+						{
+							cell: "D3",
+							format: "number",
+							value: 39691,
+						},
+						{
+							cell: "E3",
+							format: "number",
+							value: 39569,
+						},
+						{
+							cell: "F3",
+							format: "number",
+							value: 0.1,
+						},
+						{
+							cell: "G3",
+							format: "number",
+							value: 1000,
+						},
+						{
+							cell: "H3",
+							format: "number",
+							value: 1,
+						},
+
+						{ cell: "A4", css: "header", format: "common", value: "PMT" },
+						{
+							cell: "B4",
+							format: "common",
+							value: "=PMT(C4/12;D4*12;-E4)",
+						},
+						{
+							cell: "C4",
+							format: "percent",
+							value: 0.03,
+						},
+						{
+							cell: "D4",
+							format: "number",
+							value: 5,
+						},
+						{
+							cell: "E4",
+							format: "number",
+							value: 10000,
+						},
+
+						{ cell: "A5", css: "header", format: "common", value: "FV" },
+						{
+							cell: "B5",
+							format: "common",
+							value: "=FV(C5/12;D5;E5;F5;G5)",
+						},
+						{
+							cell: "C5",
+							format: "number",
+							value: 0.06,
+						},
+						{
+							cell: "D5",
+							format: "number",
+							value: 10,
+						},
+						{
+							cell: "E5",
+							format: "number",
+							value: -200,
+						},
+						{
+							cell: "F5",
+							format: "number",
+							value: -500,
+						},
+						{
+							cell: "G5",
+							format: "number",
+							value: 1,
+						},
+
+						{ cell: "A6", css: "header", format: "common", value: "DB" },
+						{
+							cell: "B6",
+							format: "common",
+							value: "=DB(C6;D6;E6;F6;G6)",
+						},
+						{
+							cell: "C6",
+							format: "number",
+							value: 10000,
+						},
+						{
+							cell: "D6",
+							format: "number",
+							value: 5000,
+						},
+						{
+							cell: "E6",
+							format: "number",
+							value: 5,
+						},
+						{
+							cell: "F6",
+							format: "number",
+							value: 1,
+						},
+						{
+							cell: "G6",
+							format: "number",
+							value: 12,
+						},
+
+						{ cell: "A7", css: "header", format: "common", value: "DDB" },
+						{
+							cell: "B7",
+							format: "common",
+							value: "=DDB(C7;D7;E7;F7;G7)",
+						},
+						{
+							cell: "C7",
+							format: "number",
+							value: 3500,
+						},
+						{
+							cell: "D7",
+							format: "number",
+							value: 500,
+						},
+						{
+							cell: "E7",
+							format: "number",
+							value: 5,
+						},
+						{
+							cell: "F7",
+							format: "number",
+							value: 1,
+						},
+						{
+							cell: "G7",
+							format: "number",
+							value: 2,
+						},
+
+						{ cell: "A8", css: "header", format: "common", value: "DOLLARDE" },
+						{
+							cell: "B8",
+							format: "common",
+							value: "=DOLLARDE(C8;D8)",
+						},
+						{
+							cell: "C8",
+							format: "number",
+							value: 1.1,
+						},
+						{
+							cell: "D8",
+							format: "number",
+							value: 32,
+						},
+
+						{ cell: "A9", css: "header", format: "common", value: "DOLLARFR" },
+						{
+							cell: "B9",
+							format: "common",
+							value: "=DOLLARFR(C9;D9)",
+						},
+						{
+							cell: "C9",
+							format: "number",
+							value: 1.125,
+						},
+						{
+							cell: "D9",
+							format: "number",
+							value: 16,
+						},
+						{
+							cell: "E9",
+							format: "number",
+							value: -2000,
+						},
+
+						{ cell: "A10", css: "header", format: "common", value: "EFFECT" },
+						{
+							cell: "B10",
+							format: "common",
+							value: "=EFFECT(C10;D10)",
+						},
+						{
+							cell: "C10",
+							format: "percent",
+							value: 0.06,
+						},
+						{
+							cell: "D10",
+							format: "number",
+							value: 2,
+						},
+						{
+							cell: "E10",
+							format: "number",
+							value: 3000,
+						},
+
+						{ cell: "A11", css: "header", format: "common", value: "FVSCHEDULE" },
+						{
+							cell: "B11",
+							format: "common",
+							value: "=FVSCHEDULE(C11;D11:D12)",
+						},
+						{
+							cell: "C11",
+							format: "number",
+							value: 100,
+						},
+						{
+							cell: "D11",
+							format: "percent",
+							value: 0.02,
+						},
+						{
+							cell: "E11",
+							format: "number",
+							value: 4000,
+						},
+
+						{ cell: "A12", css: "header", format: "common", value: "IRR" },
+						{
+							cell: "B12",
+							format: "common",
+							value: "=IRR(E9:E11)",
+						},
+
+						{
+							cell: "D12",
+							format: "percent",
+							value: 0.02,
+						},
+
+						{ cell: "A13", css: "header", format: "common", value: "IPMT" },
+						{
+							cell: "B13",
+							format: "common",
+							value: "=IPMT(C13/12;D13;E13*12;-F13)",
+						},
+						{
+							cell: "C13",
+							format: "percent",
+							value: 0.03,
+						},
+						{
+							cell: "D13",
+							format: "number",
+							value: 24,
+						},
+						{
+							cell: "E13",
+							format: "number",
+							value: 5,
+						},
+						{
+							cell: "F13",
+							format: "number",
+							value: 10000,
+						},
+
+						{ cell: "A14", css: "header", format: "common", value: "ISPMT" },
+						{
+							cell: "B14",
+							format: "common",
+							value: "=ISPMT(C14;D14;E14;-F14)",
+						},
+						{
+							cell: "C14",
+							format: "percent",
+							value: 0.1,
+						},
+						{
+							cell: "D14",
+							format: "number",
+							value: 0,
+						},
+						{
+							cell: "E14",
+							format: "number",
+							value: 4,
+						},
+						{
+							cell: "F14",
+							format: "number",
+							value: 4000,
+						},
+
+						{ cell: "A15", css: "header", format: "common", value: "NPV" },
+						{
+							cell: "B15",
+							format: "common",
+							value: "=NPV(C15;D15;E15)",
+						},
+						{
+							cell: "C15",
+							format: "percent",
+							value: 0.1,
+						},
+						{
+							cell: "D15",
+							format: "number",
+							value: 100,
+						},
+						{
+							cell: "E15",
+							format: "number",
+							value: 200,
+						},
+
+						{ cell: "A16", css: "header", format: "common", value: "NOMINAL" },
+						{
+							cell: "B16",
+							format: "common",
+							value: "=NOMINAL(C16;D16)",
+						},
+						{
+							cell: "C16",
+							format: "percent",
+							value: 0.0609,
+						},
+						{
+							cell: "D16",
+							format: "number",
+							value: 2,
+						},
+
+						{ cell: "A17", css: "header", format: "common", value: "NPER" },
+						{
+							cell: "B17",
+							format: "common",
+							value: "=NPER(C17/12;D17;-E17)",
+						},
+						{
+							cell: "C17",
+							format: "percent",
+							value: 0.045,
+						},
+						{
+							cell: "D17",
+							format: "number",
+							value: 93.22,
+						},
+						{
+							cell: "E17",
+							format: "number",
+							value: 5000,
+						},
+
+						{ cell: "A18", css: "header", format: "common", value: "PDURATION" },
+						{
+							cell: "B18",
+							format: "common",
+							value: "=PDURATION(C18;D18;E18)",
+						},
+						{
+							cell: "C18",
+							format: "percent",
+							value: 0.045,
+						},
+						{
+							cell: "D18",
+							format: "number",
+							value: 93.22,
+						},
+						{
+							cell: "E18",
+							format: "number",
+							value: 5000,
+						},
+
+						{ cell: "A19", css: "header", format: "common", value: "PPMT" },
+						{
+							cell: "B19",
+							format: "common",
+							value: "=PPMT(C19/12;D19;E19*12;-F19;G19;)",
+						},
+						{
+							cell: "C19",
+							format: "percent",
+							value: 0.03,
+						},
+						{
+							cell: "D19",
+							format: "number",
+							value: 24,
+						},
+						{
+							cell: "E19",
+							format: "number",
+							value: 5,
+						},
+						{
+							cell: "F19",
+							format: "number",
+							value: 10000,
+						},
+						{
+							cell: "G19",
+							format: "number",
+							value: 0,
+						},
+						{ cell: "A20", css: "header", format: "common", value: "PV" },
+						{
+							cell: "B20",
+							format: "common",
+							value: "=PV(C20/12;12*D20;-E20;F20;)",
+						},
+						{
+							cell: "C20",
+							format: "percent",
+							value: 0.08,
+						},
+						{
+							cell: "D20",
+							format: "number",
+							value: 20,
+						},
+						{
+							cell: "E20",
+							format: "number",
+							value: 500,
+						},
+						{
+							cell: "F20",
+							format: "number",
+							value: 0,
+						},
+					],
+				},
+				{
+					name: "Date",
+					data: [
+						{ cell: "A1", css: "header", format: "common", value: "Formula name" },
+						{
+							cell: "B1",
+							css: "header",
+							format: "common",
+							value: "Formula example",
+						},
+						{
+							cell: "C1",
+							css: "header",
+							format: "common",
+							value: "Data for formula",
+						},
+						{ cell: "A2", css: "subheader", format: "common", value: "Date" },
+						{ cell: "A3", css: "header", format: "common", value: "DATE" },
+						{
+							cell: "B3",
+							format: "common",
+							value: "=DATE(C3;D3;E3)",
+							format: "date"
+						},
+						{
+							cell: "C3",
+							format: "common",
+							value: 2021,
+						},
+						{
+							cell: "D3",
+							format: "number",
+							value: 11,
+						},
+						{
+							cell: "E3",
+							format: "number",
+							value: 1,
+						},
+
+						{ cell: "A4", css: "header", format: "common", value: "DAY" },
+						{
+							cell: "B4",
+							format: "common",
+							value: "=DAY(C4)",
+						},
+						{
+							cell: "C4",
+							format: "date",
+							value: 44501,
+						},
+						{ cell: "A5", css: "header", format: "common", value: "MONTH" },
+						{
+							cell: "B5",
+							format: "common",
+							value: "=MONTH(C5)",
+						},
+						{
+							cell: "C5",
+							format: "date",
+							value: 44501,
+						},
+
+						{ cell: "A6", css: "header", format: "common", value: "YEAR" },
+						{
+							cell: "B6",
+							format: "common",
+							value: "=YEAR(C6)",
+						},
+						{
+							cell: "C6",
+							format: "date",
+							value: 44501,
+						},
+
+						{ cell: "A7", css: "header", format: "common", value: "NOW" },
+						{
+							cell: "B7",
+							format: "date",
+							value: "=NOW()",
+						},
+
+						{ cell: "A8", css: "header", format: "common", value: "DATEDIF" },
+						{
+							cell: "B8",
+							format: "common",
+							value: "=DATEDIF(C8;D8;E8)",
+						},
+						{
+							cell: "C8",
+							format: "date",
+							value: 44136.125,
+						},
+						{
+							cell: "D8",
+							format: "date",
+							value: 44501,
+						},
+						{
+							cell: "E8",
+							format: "common",
+							value: "M",
+						},
+						{ cell: "A9", css: "header", format: "common", value: "DATEVALUE" },
+						{
+							cell: "B9",
+							format: "date",
+							value: "=DATEVALUE(C9)",
+						},
+						{
+							cell: "C9",
+							format: "common",
+							value: "3/10/1975",
+						},
+
+						{ cell: "A10", css: "header", format: "common", value: "DAYS" },
+						{
+							cell: "B10",
+							format: "common",
+							value: "=DAYS(C10;D10)",
+						},
+						{
+							cell: "C10",
+							format: "date",
+							value: 44501,
+						},
+						{
+							cell: "D10",
+							format: "date",
+							value: 44136.125,
+						},
+
+						{ cell: "A11", css: "header", format: "common", value: "DAYS360" },
+						{
+							cell: "B11",
+							format: "common",
+							value: "=DAYS360(C11;D11)",
+						},
+						{
+							cell: "C11",
+							format: "date",
+							value: 44136.125,
+						},
+						{
+							cell: "D11",
+							format: "date",
+							value: 44501,
+						},
+
+						{ cell: "A12", css: "header", format: "common", value: "EDATE" },
+						{
+							cell: "B12",
+							format: "date",
+							value: "=EDATE(C12;D12)",
+						},
+						{
+							cell: "C12",
+							format: "date",
+							value: 44136.125,
+						},
+						{
+							cell: "D12",
+							format: "number",
+							value: 24,
+						},
+
+						{ cell: "A13", css: "header", format: "common", value: "EOMONTH" },
+						{
+							cell: "B13",
+							format: "date",
+							value: "=EOMONTH(C13;D13)",
+						},
+						{
+							cell: "C13",
+							format: "date",
+							value: 44136.125,
+						},
+						{
+							cell: "D13",
+							format: "number",
+							value: 1,
+						},
+
+						{ cell: "A14", css: "header", format: "common", value: "ISOWEEKNUM" },
+						{
+							cell: "B14",
+							format: "common",
+							value: "=ISOWEEKNUM(C14)",
+						},
+						{
+							cell: "C14",
+							format: "date",
+							value: 44136.125,
+						},
+
+						{ cell: "A15", css: "header", format: "common", value: "NETWORKDAYS" },
+						{
+							cell: "B15",
+							format: "common",
+							value: "=NETWORKDAYS(C15;D15)",
+						},
+						{
+							cell: "C15",
+							format: "date",
+							value: 44136.125,
+						},
+						{
+							cell: "D15",
+							format: "date",
+							value: 44501,
+						},
+
+						{
+							cell: "A16",
+							css: "header",
+							format: "common",
+							value: "NETWORKDAYSINTL",
+						},
+						{
+							cell: "B16",
+							format: "common",
+							value: "=NETWORKDAYSINTL(C16;D16;E16, {F16,G16})",
+						},
+						{
+							cell: "C16",
+							format: "date",
+							value: 44136.125,
+						},
+						{
+							cell: "D16",
+							format: "date",
+							value: 44501,
+						},
+						{
+							cell: "E16",
+							format: "number",
+							value: 0,
+						},
+						{
+							cell: "F16",
+							format: "date",
+							value: "10/12/2020",
+						},
+						{
+							cell: "G16",
+							format: "date",
+							value: "11/12/2020",
+						},
+
+						{ cell: "A17", css: "header", format: "common", value: "WEEKNUM" },
+						{
+							cell: "B17",
+							format: "common",
+							value: "=WEEKNUM(C17)",
+						},
+						{
+							cell: "C17",
+							format: "date",
+							value: 44501,
+						},
+
+						{ cell: "A18", css: "header", format: "common", value: "WEEKDAY" },
+						{
+							cell: "B18",
+							format: "common",
+							value: "=WEEKDAY(C18)",
+						},
+						{
+							cell: "C18",
+							format: "date",
+							value: 44501,
+						},
+						{ cell: "A19", css: "header", format: "common", value: "WORKDAY" },
+						{
+							cell: "B19",
+							format: "date",
+							value: "=WORKDAY(C19,D19)",
+						},
+						{
+							cell: "C19",
+							format: "date",
+							value: 44501,
+						},
+						{
+							cell: "D19",
+							format: "number",
+							value: 5,
+						},
+						{ cell: "A20", css: "header", format: "common", value: "WORKDAYINTL" },
+						{
+							cell: "B20",
+							format: "date",
+							value: "=WORKDAYINTL(C20;D20;E20)",
+						},
+						{
+							cell: "C20",
+							format: "date",
+							value: 44136.125,
+						},
+						{
+							cell: "D20",
+							format: "number",
+							value: 2,
+						},
+						{
+							cell: "E20",
+							format: "number",
+							value: 2,
+						},
+						{ cell: "A21", css: "header", format: "common", value: "YEARFRAC" },
+						{
+							cell: "B21",
+							format: "common",
+							value: "=YEARFRAC(C21;D21;E21)",
+						},
+						{
+							cell: "C21",
+							format: "date",
+							value: 44136.125,
+						},
+						{
+							cell: "D21",
+							format: "date",
+							value: 44501,
+						},
+						{
+							cell: "E21",
+							format: "number",
+							value: 0,
+						},
+					],
+				},
+				{
+					name: "String",
+					data: [
+						{ cell: "A1", css: "header", format: "common", value: "Formula name" },
+						{
+							cell: "B1",
+							css: "header",
+							format: "common",
+							value: "Formula example",
+						},
+						{
+							cell: "C1",
+							css: "header",
+							format: "common",
+							value: "Data for formula",
+						},
+						{ cell: "A2", css: "subheader", format: "common", value: "String" },
+						{ cell: "A3", css: "header", format: "common", value: "CONCATENATE" },
+						{
+							cell: "B3",
+							format: "common",
+							value: '=CONCATENATE(C3;" ";D3)',
+						},
+						{
+							cell: "C3",
+							format: "common",
+							value: "some",
+						},
+						{
+							cell: "D3",
+							format: "common",
+							value: "text",
+						},
+						{
+							cell: "E3",
+							format: "common",
+						},
+						{ cell: "A4", css: "header", format: "common", value: "LEFT" },
+						{
+							cell: "B4",
+							format: "common",
+							value: "=LEFT(C4; 2)",
+						},
+						{
+							cell: "C4",
+							format: "common",
+							value: "some",
+						},
+						{ cell: "A5", css: "header", format: "common", value: "MID" },
+						{
+							cell: "B5",
+							format: "common",
+							value: "=MID(C5; 2; 2)",
+						},
+						{
+							cell: "C5",
+							format: "common",
+							value: "some",
+						},
+
+						{ cell: "A6", css: "header", format: "common", value: "RIGHT" },
+						{
+							cell: "B6",
+							format: "common",
+							value: "=RIGHT(C6; 2)",
+						},
+						{
+							cell: "C6",
+							format: "common",
+							value: "some",
+						},
+
+						{ cell: "A7", css: "header", format: "common", value: "LOWER" },
+						{
+							cell: "B7",
+							format: "common",
+							value: "=LOWER(C7)",
+						},
+						{
+							cell: "C7",
+							format: "common",
+							value: "SOME",
+						},
+						{ cell: "A8", css: "header", format: "common", value: "UPPER" },
+						{
+							cell: "B8",
+							format: "common",
+							value: "=UPPER(C8)",
+						},
+						{
+							cell: "C8",
+							format: "common",
+							value: "some",
+						},
+						{ cell: "A9", css: "header", format: "common", value: "PROPER" },
+						{
+							cell: "B9",
+							format: "common",
+							value: "=PROPER(C9)",
+						},
+						{
+							cell: "C9",
+							format: "common",
+							value: "some",
+						},
+						{ cell: "A10", css: "header", format: "common", value: "TRIM" },
+						{
+							cell: "B10",
+							format: "common",
+							value: "=TRIM(C10)",
+						},
+						{
+							cell: "C10",
+							format: "common",
+							value: "some",
+						},
+						{ cell: "A11", css: "header", format: "common", value: "LEN" },
+						{
+							cell: "B11",
+							format: "common",
+							value: "=LEN(C11)",
+						},
+						{
+							cell: "C11",
+							format: "common",
+							value: "some",
+						},
+
+						{ cell: "A12", css: "header", format: "common", value: "CHAR" },
+						{
+							cell: "B12",
+							format: "common",
+							value: "=CHAR(C12)",
+						},
+						{
+							cell: "C12",
+							format: "number",
+							value: 67,
+						},
+
+						{ cell: "A13", css: "header", format: "common", value: "CLEAN" },
+						{
+							cell: "B13",
+							format: "common",
+							value: "=CLEAN(C13)",
+						},
+						{
+							cell: "C13",
+							format: "common",
+							value: "some",
+						},
+
+						{ cell: "A14", css: "header", format: "common", value: "CODE" },
+						{
+							cell: "B14",
+							format: "common",
+							value: "=CODE(C14)",
+						},
+						{
+							cell: "C14",
+							format: "common",
+							value: "a",
+						},
+
+						{ cell: "A15", css: "header", format: "common", value: "DOLLAR" },
+						{
+							cell: "B15",
+							format: "common",
+							value: "=DOLLAR(C15;D15)",
+						},
+						{
+							cell: "C15",
+							format: "number",
+							value: 120.1,
+						},
+						{
+							cell: "D15",
+							format: "number",
+							value: 0,
+						},
+
+						{ cell: "A16", css: "header", format: "common", value: "EXACT" },
+						{
+							cell: "B16",
+							format: "common",
+							value: "=EXACT(C16;D16)",
+						},
+						{
+							cell: "C16",
+							format: "common",
+							value: "text",
+						},
+						{
+							cell: "D16",
+							format: "common",
+							value: "text",
+						},
+
+						{ cell: "A17", css: "header", format: "common", value: "FIND" },
+						{
+							cell: "B17",
+							format: "common",
+							value: "=FIND(C17;D17)",
+						},
+						{
+							cell: "C17",
+							format: "common",
+							value: "t",
+						},
+						{
+							cell: "D17",
+							format: "common",
+							value: "text",
+						},
+
+						{ cell: "A18", css: "header", format: "common", value: "FIXED" },
+						{
+							cell: "B18",
+							format: "common",
+							value: "=FIXED(C18;D18)",
+						},
+						{
+							cell: "C18",
+							format: "number",
+							value: 1234.567,
+						},
+						{
+							cell: "D18",
+							format: "number",
+							value: 1,
+						},
+
+						{ cell: "A19", css: "header", format: "common", value: "REPT" },
+						{
+							cell: "B19",
+							format: "common",
+							value: "=REPT(C19;D19)",
+						},
+						{
+							cell: "C19",
+							format: "common",
+							value: "s",
+						},
+						{
+							cell: "D19",
+							format: "number",
+							value: 3,
+						},
+
+						{ cell: "A20", css: "header", format: "common", value: "SEARCH" },
+						{
+							cell: "B20",
+							format: "common",
+							value: "=SEARCH(C20;D20)",
+						},
+						{
+							cell: "C20",
+							format: "common",
+							value: "m",
+						},
+						{
+							cell: "D20",
+							format: "common",
+							value: "some",
+						},
+
+						{ cell: "A21", css: "header", format: "common", value: "SUBSTITUTE" },
+						{
+							cell: "B21",
+							format: "common",
+							value: "=SUBSTITUTE(C21;D21;E21)",
+						},
+						{
+							cell: "C21",
+							format: "common",
+							value: "text",
+						},
+						{
+							cell: "D21",
+							format: "common",
+							value: "t",
+						},
+						{
+							cell: "E21",
+							format: "common",
+							value: "s",
+						},
+
+						{ cell: "A22", css: "header", format: "common", value: "JOIN" },
+						{
+							cell: "B22",
+							format: "common",
+							value: '=JOIN("_",C22,D22)',
+						},
+						{
+							cell: "C22",
+							format: "common",
+							value: "DHTMLX",
+						},
+						{
+							cell: "D22",
+							format: "common",
+							value: "Docs",
+						},
+
+						{ cell: "A23", css: "header", format: "common", value: "T" },
+						{
+							cell: "B23",
+							format: "common",
+							value: "=T(C23)",
+						},
+						{
+							cell: "C23",
+							format: "common",
+							value: "Start",
+						},
+						{ cell: "A24", css: "header", format: "common", value: "NUMBERVALUE" },
+						{ cell: "B24", value: '=NUMBERVALUE(C24,D24,E24)' },
+						{ cell: "C24", value: '="3/521,48"' },
+						{ cell: "D24", value: '/' },
+						{ cell: "E24", value: ',' },
+					],
+				},
+				{
+					name: "Information",
+					data: [
+						{ cell: "A1", css: "header", format: "common", value: "Formula name" },
+						{
+							cell: "B1",
+							css: "header",
+							format: "common",
+							value: "Formula example",
+						},
+						{
+							cell: "C1",
+							css: "header",
+							format: "common",
+							value: "Data for formula",
+						},
+						{ cell: "A2", css: "subheader", format: "common", value: "Information" },
+						{ cell: "A3", css: "header", format: "common", value: "ISBLANK" },
+						{
+							cell: "B3",
+							format: "common",
+							value: "=ISBLANK(C3)",
+						},
+						{ cell: "A4", css: "header", format: "common", value: "ISBINARY" },
+						{
+							cell: "B4",
+							format: "common",
+							value: "=ISBINARY(C4)",
+						},
+						{
+							cell: "C4",
+							format: "number",
+							value: 0,
+						},
+						{ cell: "A5", css: "header", format: "common", value: "ISEVEN" },
+						{
+							cell: "B5",
+							format: "common",
+							value: "=ISEVEN(C5)",
+						},
+						{
+							cell: "C5",
+							format: "number",
+							value: 2,
+						},
+						{ cell: "A6", css: "header", format: "common", value: "ISODD" },
+						{
+							cell: "B6",
+							format: "common",
+							value: "=ISODD(C6)",
+						},
+						{
+							cell: "C6",
+							format: "number",
+							value: 3,
+						},
+						{ cell: "A7", css: "header", format: "common", value: "ISNONTEXT" },
+						{
+							cell: "B7",
+							format: "common",
+							value: "=ISNONTEXT(C7)",
+						},
+						{
+							cell: "C7",
+							format: "number",
+							value: 1,
+						},
+						{ cell: "A8", css: "header", format: "common", value: "ISNUMBER" },
+						{
+							cell: "B8",
+							format: "common",
+							value: "=ISNUMBER(C8)",
+						},
+						{
+							cell: "C8",
+							format: "number",
+							value: 1,
+						},
+						{ cell: "A9", css: "header", format: "common", value: "ISTEXT" },
+						{
+							cell: "B9",
+							format: "common",
+							value: "=ISTEXT(C9)",
+						},
+						{
+							cell: "C9",
+							format: "common",
+							value: "text",
+						},
+						{ cell: "A10", css: "header", format: "common", value: "N" },
+						{
+							cell: "B10",
+							format: "common",
+							value: "=N(C10)",
+						},
+						{
+							cell: "C10",
+							format: "common",
+							value: "TRUE",
+						},
+					],
+				},
+				{
+					name: "Regex",
+					data: [
+						{ cell: "A1", css: "header", format: "common", value: "Formula name" },
+						{
+							cell: "B1",
+							css: "header",
+							format: "common",
+							value: "Formula example",
+						},
+						{
+							cell: "C1",
+							css: "header",
+							format: "common",
+							value: "Data for formula",
+						},
+						{ cell: "A2", css: "subheader", format: "common", value: "Regex" },
+
+						{ cell: "A3", css: "header", format: "common", value: "REGEXEXTRACT" },
+						{ cell: "B3", format: "common", value: "=REGEXEXTRACT(C3;D3)" },
+						{ cell: "C3", format: "text", value: "DHTMLX Spreadsheet" },
+						{ cell: "D3", format: "text", value: "DHTMLX" },
+
+						{ cell: "A4", css: "header", format: "common", value: "REGEXMATCH" },
+						{ cell: "B4", format: "common", value: "=REGEXMATCH(C4;D4)" },
+						{ cell: "C4", format: "text", value: "You are happy" },
+						{ cell: "D4", format: "text", value: "happy" },
+
+						{ cell: "A5", css: "header", format: "common", value: "REGEXREPLACE" },
+						{ cell: "B5", value: '=REGEXREPLACE(C5, "[0-9]+", "777")' },
+						{ cell: "C5", value: "Google Doc 101" }
+					],
+				},
+				{
+					name: "Boolean",
+					data: [
+						{ cell: "A1", css: "header", format: "common", value: "Formula name" },
+						{
+							cell: "B1",
+							css: "header",
+							format: "common",
+							value: "Formula example",
+						},
+						{
+							cell: "C1",
+							css: "header",
+							format: "common",
+							value: "Data for formula",
+						},
+						{ cell: "A2", css: "subheader", format: "common", value: "Boolean" },
+
+						{ cell: "A3", css: "header", format: "common", value: "Equal to" },
+						{ cell: "B3", format: "common", value: "=C3=D3" },
+						{ cell: "C3", format: "number", value: "5" },
+						{ cell: "D3", format: "number", value: "5" },
+
+						{ cell: "A4", css: "header", format: "common", value: "Not equal to" },
+						{ cell: "B4", format: "common", value: "=C4<>D4" },
+						{ cell: "C4", format: "number", value: "5" },
+						{ cell: "D4", format: "number", value: "5" },
+
+						{ cell: "A5", css: "header", format: "common", value: "Greater than" },
+						{ cell: "B5", format: "common", value: "=C5>D5" },
+						{ cell: "C5", format: "number", value: "7" },
+						{ cell: "D5", format: "number", value: "5" },
+
+						{ cell: "A6", css: "header", format: "common", value: "Less than" },
+						{ cell: "B6", format: "common", value: "=C6<D6" },
+						{ cell: "C6", format: "number", value: "5" },
+						{ cell: "D6", format: "number", value: "7" },
+
+						{ cell: "A7", css: "header", format: "common", value: "Greater than or equal to" },
+						{ cell: "B7", format: "common", value: "=C7>=D7" },
+						{ cell: "C7", format: "number", value: "7" },
+						{ cell: "D7", format: "number", value: "5" },
+
+						{ cell: "A8", css: "header", format: "common", value: "Less than or equal to" },
+						{ cell: "B8", format: "common", value: "=C8<=D8" },
+						{ cell: "C8", format: "number", value: "5" },
+						{ cell: "D8", format: "number", value: "7" },
+					],
+				},
+				{
+					name: "Other",
+					data: [
+						{ cell: "A1", css: "header", format: "common", value: "Formula name" },
+						{
+							cell: "B1",
+							css: "header",
+							format: "common",
+							value: "Formula example",
+						},
+						{
+							cell: "C1",
+							css: "header",
+							format: "common",
+							value: "Data for formula",
+						},
+						{ cell: "A2", css: "subheader", format: "common", value: "Other" },
+						{ cell: "A3", css: "header", format: "common", value: "IF" },
+						{
+							cell: "B3",
+							format: "common",
+							value: '=IF(C3>D3;"Pass","Fail")',
+						},
+						{
+							cell: "C3",
+							format: "number",
+							value: 70,
+						},
+						{
+							cell: "D3",
+							format: "number",
+							value: 60,
+						},
+
+						{ cell: "A4", css: "header", format: "common", value: "AND" },
+						{
+							cell: "B4",
+							format: "common",
+							value: "=AND(C4>D4;C4<E4)",
+						},
+						{
+							cell: "C4",
+							format: "number",
+							value: 70,
+						},
+						{
+							cell: "D4",
+							format: "number",
+							value: 60,
+						},
+						{
+							cell: "E4",
+							format: "number",
+							value: 100,
+						},
+						{ cell: "A5", css: "header", format: "common", value: "NOT" },
+						{
+							cell: "B5",
+							format: "common",
+							value: "=NOT(C5=D5)",
+						},
+						{
+							cell: "C5",
+							format: "common",
+							value: "text",
+						},
+						{
+							cell: "D5",
+							format: "common",
+							value: "some",
+						},
+						{ cell: "A6", css: "header", format: "common", value: "OR" },
+						{
+							cell: "B6",
+							format: "common",
+							value: "=OR(C6>D6;C6=D6)",
+						},
+						{
+							cell: "C6",
+							format: "number",
+							value: 5,
+						},
+						{
+							cell: "D6",
+							format: "number",
+							value: 2,
+						},
+						{ cell: "A7", css: "header", format: "common", value: "CHOOSE" },
+						{
+							cell: "B7",
+							format: "common",
+							value: "=CHOOSE(C7;D4;D5;D6)",
+						},
+						{
+							cell: "C7",
+							format: "number",
+							value: 2,
+						},
+						{ cell: "A8", css: "header", format: "common", value: "TRUE" },
+						{ cell: "B8", format: "common", value: "=IF(C8>D8),TRUE()" },
+						{ cell: "C8", format: "number", value: 7 },
+						{ cell: "D8", format: "number", value: 5 },
+
+						{ cell: "A9", css: "header", format: "common", value: "FALSE" },
+						{ cell: "B9", format: "common", value: "=IF(C9>D9),FALSE()" },
+						{ cell: "C9", format: "number", value: 5 },
+						{ cell: "D9", format: "number", value: 7 },
+					],
+				},
+			],
+			styles: {
+				header: {
+					color: "rgb(11 114 165)",
+				},
+				subheader: {
+					"font-weight": "bold",
+
+				},
+			}
+		})
+	</script>
+</body>
+
+</html>
