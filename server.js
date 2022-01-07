@@ -20,7 +20,7 @@ app.use(express.static(path.join(__dirname, "client", "build")));
 
 const PORT = process.env.PORT || 1337;
 const secret = process.env.SECRET || 'secret123'
-mongoose.connect('mongodb+srv://cjpepin:Sp!k300123@finalprojectcluster.zqgvb.mongodb.net/CreativeProjectDatabase?retryWrites=true&w=majority')
+mongoose.connect(process.env.MONGODB_URI || 'mongodb+srv://cjpepin:Sp!k300123@finalprojectcluster.zqgvb.mongodb.net/CreativeProjectDatabase?retryWrites=true&w=majority')
 // mongoose.connect(process.env.MONGODB_URI, {useNewUrlParser: true });
 
 app.post('/api/register', async (req,res) => {
@@ -397,7 +397,7 @@ app.post('/api/lift_list', async (req,res) => {
 });
 
 if(process.env.NODE_ENV === 'production'){
-    
+    app.use(express.static('client/build'));
 }
 
 app.get("*", (req,res) => {
