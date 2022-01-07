@@ -31,8 +31,8 @@
     "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build"
   },
   "engines": {
-    "node": "17.0.1",
-    "npm": "8.0.1"
+    "node": "17.x",
+    "npm": "8.x"
   },
   "devDependencies": {
     "gh-pages": "^3.2.3"
