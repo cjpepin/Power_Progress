@@ -78,7 +78,7 @@ export default function App() {
         const email = decoded.email
         const block = localStorage.getItem('block')
         console.log(email, block, sheetData)
-        const response = await fetch('http://localhost:1337/api/update_sheet', {
+        const response = await fetch('https://powerprogress.herokuapp.com/api/update_sheet', {
             method: 'POST',
             headers: {
             'Content-Type': 'application/json',
@@ -133,7 +133,7 @@ export default function App() {
         if(lbsorkg == ''){
             lbsorkg = 'lb';
         }
-        const response = await fetch('http://localhost:1337/api/new_lift', {
+        const response = await fetch('https://powerprogress.herokuapp.com/api/new_lift', {
             method: 'POST',
             headers: {
             'Content-Type': 'application/json',
@@ -165,7 +165,7 @@ export default function App() {
         const decoded = jwt.verify(token, 'secret123')
         const email = decoded.email
         console.log(lift)
-        const response = await fetch('http://localhost:1337/api/lift_list', {
+        const response = await fetch('https://powerprogress.herokuapp.com/lift_list', {
             method: 'POST',
             headers: {
             'Content-Type': 'application/json',
@@ -204,7 +204,7 @@ export default function App() {
     }
     async function populateBlocks(){
             
-        const req = await fetch('http://localhost:1337/api/get_blocks', {
+        const req = await fetch('https://powerprogress.herokuapp.com/api/get_blocks', {
             headers: {
                 'x-access-token': localStorage.getItem('token'),
             }
