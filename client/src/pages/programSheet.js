@@ -165,7 +165,7 @@ export default function App() {
         const decoded = jwt.verify(token, 'secret123')
         const email = decoded.email
         console.log(lift)
-        const response = await fetch('https://powerprogress.herokuapp.com/lift_list', {
+        const response = await fetch('https://powerprogress.herokuapp.com/api/lift_list', {
             method: 'POST',
             headers: {
             'Content-Type': 'application/json',
