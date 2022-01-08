@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
-
+import $ from 'jquery'
 
 export default class Navbar extends Component{
     
@@ -14,14 +14,14 @@ export default class Navbar extends Component{
             <nav class="navbar navbar-inverse">
                 <div class="container-fluid">
                     <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbarcomp">
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
                     <span class="navbar-brand">Power Tracker</span>
                     </div>
-                    <div class="collapse navbar-collapse" id="myNavbar">
+                    <div class="collapse navbar-collapse" id="navbarcomp">
                     <ul class="nav navbar-nav">
                         <li ><Link as={Link} to="/dashboard">All Time Data</Link></li>
                         <li><Link as={Link} to="/blocks">Blocks</Link> </li>
@@ -35,6 +35,7 @@ export default class Navbar extends Component{
                     </div>
                 </div>
             </nav>
+            
         );
 
     }
