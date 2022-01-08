@@ -1,4 +1,4 @@
-[Power Progress App Testing](powerprogress.herokuapp.com)
+[Power Progress App Testing](https://powerprogress.herokuapp.com)
 
 # PowerProgress
 
