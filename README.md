@@ -1,3 +1,5 @@
+[Power Progress App Testing](powerprogress.herokuapp.com)
+
 # PowerProgress
 
 PowerProgress is a MERN stack app designed to help lifters and coaches find a one-stop-shop platform to see programs, track progress, and analyze how a lifter performs over time based on given stimuli. 
@@ -13,6 +15,8 @@ Uploading a MERN stack app to Heroku/github pages/aws is a lot more challenging 
 ## 1/7/2022
 
 Ended up using a JS library to store program sheets in. Sheets are able to be updated on the user and server end, as well as perform basic spreadsheet functions. The data is able to converted directly into a visualized form in the user's "block" page.
+
+Successfully deployed to Heroku!! Next step is to make the site/navbar functional on a phone.
 
 ### Goals
 
