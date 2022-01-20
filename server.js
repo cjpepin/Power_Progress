@@ -19,8 +19,8 @@ app.use(express.json())
 app.use(express.static(path.join(__dirname, "client", "build")));
 
 const PORT = process.env.PORT || 1337;
-const secret = process.env.SECRET || 'secret123'
-mongoose.connect(process.env.MONGODB_URI || 'mongodb+srv://cjpepin:Sp!k300123@finalprojectcluster.zqgvb.mongodb.net/CreativeProjectDatabase?retryWrites=true&w=majority')
+const secret = process.env.SECRET
+mongoose.connect(process.env.MONGODB_URI)
 // mongoose.connect(process.env.MONGODB_URI, {useNewUrlParser: true });
 
 app.post('/api/register', async (req,res) => {

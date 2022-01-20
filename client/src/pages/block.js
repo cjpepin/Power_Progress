@@ -79,7 +79,7 @@ const Block = () => {
         if(lbsorkg == ''){
             lbsorkg = 'lb';
         }
-        const response = await fetch('http://localhost:1337/api/new_lift', {
+        const response = await fetch('https://powerprogress.herokuapp.com/api/new_lift', {
             method: 'POST',
             headers: {
             'Content-Type': 'application/json',
@@ -117,7 +117,7 @@ const Block = () => {
         let curLift = delData.lift;
         let curDate = delData.date;
         console.log(curLift, curDate);
-        const response = await fetch('http://localhost:1337/api/delete_lift', {
+        const response = await fetch('https://powerprogress.herokuapp.com/api/delete_lift', {
         method: 'POST',
         headers: {
             'x-access-token': localStorage.getItem('token'),
@@ -140,7 +140,7 @@ const Block = () => {
     
     async function getLifts() {
         // let block = localStorage.getItem('block');
-        const req = await fetch('http://localhost:1337/api/get_lift', {
+        const req = await fetch('https://powerprogress.herokuapp.com/api/get_lift', {
             headers: {
                 'x-access-token': localStorage.getItem('token'),
                 'block': localStorage.getItem('block')
@@ -172,7 +172,7 @@ const Block = () => {
         const decoded = jwt.verify(token, 'secret123')
         const email = decoded.email
 
-        const req = await fetch('http://localhost:1337/api/get_note', {
+        const req = await fetch('https://powerprogress.herokuapp.com/api/get_note', {
             headers: {
                 'x-access-token': localStorage.getItem('token'),
                 'block': localStorage.getItem('block'),
@@ -281,7 +281,7 @@ const Block = () => {
     }
 
     async function toCSV() {
-        const req = await fetch('http://localhost:1337/api/getCSV', {
+        const req = await fetch('https://powerprogress.herokuapp.com/api/getCSV', {
         headers: {
             'x-access-token': localStorage.getItem('token')
         }
@@ -314,7 +314,7 @@ const Block = () => {
         if(newNote == ''){
             newNote = 'Input notes here';
         }
-        const response = await fetch('http://localhost:1337/api/update_note', {
+        const response = await fetch('https://powerprogress.herokuapp.com/api/update_note', {
                 method: 'POST',
                 headers: {
                 'Content-Type': 'application/json',

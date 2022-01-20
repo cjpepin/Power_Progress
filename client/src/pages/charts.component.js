@@ -44,7 +44,7 @@ function App(){
         } else {
             block = '';
         }
-        const req = await fetch('http://localhost:1337/api/get_lift', {
+        const req = await fetch('https://powerprogress.herokuapp.com/api/get_lift', {
             headers: {
                 'x-access-token': localStorage.getItem('token'),
                 'block': block,

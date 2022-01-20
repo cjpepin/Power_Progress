@@ -26,7 +26,7 @@ export default function App() {
         if(!localStorage.getItem('block')){
             return;
         }
-        const req = await fetch('http://localhost:1337/api/get_sheet', {
+        const req = await fetch('https://powerprogress.herokuapp.com/api/get_sheet', {
                 headers: {
                     'x-access-token': localStorage.getItem('token'),
                     'block': localStorage.getItem('block')
@@ -86,7 +86,7 @@ export default function App() {
         const decoded = jwt.verify(token, 'secret123')
         const email = decoded.email
         const block = localStorage.getItem('block')
-        const response = await fetch('http://localhost:1337/api/update_sheet', {
+        const response = await fetch('https://powerprogress.herokuapp.com/api/update_sheet', {
             method: 'POST',
             headers: {
             'Content-Type': 'application/json',
@@ -141,7 +141,7 @@ export default function App() {
         if(lbsorkg == ''){
             lbsorkg = 'lb';
         }
-        const response = await fetch('http://localhost:1337/api/new_lift', {
+        const response = await fetch('https://powerprogress.herokuapp.com/api/new_lift', {
             method: 'POST',
             headers: {
             'Content-Type': 'application/json',
@@ -173,7 +173,7 @@ export default function App() {
         const decoded = jwt.verify(token, 'secret123')
         const email = decoded.email
         // console.log(lift)
-        const response = await fetch('http://localhost:1337/api/lift_list', {
+        const response = await fetch('https://powerprogress.herokuapp.com/api/lift_list', {
             method: 'POST',
             headers: {
             'Content-Type': 'application/json',
@@ -210,7 +210,7 @@ export default function App() {
     }
     async function populateBlocks(){
             
-        const req = await fetch('http://localhost:1337/api/get_blocks', {
+        const req = await fetch('https://powerprogress.herokuapp.com/api/get_blocks', {
             headers: {
                 'x-access-token': localStorage.getItem('token'),
             }
@@ -252,7 +252,7 @@ export default function App() {
     }, [])
     async function deleteWorkoutsCollection (){
         // console.log("test");
-        const req = await fetch('http://localhost:1337/api/delete_lifts', {
+        const req = await fetch('https://powerprogress.herokuapp.com/api/delete_lifts', {
                 headers: {
                     'x-access-token': localStorage.getItem('token'),
                     'block': localStorage.getItem('block')
