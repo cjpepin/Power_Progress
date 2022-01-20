@@ -18,6 +18,10 @@ Ended up using a JS library to store program sheets in. Sheets are able to be up
 
 Successfully deployed to Heroku!! Next step is to make the site/navbar functional on a phone.
 
+## 1/19/2022
+
+Ended up figuring out the scroll issue, so datapoints in the table for each block is not taking up the entire page. The actual style still needs much work, but the spreadsheet will fairly consistently autosave whenever clicked outside of the table and update the database with any changes. Currently a very slow way of doing things, but will be made more efficient soon.
+
 ### Goals
 
 1. Adding a coaches form of the site where a coach can track the data of multiple lifters given certain credentials to access their data.
