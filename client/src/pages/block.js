@@ -7,6 +7,7 @@ import Navbar from '../components/navbar.component';
 import AccessoryCharts from './accessoryCharts.component';
 import styled, { css } from 'styled-components'
 import $ from 'jquery';
+// import './cssFiles/tableScroll.css'
 // import Button from '/block.style';
 
 const Block = () => {
@@ -78,7 +79,7 @@ const Block = () => {
         if(lbsorkg == ''){
             lbsorkg = 'lb';
         }
-        const response = await fetch('https://powerprogress.herokuapp.com/api/new_lift', {
+        const response = await fetch('http://localhost:1337/api/new_lift', {
             method: 'POST',
             headers: {
             'Content-Type': 'application/json',
@@ -116,7 +117,7 @@ const Block = () => {
         let curLift = delData.lift;
         let curDate = delData.date;
         console.log(curLift, curDate);
-        const response = await fetch('https://powerprogress.herokuapp.com/api/delete_lift', {
+        const response = await fetch('http://localhost:1337/api/delete_lift', {
         method: 'POST',
         headers: {
             'x-access-token': localStorage.getItem('token'),
@@ -139,7 +140,7 @@ const Block = () => {
     
     async function getLifts() {
         // let block = localStorage.getItem('block');
-        const req = await fetch('https://powerprogress.herokuapp.com/api/get_lift', {
+        const req = await fetch('http://localhost:1337/api/get_lift', {
             headers: {
                 'x-access-token': localStorage.getItem('token'),
                 'block': localStorage.getItem('block')
@@ -171,7 +172,7 @@ const Block = () => {
         const decoded = jwt.verify(token, 'secret123')
         const email = decoded.email
 
-        const req = await fetch('https://powerprogress.herokuapp.com/api/get_note', {
+        const req = await fetch('http://localhost:1337/api/get_note', {
             headers: {
                 'x-access-token': localStorage.getItem('token'),
                 'block': localStorage.getItem('block'),
@@ -280,7 +281,7 @@ const Block = () => {
     }
 
     async function toCSV() {
-        const req = await fetch('https://powerprogress.herokuapp.com/api/getCSV', {
+        const req = await fetch('http://localhost:1337/api/getCSV', {
         headers: {
             'x-access-token': localStorage.getItem('token')
         }
@@ -313,7 +314,7 @@ const Block = () => {
         if(newNote == ''){
             newNote = 'Input notes here';
         }
-        const response = await fetch('https://powerprogress.herokuapp.com/api/update_note', {
+        const response = await fetch('http://localhost:1337/api/update_note', {
                 method: 'POST',
                 headers: {
                 'Content-Type': 'application/json',
@@ -400,13 +401,14 @@ const Block = () => {
         <div>
             <div id="inputBlockData">
                 <Navbar />
-                <div>
+                <div style={{display: "flex", alignItems: "center"}}>
                     <div>
                         <h1>Welcome {name}</h1> 
-                        <h3>Block: {localStorage.getItem('block')}</h3> 
-                        <button onClick={openSheet}>Program Sheet</button>
+                        <h3>Block Name: {localStorage.getItem('block')}</h3> 
+                        {/* <button onClick={openSheet}>Program Sheet</button> */}
                         <br/>
                         <br/>
+                        <h3>Block Notes</h3>
                         <span 
                             id="blockNoteShow" 
                             style={{display: "inline", whiteSpace: "pre-line", marginLeft: "10px", marginTop: "40px"}}  
@@ -419,10 +421,10 @@ const Block = () => {
                         
                 </div>
                 <br/>
-                <div class="col-sm-2">
+                <div>
                     <input type="date" onChange={(e) => setDate(e.target.value)}/>
                 </div>
-                <div class="col-sm-2">
+                <div>
                     <select onChange={(e) => setLift(e.target.value)}>
                         <option defaultValue="squat">Squat</option>
                         <option value="bench">Bench</option>
@@ -441,24 +443,24 @@ const Block = () => {
                         <option value="kg">kg</option>
                     </select>
                     </div>
-                    <div class="col-sm-2">
+                    <div>
                     <input type="number" name="reps" placeholder="How many reps?" step="1"  onChange={(e) => setReps(e.target.value)}/>
                     </div>
-                    <div class="col-sm-2">
+                    <div>
                     <input type="number" name="sets" placeholder="How many sets?" step="1"  onChange={(e) => setSets(e.target.value)}/>
                     </div>
-                    <div class="col-sm-2">
+                    <div>
                     <input type="number" name="rpe" placeholder="What was the RPE?" step="0.5"  onChange={(e) => setRpe(e.target.value)}/>
                     </div>
                     
-                    <div class="col-sm-1">
+                    <div>
                     <input type="submit" value="Add Lift" onClick={createLift}/>
                     </div>
-                    <div class="col-sm-1">
+                    <div>
                     <input type="submit" value="Download CSV" onClick={toCSV}/>
                     </div>
                 </div>
-                <div class="table-wrapper-scroll-y my-custom-scrollbar">
+                <div id="testTable" style={{maxHeight: "250px", overflowY: "auto", borderStyle: "solid", borderWidth: "2px"}}>
                     <table class="table" id="dataTable" onClick={removeRow}>
                     <thead>
                         <tr>

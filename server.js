@@ -18,9 +18,9 @@ app.use(cors())
 app.use(express.json())
 app.use(express.static(path.join(__dirname, "client", "build")));
 
-const PORT = process.env.PORT 
-const secret = process.env.SECRET
-mongoose.connect(process.env.MONGODB_URI)
+const PORT = process.env.PORT || 1337;
+const secret = process.env.SECRET || 'secret123'
+mongoose.connect(process.env.MONGODB_URI || 'mongodb+srv://cjpepin:Sp!k300123@finalprojectcluster.zqgvb.mongodb.net/CreativeProjectDatabase?retryWrites=true&w=majority')
 // mongoose.connect(process.env.MONGODB_URI, {useNewUrlParser: true });
 
 app.post('/api/register', async (req,res) => {
@@ -127,6 +127,29 @@ app.get('/api/get_lift', async (req,res) => {
             console.log(error)
             res.json({status: 'error', error: 'invalid token'})
         }
+    }
+    
+
+});
+app.get('/api/delete_lifts', async (req,res) => {
+    console.log("called")
+    const token = req.headers['x-access-token'];
+    const block = req.headers['block'];
+    if(block){
+        try {
+            const decoded = jwt.verify(token, 'secret123')
+            const email = decoded.email
+            await Data.deleteMany({ email: email, block: block}).sort( { date: 1 } )
+            console.log("deleting lifts from " + email + " in " + block);
+            return res.json({status: 'fine',
+                             result: 'lifts all deleted',
+                            })
+        } catch(error){
+            console.log(error)
+            res.json({status: 'error', error: 'invalid token'})
+        }
+    } else {
+        res.json({status: 'error', error: 'somethjing is wrong'})
     }
     
 
@@ -380,7 +403,7 @@ app.post('/api/lift_list', async (req,res) => {
         lift: req.body.lift,
     })
     if(exists){
-        res.json({statues: "bad", error: "Lift already exists"})
+        res.json({status: 'bad', error: "Lift already exists"})
     } else{
         try {
             

@@ -1,12 +1,22 @@
 import React, { useRef, useEffect, useState } from "react";
+import {BrowserRouter as Prompt} from 'react-router-dom';
 import jspreadsheet from "jspreadsheet-ce";
 import jwt from 'jsonwebtoken'
 import "../../node_modules/jspreadsheet-ce/dist/jspreadsheet.css";
 import Navbar from '../components/navbar.component'
-
-
+import myForm from '../components/myForm'
+// https://powerprogress.herokuapp.com/
 export default function App() {
-
+    function checkUpdate(e) {
+        e.preventDefault();
+        let clickNum = 0;
+        if(clickNum === 0 && e.target.className != "selected" && e.target.className != "draggable" && e.target.className != "highlight-selected highlight highlight-top highlight-bottom highlight-left highlight-right" && e.target.className != "jexcel_content" && e.target.className != "jexcel_selectall" && e.target.className != "jexcel_corner" && e.target.style.width != "50px" && e.target.className != "copying copying-left copying-right highlight-selected highlight highlight-top highlight-bottom highlight-left highlight-right" && e.target.className != "highlight highlight-bottom highlight-left highlight-right"){
+            console.log(e.target)
+            clickNum = 1;
+            updateTable();
+            searchThroughData();
+        }
+    }
     const jRef = useRef(null);
     const [numRows, setNumRows] = useState(15);
     const [numCols, setNumCols] = useState(15);
@@ -16,7 +26,7 @@ export default function App() {
         if(!localStorage.getItem('block')){
             return;
         }
-        const req = await fetch('https://powerprogress.herokuapp.com/api/get_sheet', {
+        const req = await fetch('http://localhost:1337/api/get_sheet', {
                 headers: {
                     'x-access-token': localStorage.getItem('token'),
                     'block': localStorage.getItem('block')
@@ -36,7 +46,6 @@ export default function App() {
                 if (!jRef.current.jspreadsheet) {
                     jspreadsheet(jRef.current, options);
                     }
-                console.log(newData);
             } else {
                 alert(sheetData.error + "test")
             }
@@ -77,8 +86,7 @@ export default function App() {
         const decoded = jwt.verify(token, 'secret123')
         const email = decoded.email
         const block = localStorage.getItem('block')
-        console.log(email, block, sheetData)
-        const response = await fetch('https://powerprogress.herokuapp.com/api/update_sheet', {
+        const response = await fetch('http://localhost:1337/api/update_sheet', {
             method: 'POST',
             headers: {
             'Content-Type': 'application/json',
@@ -91,12 +99,12 @@ export default function App() {
         })
 
         const data = await response.json();
-        console.log(data)
+
         // alert(data.status);
         if(data.status === 'sheet updated'){
-            alert('SheetUpdated');
+            console.log('SheetUpdated');
         } else{
-            alert("Something went wrong" + data.error);
+            console.log("Something went wrong" + data.error);
         }
 
     }
@@ -133,7 +141,7 @@ export default function App() {
         if(lbsorkg == ''){
             lbsorkg = 'lb';
         }
-        const response = await fetch('https://powerprogress.herokuapp.com/api/new_lift', {
+        const response = await fetch('http://localhost:1337/api/new_lift', {
             method: 'POST',
             headers: {
             'Content-Type': 'application/json',
@@ -164,8 +172,8 @@ export default function App() {
         const token = localStorage.getItem('token')
         const decoded = jwt.verify(token, 'secret123')
         const email = decoded.email
-        console.log(lift)
-        const response = await fetch('https://powerprogress.herokuapp.com/api/lift_list', {
+        // console.log(lift)
+        const response = await fetch('http://localhost:1337/api/lift_list', {
             method: 'POST',
             headers: {
             'Content-Type': 'application/json',
@@ -193,18 +201,16 @@ export default function App() {
         if(localStorage.getItem('block') != ''){
             localStorage.removeItem('block');
             localStorage.setItem('block', blockName);
-            console.log(localStorage.getItem('block'))
             getSheet();
 
         } else{
             localStorage.setItem('block', blockName);
-            console.log(localStorage.getItem('block'))
             getSheet();
         }
     }
     async function populateBlocks(){
             
-        const req = await fetch('https://powerprogress.herokuapp.com/api/get_blocks', {
+        const req = await fetch('http://localhost:1337/api/get_blocks', {
             headers: {
                 'x-access-token': localStorage.getItem('token'),
             }
@@ -214,15 +220,15 @@ export default function App() {
         if(data.status === 'fine'){
             console.log("populating blocks");
             let totData = data.blocks;
-            console.log(totData)
+            // console.log(totData)
             let blockList = [];
             let blockDiv = document.getElementById("populatedBlocks");
             let newBlockButton = document.getElementById("newBlock");
             for(let key in totData){
-                console.log(key)
+                // console.log(key)
                 if(totData.hasOwnProperty(key)){
                     let curBlock = totData[key].blockName
-                    console.log(curBlock)
+                    // console.log(curBlock)
                     if(blockList.includes(curBlock)){
                         continue;
                     } else{
@@ -244,8 +250,24 @@ export default function App() {
     useEffect(() =>{
         populateBlocks();
     }, [])
-
+    async function deleteWorkoutsCollection (){
+        // console.log("test");
+        const req = await fetch('http://localhost:1337/api/delete_lifts', {
+                headers: {
+                    'x-access-token': localStorage.getItem('token'),
+                    'block': localStorage.getItem('block')
+                },
+            });
+        // console.log("test2")
+        const res = await req.json();
+        if(res.status === 'fine'){
+            console.log("lifts have been deleted and are ready to be repopulated!")
+        } else {
+            alert(res.error + "test")
+        }
+    }
     function searchThroughData(e){
+        deleteWorkoutsCollection();
         let totObj = []
         let curObj = {};
         let liftArr = [];
@@ -257,7 +279,7 @@ export default function App() {
         let datesArr = [];
         let curLiftArr = [];
 
-        console.log(data.length)
+        // console.log(data.length)
         for(let i = 0; i <data.length; i++){
             let curRow = jRef.current.jexcel.getRowData(i)
 
@@ -308,7 +330,7 @@ export default function App() {
                     } else if(datesArr.includes(j)){
                         curDate = jRef.current.jexcel.getCell([j,i]).innerHTML
                         if(curLift != "Lift"  && curLift != '' && curSets != '' && curReps != '' && curWeight != '' && curRPE != '' && curDate != '' && curLbsorKg != ''){
-                            console.log(curLift, curSets, curReps, curWeight, curRPE, curDate, curLbsorKg)
+                            // console.log(curLift, curSets, curReps, curWeight, curRPE, curDate, curLbsorKg)
                             createLift(curLift, curSets, curWeight, curLbsorKg, curReps, curRPE, curDate);
                             if(!curLiftArr.includes(curLift)){
                                 curLiftArr.push(curLift)
@@ -328,8 +350,18 @@ export default function App() {
             }
         }
     }
+    // window.onbeforeunload = (event) => {
+    //     const e = event || window.event;
+    //     // Cancel the event
+    //     e.preventDefault();
+    //     if (e) {
+    //       e.returnValue = ''; // Legacy method for cross browser support
+    //     }
+    //     return ''; // Legacy method for cross browser support
+    //   };
+    
     return (
-        <div>
+        <div onClick={checkUpdate}>
             <Navbar/>
         <div id="blocksList">
             <h2>Block List</h2>
@@ -337,13 +369,13 @@ export default function App() {
                 
                 </div>
         </div>
-
+        
         <input type="button" onClick={addRow} value="Add new row" />
         <input type="button" onClick={addCol} value="Add new column" />
         <input type="button" onClick={removeRow} value="Remove row" />
         <input type="button" onClick={removeCol} value="Remove column" />
-        <input type="button" onClick={updateTable} value="update mongo" />
-        <input type="button" onClick={searchThroughData} value="Testing" />
+        <input type="button" onClick={updateTable} value="Save Sheet" />
+        <input type="button" onClick={searchThroughData} value="Update Lift Data" />
         <br/>
         <div ref={jRef}/>
         <br />
