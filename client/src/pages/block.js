@@ -46,7 +46,7 @@ const Block = () => {
             blockNoteIn.value = prevText;
 
             blockNoteShow.style.display = "none";
-            blockNoteIn.style.display = "inline";
+            blockNoteIn.style.display = "flex";
         }
     }
 
@@ -274,7 +274,7 @@ const Block = () => {
             blockNoteShow.innerHTML = prevText;
             setNote(prevText);
             updateNote(prevText);
-            blockNoteShow.style.display = "inline";
+            blockNoteShow.style.display = "flex";
             blockNoteIn.style.display = "none";
             
         }
@@ -433,11 +433,15 @@ function updateDataTable(data){
                     if(dataSheetJson[i][j] == curVar){
                         varChangedArr.push(j)
                     }
+                
                 }
+                console.log(idArr, varChangedArr)
                 if(idArr.includes(j) && dataSheetJson[i][j] == id){
+                    console.log("test")
                     rowTarget = i
                     colTarget = varChangedArr[idArr.indexOf(j)]
                     dataSheetJson[rowTarget][colTarget] = value;
+                    console.log(dataSheetJson);
                     updateTable(JSON.stringify(dataSheetJson));
                 }
                 
@@ -522,12 +526,12 @@ function updateDataTable(data){
                         <Notes>
                             <span 
                                 id="blockNoteShow" 
-                                style={{display: "flex", alignItems: "center", justifyContent: "center", whiteSpace: "pre-line", marginLeft: "20px", marginRight: "20%", marginTop: "40px"}}  
+                                style={{display: "flex", whiteSpace: "pre-line", marginLeft: "20px", marginRight: "20%", marginTop: "40px"}}  
                                 onClick={blockNote}>{note}
                             </span>
                             <textarea 
                                 id="blockNoteIn" 
-                                style={{display: "none", width: "90%", height: "50px", marginLeft: "10%", marginRight: "10%", marginTop: "20px"}} 
+                                style={{display: "none", width: "90%", height: "100px", marginLeft: "20px", marginRight: "10%", marginTop: "20px"}} 
                                 onKeyDown={saveNote}/>
                         </Notes>
                         

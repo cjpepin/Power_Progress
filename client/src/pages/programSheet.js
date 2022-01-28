@@ -9,7 +9,6 @@ import myForm from '../components/myForm'
 // http://localhost3000/
 export default function App() {
     function checkUpdate(e) {
-        e.preventDefault();
         console.log(e.target)
 
         if(e.target.className != "selected" && e.target.className != "draggable" && e.target.className != "highlight-selected highlight highlight-top highlight-bottom highlight-left highlight-right" && e.target.className != "jexcel_content" && e.target.className != "jexcel_selectall" && e.target.className != "jexcel_corner" && e.target.style.width != "50px" && e.target.className != "copying copying-left copying-right highlight-selected highlight highlight-top highlight-bottom highlight-left highlight-right" && e.target.className != "highlight highlight-bottom highlight-left highlight-right"){
@@ -381,9 +380,106 @@ export default function App() {
         // console.log(data.length)
         
     }
+    async function updateDatabase(e) {
+        const value = e.value;
+        console.log(value)
+        // let id = e.closest('tr').id;
+        // let varChanged = e.id
+        // const response = await fetch('http://localhost:1337/api/update_lift', {
+        //         method: 'POST',
+        //         headers: {
+        //         'Content-Type': 'application/json',
+        //         },
+        //         body: JSON.stringify({
+        //         id,
+        //         value,
+        //         varChanged,
+        //         }),
+        //     })
+        // const data = await response.json();
+        // if(data.status == 'lift updated'){
+        //     console.log('update success')
+        // } else {
+        //     console.log(data.error)
+        // }
+        // const req = await fetch('http://localhost:1337/api/get_sheet', {
+        //     headers: {
+        //         'x-access-token': localStorage.getItem('token'),
+        //         'block': localStorage.getItem('block')
+        //     },
+        // })
+        // const dataSheet = await req.json();
+        // const dataSheetJson = JSON.parse(dataSheet.data.sheetData);
+        // let curVar;
+        // let idArr = [];
+        // let varChangedArr = []
+        // let rowTarget;
+        // let colTarget;
+        // if(varChanged == 'lift'){
+        //     curVar = 'Lift'
+        // } else if(varChanged == 'rpe'){
+        //     curVar = 'RPE'
+        // } else if(varChanged == 'reps'){
+        //     curVar = 'Reps'
+        // } else if(varChanged == 'sets'){
+        //     curVar = 'Sets'
+        // }
+        // for (let i=0 ; i < dataSheetJson.length ; i++){
+        //     for(let j =0; j < dataSheetJson[i].length; j++){
+        //         if(i == 0){
+        //             if(dataSheetJson[i][j] == 'id'){
+        //                 idArr.push(j)
+        //             }
+        //             if(dataSheetJson[i][j] == curVar){
+        //                 varChangedArr.push(j)
+        //             }
+                
+        //         }
+        //         console.log(idArr, varChangedArr)
+        //         if(idArr.includes(j) && dataSheetJson[i][j] == id){
+        //             console.log("test")
+        //             rowTarget = i
+        //             colTarget = varChangedArr[idArr.indexOf(j)]
+        //             dataSheetJson[rowTarget][colTarget] = value;
+        //             console.log(dataSheetJson);
+        //             updateTable(JSON.stringify(dataSheetJson));
+        //         }
+                
+        //     }
+        //     // if (dataSheetJson[i][searchField] == searchVal) {
+        //     //     // results.push(obj.list[i]);
+        //     // }
+        // }
+    }
+
+    async function updateHTMLTable(sheetData) {
+            const token = localStorage.getItem('token')
+            const decoded = jwt.verify(token, 'secret123')
+            const email = decoded.email
+            const block = localStorage.getItem('block')
+            const response = await fetch('http://localhost:1337/api/update_sheet', {
+                method: 'POST',
+                headers: {
+                'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                email,
+                block,
+                sheetData,
+                }),
+            })
     
+            const data = await response.json();
+    
+            // alert(data.status);
+            if(data.status === 'sheet updated'){
+                console.log('SheetUpdated');
+            } else{
+                console.log("Something went wrong" + data.error);
+            }
+        }
     return (
-        <div onClick={checkUpdate}>
+        <div onClick={checkUpdate} onInput={(e) => {updateDatabase(e.target)}}>
             <Navbar/>
         <div id="blocksList">
             <h2>Block List</h2>
