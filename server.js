@@ -19,8 +19,8 @@ app.use(express.json())
 app.use(express.static(path.join(__dirname, "client", "build")));
 
 const PORT = process.env.PORT || 1337;
-const secret = process.env.SECRET
-mongoose.connect(process.env.MONGODB_URI)
+const secret = process.env.SECRET || 'secret123'
+mongoose.connect(process.env.MONGODB_URI || 'mongodb+srv://cjpepin:Sp!k300123@finalprojectcluster.zqgvb.mongodb.net/CreativeProjectDatabase?retryWrites=true&w=majority')
 // mongoose.connect(process.env.MONGODB_URI, {useNewUrlParser: true });
 
 app.post('/api/register', async (req,res) => {
@@ -74,12 +74,13 @@ app.post('/api/new_lift', async (req,res) => {
     })
     if(exists){
         console.log('exists');
-        res.json({status: 'Lift already exists'});
+        // res.json({status: 'Lift already exists'});
+        res.json({status: 'exists', id: exists._id})
     } else{
 
     try {
         console.log("creating new lift");
-        await Data.create({
+        const lift = await Data.create({
             email: req.body.email,
             lift: req.body.lift,
             weight: req.body.weight,
@@ -91,7 +92,7 @@ app.post('/api/new_lift', async (req,res) => {
             e1rm: req.body.e1rm,
             block: req.body.block,
         })
-        res.json({status: 'good'});
+        res.json({status: 'good', id: lift._id});
     } catch (err) {res.json({status: 'bad', error: err})}
 } 
 
@@ -184,6 +185,76 @@ app.post('/api/update_note', async (req,res) => {
             })
             res.json({status: 'good'});
         } catch (err) {res.json({status: 'bad', error: err + 1})}
+} 
+
+});
+app.post('/api/update_lift', async (req,res) => {
+    
+    const exists = await Data.findOne({
+        _id: req.body.id
+    })
+    if(exists && req.body.varChanged != 'email' && req.body.varChanged != 'block' && req.body.varChanged != 'e1rm' && req.body.varChanged != 'weight'){
+        try {
+            console.log(req.body.id, req.body.varChanged, req.body.value)
+            const varChanged = req.body.varChanged;
+            const filter = {_id: req.body.id};
+            if(varChanged == 'lift'){
+                const toUpdate = {
+                    $set: {lift: req.body.value},
+                }
+                console.log('updating lift');
+                await Data.updateOne(filter, toUpdate);
+                res.json({status: 'lift updated'});
+            } else if(varChanged == 'weight'){
+                const toUpdate = {
+                    $set: {weight: req.body.value},
+                }
+                console.log('updating lift');
+                await Data.updateOne(filter, toUpdate);
+                res.json({status: 'lift updated'});
+            } else if(varChanged == 'lbsorkg'){
+                const toUpdate = {
+                    $set: {lbsorkg: req.body.value},
+                }
+                console.log('updating lift');
+                await Data.updateOne(filter, toUpdate);
+                res.json({status: 'lift updated'});
+            } else if(varChanged == 'reps'){
+                const toUpdate = {
+                    $set: {reps: req.body.value},
+                }
+                console.log('updating lift');
+                await Data.updateOne(filter, toUpdate);
+                res.json({status: 'lift updated'});
+            } else if(varChanged == 'sets'){
+                const toUpdate = {
+                    $set: {sets: req.body.value},
+                }
+                console.log('updating lift');
+                await Data.updateOne(filter, toUpdate);
+                res.json({status: 'lift updated'});
+            } else if(varChanged == 'rpe'){
+                const toUpdate = {
+                    $set: {rpe: req.body.value},
+                }
+                console.log('updating lift');
+                await Data.updateOne(filter, toUpdate);
+                res.json({status: 'lift updated'});
+            } else if(varChanged == 'date'){
+                const toUpdate = {
+                    $set: {date: req.body.value},
+                }
+                console.log('updating lift');
+                await Data.updateOne(filter, toUpdate);
+                res.json({status: 'lift updated'});
+            }
+            
+            
+        } catch (err) {
+            {res.json({status: 'bad', error: err + 2})}
+        }
+        
+    } else{
 } 
 
 });

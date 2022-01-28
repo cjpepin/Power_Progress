@@ -5,16 +5,18 @@ import jwt from 'jsonwebtoken'
 import "../../node_modules/jspreadsheet-ce/dist/jspreadsheet.css";
 import Navbar from '../components/navbar.component'
 import myForm from '../components/myForm'
-// https://powerprogress.herokuapp.com/
+// http://localhost:1337/
+// http://localhost3000/
 export default function App() {
     function checkUpdate(e) {
         e.preventDefault();
-        let clickNum = 0;
-        if(clickNum === 0 && e.target.className != "selected" && e.target.className != "draggable" && e.target.className != "highlight-selected highlight highlight-top highlight-bottom highlight-left highlight-right" && e.target.className != "jexcel_content" && e.target.className != "jexcel_selectall" && e.target.className != "jexcel_corner" && e.target.style.width != "50px" && e.target.className != "copying copying-left copying-right highlight-selected highlight highlight-top highlight-bottom highlight-left highlight-right" && e.target.className != "highlight highlight-bottom highlight-left highlight-right"){
+        console.log(e.target)
+
+        if(e.target.className != "selected" && e.target.className != "draggable" && e.target.className != "highlight-selected highlight highlight-top highlight-bottom highlight-left highlight-right" && e.target.className != "jexcel_content" && e.target.className != "jexcel_selectall" && e.target.className != "jexcel_corner" && e.target.style.width != "50px" && e.target.className != "copying copying-left copying-right highlight-selected highlight highlight-top highlight-bottom highlight-left highlight-right" && e.target.className != "highlight highlight-bottom highlight-left highlight-right"){
             console.log(e.target)
-            clickNum = 1;
-            updateTable();
             searchThroughData();
+
+            updateTable();
         }
     }
     const jRef = useRef(null);
@@ -26,7 +28,7 @@ export default function App() {
         if(!localStorage.getItem('block')){
             return;
         }
-        const req = await fetch('https://powerprogress.herokuapp.com/api/get_sheet', {
+        const req = await fetch('http://localhost:1337/api/get_sheet', {
                 headers: {
                     'x-access-token': localStorage.getItem('token'),
                     'block': localStorage.getItem('block')
@@ -34,21 +36,28 @@ export default function App() {
             })
 
             const sheetData = await req.json();
+            let options;
             if(sheetData.status === 'fine'){
-                let newData = await sheetData.data.sheetData;
-                newData = JSON.parse(newData);
-                setData(newData)
-            
-                const options = {
-                    data: newData,
-                    minDimensions: [numRows, numCols]
-                };
-                if (!jRef.current.jspreadsheet) {
-                    jspreadsheet(jRef.current, options);
-                    }
+                if(sheetData.data){
+                    let newData = await sheetData.data.sheetData;
+                    console.log(newData)
+                    newData = JSON.parse(newData);
+                    setData(newData)
+                    options = {
+                        data: newData,
+                        minDimensions: [numRows, numCols]
+                    };
+                } 
             } else {
-                alert(sheetData.error + "test")
+                options = {
+                    data: [],
+                    minDimensions: [numRows, numCols]
+                // alert(sheetData.error + "test")
             }
+        }
+            if (!jRef.current.jspreadsheet) {
+                jspreadsheet(jRef.current, options);
+                }
     }
 
     useEffect(() => {
@@ -81,31 +90,34 @@ export default function App() {
         
     };
     async function updateTable() {
-        let sheetData = JSON.stringify(jRef.current.jexcel.getData())
-        const token = localStorage.getItem('token')
-        const decoded = jwt.verify(token, 'secret123')
-        const email = decoded.email
-        const block = localStorage.getItem('block')
-        const response = await fetch('https://powerprogress.herokuapp.com/api/update_sheet', {
-            method: 'POST',
-            headers: {
-            'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-            email,
-            block,
-            sheetData,
-            }),
-        })
-
-        const data = await response.json();
-
-        // alert(data.status);
-        if(data.status === 'sheet updated'){
-            console.log('SheetUpdated');
-        } else{
-            console.log("Something went wrong" + data.error);
+        if(jRef.current.jexcel){
+            let sheetData = JSON.stringify(jRef.current.jexcel.getData())
+            const token = localStorage.getItem('token')
+            const decoded = jwt.verify(token, 'secret123')
+            const email = decoded.email
+            const block = localStorage.getItem('block')
+            const response = await fetch('http://localhost:1337/api/update_sheet', {
+                method: 'POST',
+                headers: {
+                'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                email,
+                block,
+                sheetData,
+                }),
+            })
+    
+            const data = await response.json();
+    
+            // alert(data.status);
+            if(data.status === 'sheet updated'){
+                console.log('SheetUpdated');
+            } else{
+                console.log("Something went wrong" + data.error);
+            }
         }
+        
 
     }
     function plateMath(rpe, reps, weight){
@@ -141,7 +153,7 @@ export default function App() {
         if(lbsorkg == ''){
             lbsorkg = 'lb';
         }
-        const response = await fetch('https://powerprogress.herokuapp.com/api/new_lift', {
+        const response = await fetch('http://localhost:1337/api/new_lift', {
             method: 'POST',
             headers: {
             'Content-Type': 'application/json',
@@ -160,12 +172,15 @@ export default function App() {
             }),
         })
     
-        const data = await response.json();
+        const curData = await response.json();
         // alert(data.status);
-        if(data.status === 'good' || data.status === 'fine' ){
+        if(curData.status === 'good' || curData.status === 'fine' ){
             console.log("lifts added to mongo")
-        } else{
-            console.log(data.status);
+            console.log(curData.id)
+            return curData.id;
+        } else if(curData.status === 'exists'){
+            console.log(curData.status);
+            return curData.id;
         }
     }
     async function addLiftToLibrary(lift) {
@@ -173,7 +188,7 @@ export default function App() {
         const decoded = jwt.verify(token, 'secret123')
         const email = decoded.email
         // console.log(lift)
-        const response = await fetch('https://powerprogress.herokuapp.com/api/lift_list', {
+        const response = await fetch('http://localhost:1337/api/lift_list', {
             method: 'POST',
             headers: {
             'Content-Type': 'application/json',
@@ -210,7 +225,7 @@ export default function App() {
     }
     async function populateBlocks(){
             
-        const req = await fetch('https://powerprogress.herokuapp.com/api/get_blocks', {
+        const req = await fetch('http://localhost:1337/api/get_blocks', {
             headers: {
                 'x-access-token': localStorage.getItem('token'),
             }
@@ -252,7 +267,7 @@ export default function App() {
     }, [])
     async function deleteWorkoutsCollection (){
         // console.log("test");
-        const req = await fetch('https://powerprogress.herokuapp.com/api/delete_lifts', {
+        const req = await fetch('http://localhost:1337/api/delete_lifts', {
                 headers: {
                     'x-access-token': localStorage.getItem('token'),
                     'block': localStorage.getItem('block')
@@ -267,7 +282,7 @@ export default function App() {
         }
     }
     function searchThroughData(e){
-        deleteWorkoutsCollection();
+        // deleteWorkoutsCollection();
         let totObj = []
         let curObj = {};
         let liftArr = [];
@@ -277,88 +292,95 @@ export default function App() {
         let lbsorkgArr = [];
         let weightArr = [];
         let datesArr = [];
+        let idArr = [];
         let curLiftArr = [];
+        if(data){
+            for(let i = 0; i <data.length; i++){
+                if(jRef.current.jexcel){
+                    let curRow = jRef.current.jexcel.getRowData(i)
+    
+                    if(i === 0){
+                        for(let j = 0; j <= curRow.length; j++){
+                            if(curRow[j] === "Lift"){
+                                liftArr.push(j);
+                            }else if(curRow[j] === "Sets"){
+                                setsArr.push(j);
+                            }else if(curRow[j] === "Reps"){
+                                repsArr.push(j);
+                            }else if(curRow[j] === "Weight"){
+                                weightArr.push(j);
+                            }else if(curRow[j] === "RPE"){
+                                rpeArr.push(j);
+                            }else if(curRow[j] === "Date"){
+                                datesArr.push(j);
+                            }else if(curRow[j] === "Lbs or KG"){
+                                lbsorkgArr.push(j);
+                            }else if(curRow[j] === "id"){
+                                idArr.push(j);
+                            }
+                        }
+                    }
+                    let curLift;
+                    let curSets;
+                    let curReps;
+                    let curWeight;
+                    let curRPE;
+                    let curDate;
+                    let curId;
+                    let curLbsorKg;
+                    for(let j=0; j< curRow.length; j++){
+        
+                        // console.log(curLiftArr)
+                            if(curLift && curSets && curReps && curWeight && curRPE && curDate && curLbsorKg && curId){
+                                continue;
+                            }
+                            if(liftArr.includes(j)){
+                                curLift = jRef.current.jexcel.getCell([j,i]).innerHTML
+                            } else if(setsArr.includes(j)){
+                                curSets = jRef.current.jexcel.getCell([j,i]).innerHTML
+                            } else if(repsArr.includes(j)){
+                                curReps = jRef.current.jexcel.getCell([j,i]).innerHTML
+                            } else if(weightArr.includes(j)){
+                                curWeight = jRef.current.jexcel.getCell([j,i]).innerHTML
+                            } else if(rpeArr.includes(j)){
+                                curRPE = jRef.current.jexcel.getCell([j,i]).innerHTML
+                            } else if(lbsorkgArr.includes(j)){
+                                curLbsorKg = jRef.current.jexcel.getCell([j,i]).innerHTML
+                            } else if(datesArr.includes(j)){
+                                curDate = jRef.current.jexcel.getCell([j,i]).innerHTML
+                            } else if(idArr.includes(j)){
+                                if(curLift != "Lift"  && curLift != '' && curSets != '' && curReps != '' && curWeight != '' && curRPE != '' && curDate != '' && curLbsorKg != ''){
+                                    
+                                    // console.log(curLift, curSets, curReps, curWeight, curRPE, curDate, curLbsorKg)
+                                    createLift(curLift, curSets, curWeight, curLbsorKg, curReps, curRPE, curDate).then(curData => {
+                                            if(jRef.current){
+                                                // if(jRef.current.jexcel.getCell([j,i]).innerHTML == '' || jRef.current.jexcel.getCell([j,i]).innerHTML == 'undefined' ){
+                                                    jRef.current.jexcel.setValueFromCoords(j,i,curData,true);
 
-        // console.log(data.length)
-        for(let i = 0; i <data.length; i++){
-            let curRow = jRef.current.jexcel.getRowData(i)
-
-            if(i === 0){
-                for(let j = 0; j <= curRow.length; j++){
-                    if(curRow[j] === "Lift"){
-                        liftArr.push(j);
-                    }else if(curRow[j] === "Sets"){
-                        setsArr.push(j);
-                    }else if(curRow[j] === "Reps"){
-                        repsArr.push(j);
-                    }else if(curRow[j] === "Weight"){
-                        weightArr.push(j);
-                    }else if(curRow[j] === "RPE"){
-                        rpeArr.push(j);
-                    }else if(curRow[j] === "Date"){
-                        datesArr.push(j);
-                    }else if(curRow[j] === "Lbs or KG"){
-                        lbsorkgArr.push(j);
+                                                // }
+                                            }
+                                        });
+                                    if(!curLiftArr.includes(curLift)){
+                                        curLiftArr.push(curLift)
+                                        addLiftToLibrary(curLift);
+                                    } 
+                                    curLift = '';
+                                    curSets = '';
+                                    curReps = '';
+                                    curWeight = '';
+                                    curRPE = '';
+                                    curDate = '';
+                                } 
+                            }
                     }
                 }
-            }
-            let curLift;
-            let curSets;
-            let curReps;
-            let curWeight;
-            let curRPE;
-            let curDate;
-            let curLbsorKg;
-            for(let j=0; j< curRow.length; j++){
-
-                // console.log(curLiftArr)
-                    if(curLift && curSets && curReps && curWeight && curRPE && curDate && curLbsorKg){
-                        continue;
-                    }
-                    if(liftArr.includes(j)){
-                        curLift = jRef.current.jexcel.getCell([j,i]).innerHTML
-                    } else if(setsArr.includes(j)){
-                        curSets = jRef.current.jexcel.getCell([j,i]).innerHTML
-                    } else if(repsArr.includes(j)){
-                        curReps = jRef.current.jexcel.getCell([j,i]).innerHTML
-                    } else if(weightArr.includes(j)){
-                        curWeight = jRef.current.jexcel.getCell([j,i]).innerHTML
-                    } else if(rpeArr.includes(j)){
-                        curRPE = jRef.current.jexcel.getCell([j,i]).innerHTML
-                    } else if(lbsorkgArr.includes(j)){
-                        curLbsorKg = jRef.current.jexcel.getCell([j,i]).innerHTML
-                    } else if(datesArr.includes(j)){
-                        curDate = jRef.current.jexcel.getCell([j,i]).innerHTML
-                        if(curLift != "Lift"  && curLift != '' && curSets != '' && curReps != '' && curWeight != '' && curRPE != '' && curDate != '' && curLbsorKg != ''){
-                            // console.log(curLift, curSets, curReps, curWeight, curRPE, curDate, curLbsorKg)
-                            createLift(curLift, curSets, curWeight, curLbsorKg, curReps, curRPE, curDate);
-                            if(!curLiftArr.includes(curLift)){
-                                curLiftArr.push(curLift)
-                                addLiftToLibrary(curLift);
-                            } 
-                            curLift = '';
-                            curSets = '';
-                            curReps = '';
-                            curWeight = '';
-                            curRPE = '';
-                            curDate = '';
-                        } 
-                    }
-                // if(curLift != undefined && curSets != undefined && curReps != undefined && curWeight != undefined && curRPE != undefined && curDate != undefined && curLift != '' && curRPE != '' && curReps != '' && curWeight != '' && curSets != '' && curDate != ''){
-                //     console.log(curLift, curSets, curReps, curWeight, curRPE, curDate)
-                // }
+                
             }
         }
+
+        // console.log(data.length)
+        
     }
-    // window.onbeforeunload = (event) => {
-    //     const e = event || window.event;
-    //     // Cancel the event
-    //     e.preventDefault();
-    //     if (e) {
-    //       e.returnValue = ''; // Legacy method for cross browser support
-    //     }
-    //     return ''; // Legacy method for cross browser support
-    //   };
     
     return (
         <div onClick={checkUpdate}>

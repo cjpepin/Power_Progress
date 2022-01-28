@@ -37,7 +37,7 @@ const Block = () => {
     }
 
     function blockNote(e){
-        console.log(e.key)
+        // console.log(e.key)
         e.preventDefault();
         let blockNoteIn = document.getElementById("blockNoteIn");
         let blockNoteShow = document.getElementById("blockNoteShow");
@@ -79,7 +79,7 @@ const Block = () => {
         if(lbsorkg == ''){
             lbsorkg = 'lb';
         }
-        const response = await fetch('https://powerprogress.herokuapp.com/api/new_lift', {
+        const response = await fetch('http://localhost:1337/api/new_lift', {
             method: 'POST',
             headers: {
             'Content-Type': 'application/json',
@@ -116,8 +116,8 @@ const Block = () => {
         const email = decoded.email
         let curLift = delData.lift;
         let curDate = delData.date;
-        console.log(curLift, curDate);
-        const response = await fetch('https://powerprogress.herokuapp.com/api/delete_lift', {
+        // console.log(curLift, curDate);
+        const response = await fetch('http://localhost:1337/api/delete_lift', {
         method: 'POST',
         headers: {
             'x-access-token': localStorage.getItem('token'),
@@ -131,7 +131,7 @@ const Block = () => {
         })
 
         const data = await response.json()
-        console.log(data.status)
+        // console.log(data.status)
         if(data.status === 'fine'){
         // alert('Lift deleted')
         
@@ -140,7 +140,7 @@ const Block = () => {
     
     async function getLifts() {
         // let block = localStorage.getItem('block');
-        const req = await fetch('https://powerprogress.herokuapp.com/api/get_lift', {
+        const req = await fetch('http://localhost:1337/api/get_lift', {
             headers: {
                 'x-access-token': localStorage.getItem('token'),
                 'block': localStorage.getItem('block')
@@ -153,7 +153,7 @@ const Block = () => {
             console.log("creating list");
             console.log(data.data);
             clearTable();
-            updateTable(data);
+            updateDataTable(data);
             setTotData(data.data, []);
             localStorage.setItem('data', data.data)
         } else {
@@ -172,7 +172,7 @@ const Block = () => {
         const decoded = jwt.verify(token, 'secret123')
         const email = decoded.email
 
-        const req = await fetch('https://powerprogress.herokuapp.com/api/get_note', {
+        const req = await fetch('http://localhost:1337/api/get_note', {
             headers: {
                 'x-access-token': localStorage.getItem('token'),
                 'block': localStorage.getItem('block'),
@@ -281,7 +281,7 @@ const Block = () => {
     }
 
     async function toCSV() {
-        const req = await fetch('https://powerprogress.herokuapp.com/api/getCSV', {
+        const req = await fetch('http://localhost:1337/api/getCSV', {
         headers: {
             'x-access-token': localStorage.getItem('token')
         }
@@ -314,7 +314,7 @@ const Block = () => {
         if(newNote == ''){
             newNote = 'Input notes here';
         }
-        const response = await fetch('https://powerprogress.herokuapp.com/api/update_note', {
+        const response = await fetch('http://localhost:1337/api/update_note', {
                 method: 'POST',
                 headers: {
                 'Content-Type': 'application/json',
@@ -335,7 +335,7 @@ const Block = () => {
             }
     }
 
-    function updateTable(data){
+function updateDataTable(data){
     console.log(data)
     const liftData = data.data;
     console.log(liftData);
@@ -367,20 +367,113 @@ const Block = () => {
         e1rm = Math.round(e1rm*100)/100 + 'kg/' + Math.round(e1rmInLbs*100)/100 + 'lbs';
         }
         firstNode.innerHTML += `
-        <tr id=${i}>
-        <td id="date">${liftData[i]['date']}</td>
-        <td id="lift">${liftData[i]['lift']}</td>
-        <td id="weight">${weight}</td>
-        <td id="rpe">${liftData[i]['rpe']}</td>
-        <td id="reps">${liftData[i]['reps']}</td>
-        <td id="reps">${liftData[i]['sets']}</td>
-        <td id="e1rm">${e1rm}</td>
-        <td id="delete"><button id="delete">delete</button></td>
+        <tr id=${liftData[i]['_id']}>
+            <td id="date" contenteditable="true" >${liftData[i]['date']}</td>
+            <td id="lift" contenteditable="true">${liftData[i]['lift']}</td>
+            <td id="weight">${weight}</td>
+            <td id="rpe" contenteditable="true">${liftData[i]['rpe']}</td>
+            <td id="reps" contenteditable="true">${liftData[i]['reps']}</td>
+            <td id="sets" contenteditable="true">${liftData[i]['sets']}</td>
+            <td id="e1rm">${e1rm}</td>
+            <td id="delete" ><button id="delete">delete</button></td>
         </tr>
         `
     }
     }
 
+    async function updateDatabase(e) {
+        const value = e.innerHTML;
+        let id = e.closest('tr').id;
+        let varChanged = e.id
+        const response = await fetch('http://localhost:1337/api/update_lift', {
+                method: 'POST',
+                headers: {
+                'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                id,
+                value,
+                varChanged,
+                }),
+            })
+        const data = await response.json();
+        if(data.status == 'lift updated'){
+            console.log('update success')
+        } else {
+            console.log(data.error)
+        }
+        const req = await fetch('http://localhost:1337/api/get_sheet', {
+            headers: {
+                'x-access-token': localStorage.getItem('token'),
+                'block': localStorage.getItem('block')
+            },
+        })
+        const dataSheet = await req.json();
+        const dataSheetJson = JSON.parse(dataSheet.data.sheetData);
+        let curVar;
+        let idArr = [];
+        let varChangedArr = []
+        let rowTarget;
+        let colTarget;
+        if(varChanged == 'lift'){
+            curVar = 'Lift'
+        } else if(varChanged == 'rpe'){
+            curVar = 'RPE'
+        } else if(varChanged == 'reps'){
+            curVar = 'Reps'
+        } else if(varChanged == 'sets'){
+            curVar = 'Sets'
+        }
+        for (let i=0 ; i < dataSheetJson.length ; i++){
+            for(let j =0; j < dataSheetJson[i].length; j++){
+                if(i == 0){
+                    if(dataSheetJson[i][j] == 'id'){
+                        idArr.push(j)
+                    }
+                    if(dataSheetJson[i][j] == curVar){
+                        varChangedArr.push(j)
+                    }
+                }
+                if(idArr.includes(j) && dataSheetJson[i][j] == id){
+                    rowTarget = i
+                    colTarget = varChangedArr[idArr.indexOf(j)]
+                    dataSheetJson[rowTarget][colTarget] = value;
+                    updateTable(JSON.stringify(dataSheetJson));
+                }
+                
+            }
+            // if (dataSheetJson[i][searchField] == searchVal) {
+            //     // results.push(obj.list[i]);
+            // }
+        }
+    }
+
+    async function updateTable(sheetData) {
+            const token = localStorage.getItem('token')
+            const decoded = jwt.verify(token, 'secret123')
+            const email = decoded.email
+            const block = localStorage.getItem('block')
+            const response = await fetch('http://localhost:1337/api/update_sheet', {
+                method: 'POST',
+                headers: {
+                'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                email,
+                block,
+                sheetData,
+                }),
+            })
+    
+            const data = await response.json();
+    
+            // alert(data.status);
+            if(data.status === 'sheet updated'){
+                console.log('SheetUpdated');
+            } else{
+                console.log("Something went wrong" + data.error);
+            }
+        }
     useEffect(() => {
         getLifts();
         console.log(lbsorkg);
@@ -390,41 +483,58 @@ const Block = () => {
         updateNote();
         console.log(lbsorkg);
     }, []);
- 
-    ////////////////////
-    //  Testing With  //
-    // Google Sheets  //
-    ////////////////////
 
 
+
+    const Wrapper = styled.div`
+        margin-left: 10vw;
+        margin-right: 10vw;
+    
+    `
+    const Title = styled.h1`
+        display: flex;
+        align-items: center;
+        justify-content: center;`
+
+    const Form = styled.div`
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        margin: 5px;
+        box-shadow: 4px;
+    `
+    const Notes = styled.div`
+    
+    `
     return (
         <div>
             <div id="inputBlockData">
                 <Navbar />
-                <div style={{display: "flex", alignItems: "center"}}>
+                <Wrapper>
+                <div>
                     <div>
-                        <h1>Welcome {name}</h1> 
-                        <h3>Block Name: {localStorage.getItem('block')}</h3> 
+                        <Title>Welcome {name}</Title> 
+                        <Title>Block Name: {localStorage.getItem('block')}</Title> 
                         {/* <button onClick={openSheet}>Program Sheet</button> */}
                         <br/>
                         <br/>
                         <h3>Block Notes</h3>
-                        <span 
-                            id="blockNoteShow" 
-                            style={{display: "inline", whiteSpace: "pre-line", marginLeft: "10px", marginTop: "40px"}}  
-                            onClick={blockNote}>{note}
-                        </span>
-                        <textarea 
-                            id="blockNoteIn" 
-                            style={{display: "none", width: "90%", height: "50px", marginLeft: "10px", marginTop: "20px"}} 
-                            onKeyDown={saveNote}/>
+                        <Notes>
+                            <span 
+                                id="blockNoteShow" 
+                                style={{display: "flex", alignItems: "center", justifyContent: "center", whiteSpace: "pre-line", marginLeft: "20px", marginRight: "20%", marginTop: "40px"}}  
+                                onClick={blockNote}>{note}
+                            </span>
+                            <textarea 
+                                id="blockNoteIn" 
+                                style={{display: "none", width: "90%", height: "50px", marginLeft: "10%", marginRight: "10%", marginTop: "20px"}} 
+                                onKeyDown={saveNote}/>
+                        </Notes>
                         
                 </div>
                 <br/>
-                <div>
-                    <input type="date" onChange={(e) => setDate(e.target.value)}/>
-                </div>
-                <div>
+                <Form>
+                    <input type="date" style={{minWidth: "40px;"}} onChange={(e) => setDate(e.target.value)}/>
                     <select onChange={(e) => setLift(e.target.value)}>
                         <option defaultValue="squat">Squat</option>
                         <option value="bench">Bench</option>
@@ -442,26 +552,18 @@ const Block = () => {
                         <option defaultValue="lb">lb</option>
                         <option value="kg">kg</option>
                     </select>
-                    </div>
-                    <div>
                     <input type="number" name="reps" placeholder="How many reps?" step="1"  onChange={(e) => setReps(e.target.value)}/>
-                    </div>
-                    <div>
                     <input type="number" name="sets" placeholder="How many sets?" step="1"  onChange={(e) => setSets(e.target.value)}/>
-                    </div>
-                    <div>
                     <input type="number" name="rpe" placeholder="What was the RPE?" step="0.5"  onChange={(e) => setRpe(e.target.value)}/>
-                    </div>
-                    
-                    <div>
                     <input type="submit" value="Add Lift" onClick={createLift}/>
-                    </div>
-                    <div>
                     <input type="submit" value="Download CSV" onClick={toCSV}/>
-                    </div>
+                </Form>
+                
                 </div>
-                <div id="testTable" style={{maxHeight: "250px", overflowY: "auto", borderStyle: "solid", borderWidth: "2px"}}>
-                    <table class="table" id="dataTable" onClick={removeRow}>
+                </Wrapper>
+
+                <div id="testTable" class="table-editable" style={{maxHeight: "250px", overflowY: "auto", borderStyle: "solid", borderWidth: "2px",marginLeft: '5vw', marginRight: '5vw'}}>
+                    <table class="table" id="dataTable" onClick={removeRow} onInput={(e) => updateDatabase(e.target)}>
                     <thead>
                         <tr>
                         <th>Date</th>
@@ -482,7 +584,6 @@ const Block = () => {
                         </tbody>
                     </table>
                 </div>
-                
                 <br />
                 <div style={{display: "flex", justifyContent: "center"}}>
                     Chart Weight in &nbsp; 

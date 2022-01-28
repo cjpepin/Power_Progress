@@ -8,7 +8,7 @@ export default class Navbar extends Component{
         function logout(){
             window.localStorage.clear();
             console.log("Made it here")
-            window.location.href('/login');
+            window.location.href = '/login';
         }
         return (
             <nav class="navbar navbar-inverse">
