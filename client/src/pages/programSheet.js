@@ -12,9 +12,6 @@ export default function App() {
         console.log(e.target)
 
         if(e.target.className != "selected" && e.target.className != "draggable" && e.target.className != "highlight-selected highlight highlight-top highlight-bottom highlight-left highlight-right" && e.target.className != "jexcel_content" && e.target.className != "jexcel_selectall" && e.target.className != "jexcel_corner" && e.target.style.width != "50px" && e.target.className != "copying copying-left copying-right highlight-selected highlight highlight-top highlight-bottom highlight-left highlight-right" && e.target.className != "highlight highlight-bottom highlight-left highlight-right"){
-            console.log(e.target)
-            searchThroughData();
-
             updateTable();
         }
     }
@@ -143,7 +140,7 @@ export default function App() {
         e1rm = Math.round(e1rm * 100)/100;
         return e1rm;
     }
-    async function createLift(lift, sets, weight, lbsorkg, reps, rpe, date) {
+    async function createLift(lift, sets, weight, lbsorkg, reps, rpe, date, id) {
         const token = localStorage.getItem('token')
         const decoded = jwt.verify(token, 'secret123')
         const email = decoded.email
@@ -168,6 +165,7 @@ export default function App() {
             date,
             e1rm,
             block,
+            id,
             }),
         })
     
@@ -280,10 +278,7 @@ export default function App() {
             alert(res.error + "test")
         }
     }
-    function searchThroughData(e){
-        // deleteWorkoutsCollection();
-        let totObj = []
-        let curObj = {};
+    function populateIds(e){
         let liftArr = [];
         let setsArr = [];
         let repsArr = [];
@@ -348,6 +343,7 @@ export default function App() {
                             } else if(datesArr.includes(j)){
                                 curDate = jRef.current.jexcel.getCell([j,i]).innerHTML
                             } else if(idArr.includes(j)){
+                                curId = jRef.current.jexcel.getCell([j,i]).innerHTML
                                 if(curLift != "Lift"  && curLift != '' && curSets != '' && curReps != '' && curWeight != '' && curRPE != '' && curDate != '' && curLbsorKg != ''){
                                     
                                     // console.log(curLift, curSets, curReps, curWeight, curRPE, curDate, curLbsorKg)
@@ -382,74 +378,101 @@ export default function App() {
     }
     async function updateDatabase(e) {
         const value = e.value;
-        console.log(value)
-        // let id = e.closest('tr').id;
-        // let varChanged = e.id
-        // const response = await fetch('http://localhost:1337/api/update_lift', {
-        //         method: 'POST',
-        //         headers: {
-        //         'Content-Type': 'application/json',
-        //         },
-        //         body: JSON.stringify({
-        //         id,
-        //         value,
-        //         varChanged,
-        //         }),
-        //     })
-        // const data = await response.json();
-        // if(data.status == 'lift updated'){
-        //     console.log('update success')
-        // } else {
-        //     console.log(data.error)
-        // }
-        // const req = await fetch('http://localhost:1337/api/get_sheet', {
-        //     headers: {
-        //         'x-access-token': localStorage.getItem('token'),
-        //         'block': localStorage.getItem('block')
-        //     },
-        // })
-        // const dataSheet = await req.json();
-        // const dataSheetJson = JSON.parse(dataSheet.data.sheetData);
-        // let curVar;
-        // let idArr = [];
-        // let varChangedArr = []
-        // let rowTarget;
-        // let colTarget;
-        // if(varChanged == 'lift'){
-        //     curVar = 'Lift'
-        // } else if(varChanged == 'rpe'){
-        //     curVar = 'RPE'
-        // } else if(varChanged == 'reps'){
-        //     curVar = 'Reps'
-        // } else if(varChanged == 'sets'){
-        //     curVar = 'Sets'
-        // }
-        // for (let i=0 ; i < dataSheetJson.length ; i++){
-        //     for(let j =0; j < dataSheetJson[i].length; j++){
-        //         if(i == 0){
-        //             if(dataSheetJson[i][j] == 'id'){
-        //                 idArr.push(j)
-        //             }
-        //             if(dataSheetJson[i][j] == curVar){
-        //                 varChangedArr.push(j)
-        //             }
+        if(e.value == ''){
+            return;
+        }
+        const xCoord = parseInt(e.closest('td').dataset.x);
+        const yCoord = parseInt(e.closest('td').dataset.y);
+        console.log(xCoord,yCoord)
+        let varChanged;
+        let liftArr = [];
+        let setsArr = [];
+        let repsArr = [];
+        let weightArr = [];
+        let lbsorkgArr = [];
+        let rpeArr = [];
+        let dateArr = [];
+        let idArr = [];
+        let colTarget;
+        for (let i=0 ; i < data.length ; i++){
+            for(let j =0; j < data[i].length; j++){
+                if(i == 0){
+                    if(data[i][j] == 'id'){
+                        idArr.push(j)
+                    } else if(data[i][j] == 'Lift'){
+                        liftArr.push(j)
+                    } else if(data[i][j] == 'Sets'){
+                        setsArr.push(j)
+                    } else if(data[i][j] == 'Reps'){
+                        repsArr.push(j)
+                    } else if(data[i][j] == 'Weight'){
+                        weightArr.push(j)
+                    } else if(data[i][j] == 'Lbs or KG'){
+                        lbsorkgArr.push(j)
+                    } else if(data[i][j] == 'RPE'){
+                        rpeArr.push(j)
+                    } else if(data[i][j] == 'Date'){
+                        dateArr.push(j)
+                    }
+                    // if(data[i][j] == curVar){
+                    //     varChangedArr.push(j)
+                    // }
+                } else if(i == yCoord){
+                    console.log(i, yCoord, "test")
+                    if(liftArr.includes(xCoord)){
+                        varChanged = 'lift';
+                        colTarget = idArr[liftArr.indexOf(xCoord)]
+                    } else if(setsArr.includes(xCoord)){
+                        varChanged = 'sets'
+                        colTarget = idArr[setsArr.indexOf(xCoord)]
+                    } else if(repsArr.includes(xCoord)){
+                        varChanged = 'reps'
+                        colTarget = idArr[repsArr.indexOf(xCoord)]
+                    } else if(weightArr.includes(xCoord)){
+                        varChanged = 'weight'
+                        colTarget = idArr[weightArr.indexOf(xCoord)]
+                    } else if(lbsorkgArr.includes(xCoord)){
+                        varChanged = 'lbsorkg'
+                        colTarget = idArr[lbsorkgArr.indexOf(xCoord)]
+                    } else if(rpeArr.includes(xCoord)){
+                        varChanged = 'rpe'
+                        colTarget = idArr[rpeArr.indexOf(xCoord)]
+                    } else if(dateArr.includes(xCoord)){
+                        varChanged = 'date'
+                        colTarget = idArr[dateArr.indexOf(xCoord)]
+                    }
+                    const rowTarget = i
+                    const id = data[rowTarget][colTarget]
+                    console.log(id)
+                    let block = localStorage.getItem('block');
+                    const response = await fetch('http://localhost:1337/api/update_lift', {
+                        method: 'POST',
+                        headers: {
+                        'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                        block,
+                        id,
+                        value,
+                        varChanged,
+                        }),
+                    })
+
+                    const updatedSheet = await response.json();
+                    console.log(updatedSheet)
+                    if(updatedSheet.status == 'lift updated'){
+                        console.log(jRef.current.jspreadsheet.getData())
+                        updateTable();
+                        console.log('update success')
+                        break;
+                    } else {
+                        console.log(updatedSheet.error)
+                        break;
+                    }
+                }
                 
-        //         }
-        //         console.log(idArr, varChangedArr)
-        //         if(idArr.includes(j) && dataSheetJson[i][j] == id){
-        //             console.log("test")
-        //             rowTarget = i
-        //             colTarget = varChangedArr[idArr.indexOf(j)]
-        //             dataSheetJson[rowTarget][colTarget] = value;
-        //             console.log(dataSheetJson);
-        //             updateTable(JSON.stringify(dataSheetJson));
-        //         }
-                
-        //     }
-        //     // if (dataSheetJson[i][searchField] == searchVal) {
-        //     //     // results.push(obj.list[i]);
-        //     // }
-        // }
+            }
+            }
     }
 
     async function updateHTMLTable(sheetData) {
@@ -493,7 +516,7 @@ export default function App() {
         <input type="button" onClick={removeRow} value="Remove row" />
         <input type="button" onClick={removeCol} value="Remove column" />
         <input type="button" onClick={updateTable} value="Save Sheet" />
-        <input type="button" onClick={searchThroughData} value="Update Lift Data" />
+        <input type="button" onClick={populateIds} value="Populate Ids" />
         <br/>
         <div ref={jRef}/>
         <br />

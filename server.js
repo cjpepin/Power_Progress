@@ -189,13 +189,12 @@ app.post('/api/update_note', async (req,res) => {
 
 });
 app.post('/api/update_lift', async (req,res) => {
-    
+    console.log("updating lift")
     const exists = await Data.findOne({
         _id: req.body.id
     })
-    if(exists && req.body.varChanged != 'email' && req.body.varChanged != 'block' && req.body.varChanged != 'e1rm' && req.body.varChanged != 'weight'){
+    if(exists && req.body.varChanged != 'email' && req.body.varChanged != 'block' && req.body.varChanged != 'e1rm'){
         try {
-            console.log(req.body.id, req.body.varChanged, req.body.value)
             const varChanged = req.body.varChanged;
             const filter = {_id: req.body.id};
             if(varChanged == 'lift'){
@@ -234,6 +233,7 @@ app.post('/api/update_lift', async (req,res) => {
                 await Data.updateOne(filter, toUpdate);
                 res.json({status: 'lift updated'});
             } else if(varChanged == 'rpe'){
+                console.log("rpe being changed")
                 const toUpdate = {
                     $set: {rpe: req.body.value},
                 }

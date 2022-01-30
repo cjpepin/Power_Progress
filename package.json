@@ -24,6 +24,7 @@
     "react-datasheet": "^1.4.9",
     "react-icons": "^4.3.1",
     "react-spreadsheet": "^0.6.1",
+    "recharts": "^2.1.8",
     "scheduler": "^0.20.2",
     "tabletop": "^1.6.3",
     "x-data-spreadsheet": "^1.1.9"
