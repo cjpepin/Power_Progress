@@ -49,6 +49,20 @@ const Input = styled.input`
     background-color: rgb(142,174,189, 0.5);
   }
 `
+const Button = styled.button`
+  color: rgb(15,22,40);
+  background-color: rgb(142,174,189);
+  margin: 8px;
+
+  padding: 5px;
+  border-radius: 3px;
+  box-shadow: 5px 5px;
+  border: none;
+  outline: inherit;
+  &:hover {
+    background-color: rgb(142,174,189, 0.5);
+  }
+`
 const Title = styled.span`
   font-size: 35px;
   color: rgb(142,174,189);
@@ -128,9 +142,9 @@ function App() {
         />
         <br />
         <Input type="submit" value="Login"/>
-        <Input type="submit" value="Register" onClick={registerNewUser}/>
         </div>
       </Form>
+      <Input type="submit" value="Register" onClick={registerNewUser}/>
        <Input type="submit" value="See Example Data" onClick={examplePage}/>
      
     </Wrapper>
