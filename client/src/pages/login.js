@@ -121,7 +121,9 @@ function App() {
 
   return (
     <>
+
     <Title>Power Progress</Title>
+    <h4>Current testing email: lookingback31415@gmail.com and password: 1234. Security features coming soon I promise!</h4>
     <Wrapper className="wrapper">
       
       <h1>Login</h1>
