@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 const Block = new mongoose.Schema({
     email: {type: String, required: true},
     blockName: {type: String, required: true},
-    sheetURL: {type: String, required: true},
+    sheetURL: {type: String, required: false},
 }, 
 {collection: 'blocks'}
 )

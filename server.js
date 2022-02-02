@@ -8,6 +8,7 @@ const Note = require('./models/notes.model')
 const Block = require('./models/blocks.model')
 const Sheet = require('./models/program-sheets.model')
 const Lift = require('./models/lifts.model')
+const Colors = require('./models/colors.model')
 const jwt = require('jsonwebtoken')
 const objectstocsv = require('objects-to-csv')
 const path = require('path')
@@ -18,9 +19,9 @@ app.use(cors())
 app.use(express.json())
 app.use(express.static(path.join(__dirname, "client", "build")));
 
-const PORT = process.env.PORT || 1337;
-const secret = process.env.SECRET || 'secret123'
-mongoose.connect(process.env.MONGODB_URI || 'mongodb+srv://cjpepin:Sp!k300123@finalprojectcluster.zqgvb.mongodb.net/CreativeProjectDatabase?retryWrites=true&w=majority')
+const PORT = process.env.PORT 
+const secret = process.env.SECRET 
+mongoose.connect(process.env.MONGODB_URI)
 // mongoose.connect(process.env.MONGODB_URI, {useNewUrlParser: true });
 
 app.post('/api/register', async (req,res) => {
@@ -106,7 +107,7 @@ app.get('/api/get_lift', async (req,res) => {
         try {
             const decoded = jwt.verify(token, 'secret123')
             const email = decoded.email
-            const data = await Data.find({ email: email, block: block}).sort( { date: 1 } )
+            const data = await Data.find({ email: email, block: block}).sort( { date: 1 , e1rm: 1} )
             console.log("getting lifts" + data);
             return res.json({status: 'fine',
                              data: data,
@@ -487,6 +488,18 @@ app.post('/api/lift_list', async (req,res) => {
             res.json({status: 'good'});
         } catch (err) {res.json({status: 'bad', error: err + 1})}
 } 
+
+});
+
+app.get('/api/get_colors', async (req,res) => {
+    try{
+        const colors = await Colors.find({
+        })
+        res.json({status: 'good', colors: colors}); 
+    } catch (err){
+        {res.json({status: 'bad', error: err})}
+    }
+    
 
 });
 

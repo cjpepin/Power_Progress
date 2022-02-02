@@ -2,6 +2,101 @@ import React, { useEffect } from 'react'
 import { useState, useRef } from 'react';
 import Navbar from '../components/navbar.component'
 import jwt from 'jsonwebtoken'
+import styled from 'styled-components'
+
+const Wrapper = styled.div`
+  color: rgb(142,174,189);
+  background-color: rgb(15,22,40);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-left: 38%;
+  margin-right: 38%;
+  margin-top: 5vh;
+  width: 325px;
+  height: 325px;
+
+  border-radius: 5px;
+  padding: 25px;
+  box-shadow: 8px 10px;
+`
+const H1 = styled.h1`
+    color: rgb(142,174,189);
+    background-color: rgb(15,22,40);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-left: 38%;
+    margin-right: 38%;
+    margin-top: 5vh;
+
+    border-radius: 5px;
+    padding: 25px;
+    box-shadow: 8px 10px;
+`
+const Form = styled.div`
+  color: rgb(142,174,189);
+  background-color: rgb(15,22,40);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 80vw;
+  margin-top: 20px;
+  margin-left: 15%;
+  margin-right: 15%;
+
+  border-radius: 5px;
+  padding: 25px;
+  box-shadow: 8px 10px;
+` 
+const Input = styled.input`
+  color: rgb(15,22,40);
+  background-color: rgb(142,174,189);
+  margin: 8px;
+
+  padding: 5px;
+  border-radius: 3px;
+  box-shadow: 5px 5px;
+  border: none;
+  outline: inherit;
+  &:hover {
+    background-color: rgb(142,174,189, 0.5);
+  }
+`
+const Button = styled.button`
+  color: rgb(15,22,40);
+  background-color: rgb(142,174,189);
+  margin: 8px;
+
+  padding: 5px;
+  border-radius: 3px;
+  box-shadow: 5px 5px;
+  border: none;
+  outline: inherit;
+  &:hover {
+    background-color: rgb(142,174,189, 0.5);
+  }
+`
+const Title = styled.span`
+  font-size: 35px;
+  color: rgb(142,174,189);
+  background-color: rgb(15,22,40);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-left: 38%;
+  margin-right: 38%;
+  margin-top: 22vh;
+  width: 325px;
+  height: 100px;
+
+  border-radius: 5px;
+  box-shadow: 8px 10px;
+`
+
 
 const ComplexData = () => {
     const [blockName, setBlockName] = useState('');
@@ -12,7 +107,7 @@ const ComplexData = () => {
     }
     async function populateBlocks(){
         
-        const req = await fetch('http://localhost:1337/api/get_blocks', {
+        const req = await fetch('https://powerprogress.herokuapp.com/api/get_blocks', {
             headers: {
                 'x-access-token': localStorage.getItem('token'),
             }
@@ -35,7 +130,7 @@ const ComplexData = () => {
                         continue;
                     } else{
                         blockList.push(curBlock);
-                        const newBlock = document.createElement('button');
+                        const newBlock = document.createElement('Button');
                         newBlock.id = totData[key.sheetURL];
                         newBlock.value = curBlock;
                         newBlock.innerHTML = curBlock;
@@ -63,8 +158,13 @@ const ComplexData = () => {
         const decoded = jwt.verify(token, 'secret123')
         const email = decoded.email
         let block = localStorage.getItem('block');
-        let sheetURL = localStorage.getItem('url');;
-        const response = await fetch('http://localhost:1337/api/new_block', {
+        let sheetURL
+        if(!localStorage.getItem('url')){
+            sheetURL = ''
+        } else{
+            sheetURL = localStorage.getItem('url');
+        }
+        const response = await fetch('https://powerprogress.herokuapp.com/api/new_block', {
             method: 'POST',
             headers: {
             'Content-Type': 'application/json',
@@ -102,7 +202,7 @@ const ComplexData = () => {
   
     async function getLifts() {
         // let block = localStorage.getItem('block');
-        const req = await fetch('http://localhost:1337/api/get_lift', {
+        const req = await fetch('https://powerprogress.herokuapp.com/api/get_lift', {
             headers: {
                 'x-access-token': localStorage.getItem('token'),
                 'block': localStorage.getItem('block')
@@ -124,16 +224,18 @@ const ComplexData = () => {
         <div>
             <Navbar />
             <div id="blocksWrapper">
-            <h2>Block List</h2>
-                <div id="populatedBlocks" onClick={enterBlock}>
+            <H1>Block List</H1>
                 
-                </div>
-                <div class="form-group">
+                <Form onSubmit={addNewBlock}>
                     <span>Add Block:</span>
-                    <input type="text" onChange={(e) => setBlockName(e.target.value)} placeholder="Block Name"></input>
-                    <input type="url" onChange={(e) => setBlockUrl(e.target.value)} placeholder="Google Sheets URL"></input>
-                    <button id="newBlock" onClick={addNewBlock}>Add New Block</button>
-                </div>
+                    <br />
+                    <Input type="text" onChange={(e) => setBlockName(e.target.value)} placeholder="Block Name"/>
+                    <Input type="url" onChange={(e) => setBlockUrl(e.target.value)} placeholder="Google Sheets URL"/>
+                    <Button type="submit" id="newBlock" value="">Add New Block</Button>
+                </Form>
+            </div>
+            <div id="populatedBlocks" onClick={enterBlock}>
+                
             </div>
 
             

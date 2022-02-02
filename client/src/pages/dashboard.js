@@ -2,9 +2,62 @@ import React, { ReactFromModule, useEffect } from 'react'
 import jwt from 'jsonwebtoken'
 import {BrowserRouter as Router} from 'react-router-dom'
 import { useState, useRef } from 'react';
+import styled from 'styled-components'
 import Charts from './charts.component';
 import Navbar from '../components/navbar.component'
 export { default as ReactFromModule } from 'react'
+
+const Wrapper = styled.div`
+  color: rgb(142,174,189);
+  background-color: rgb(15,22,40);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-left: 38%;
+  margin-right: 38%;
+  margin-top: 5vh;
+  width: 325px;
+  height: 325px;
+
+  border-radius: 5px;
+  padding: 25px;
+  box-shadow: 8px 10px;
+`
+const H1 = styled.h1`
+  color: rgb(142,174,189);
+  background-color: rgb(15,22,40);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-left: 30%;
+  margin-right: 30%;
+  margin-top: 5vh;
+  margin-bottom: 5vh;
+
+  max-width: 30vw;
+  border-radius: 5px;
+  padding: 25px;
+  box-shadow: 8px 10px;
+`
+const TableWrapper = styled.div`
+  color: rgb(142,174,189);
+  background-color: rgb(15,22,40);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-left: 10%;
+  margin-right: 10%;
+  margin-top: 5vh;
+  margin-bottom: 5vh;
+
+  max-width: 80vw;
+  border-radius: 5px;
+  padding: 25px;
+  box-shadow: 8px 10px;
+`
 
 const Dashboard = () => {
     console.log(React)
@@ -105,7 +158,7 @@ const Dashboard = () => {
         if(lbsorkg == ''){
           lbsorkg = 'lb';
         }
-        const response = await fetch('http://localhost:1337/api/new_lift', {
+        const response = await fetch('https://powerprogress.herokuapp.com/api/new_lift', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -160,7 +213,7 @@ const Dashboard = () => {
       return csvRows.join('\n','');
     }
     async function toCSV() {
-      const req = await fetch('http://localhost:1337/api/getCSV', {
+      const req = await fetch('https://powerprogress.herokuapp.com/api/getCSV', {
         headers: {
             'x-access-token': localStorage.getItem('token')
         }
@@ -182,7 +235,7 @@ const Dashboard = () => {
     }
 
     async function getLifts() {
-        const req = await fetch('http://localhost:1337/api/get_lift', {
+        const req = await fetch('https://powerprogress.herokuapp.com/api/get_lift', {
             headers: {
                 'x-access-token': localStorage.getItem('token')
             }
@@ -212,7 +265,7 @@ const Dashboard = () => {
   
 
   // function getAllExercises() {
-  //   const req = await fetch('http://localhost:1337/api/get_all', {
+  //   const req = await fetch('https://powerprogress.herokuapp.com/api/get_all', {
   //           headers: {
   //               'x-access-token': localStorage.getItem('token')
   //           }
@@ -244,34 +297,37 @@ const Dashboard = () => {
         <div>
           <Navbar />
           <div>
-            <h1>Welcome {name}</h1>
+            <H1>Welcome {name}</H1>
   
           </div>
-          <div id="allTimeTable" style={{maxHeight: "250px", overflowY: "auto", borderStyle: "solid", borderWidth: "2px",marginLeft: '5vw', marginRight: '5vw'}}>
-            <table class="table" id="dataTable" >
-              <thead>
-                <tr>
-                  <th>Block</th>
-                  <th>Date</th>
-                  <th>Lift</th>
-                  <th>Weight</th>
-                  <th>Rpe</th>
-                  <th>Reps</th>
-                  <th>Estimated 1rm</th>
-                </tr>
-              </thead>
-              <tbody id="liftData">
+          <div id="allTimeTable" style={{maxHeight: "250px", overflowY: "auto"}}>
+            <TableWrapper>
+              <table class="table" id="dataTable" >
+                <thead>
+                  <tr>
+                    <th>Block</th>
+                    <th>Date</th>
+                    <th>Lift</th>
+                    <th>Weight</th>
+                    <th>Rpe</th>
+                    <th>Reps</th>
+                    <th>Estimated 1rm</th>
+                  </tr>
+                </thead>
+                <tbody id="liftData">
 
-              </tbody>
-              <tbody id='startHere'>
+                </tbody>
+                <tbody id='startHere'>
 
-              </tbody>
-            </table>
+                </tbody>
+              </table>
+            </TableWrapper>
+            
             </div>
             <br />
-            <div>
+            <TableWrapper>
               <Charts />
-            </div>
+            </TableWrapper>
            
             
         </div>

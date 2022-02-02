@@ -7,9 +7,115 @@ import Navbar from '../components/navbar.component';
 import AccessoryCharts from './accessoryCharts.component';
 import styled, { css } from 'styled-components'
 import $ from 'jquery';
-// import './cssFiles/tableScroll.css'
-// import Button from '/block.style';
 
+const Wrapper = styled.div`
+        margin-left: 10vw;
+        margin-right: 10vw;
+    
+    `
+    const Title = styled.h1`
+        display: flex;
+        align-items: center;
+        justify-content: center;`
+
+    const Form = styled.div`
+        color: rgb(142,174,189);
+        background-color: rgb(15,22,40);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: 5vw;
+        margin-right: 5vw;
+
+        color: rgb(142,174,189);
+        background-color: rgb(15,22,40);
+        border-radius: 5px;
+        padding: 25px;
+        box-shadow: 8px 10px;
+    `
+    const NotesShow = styled.span`
+        color: rgb(142,174,189);
+        background-color: rgb(15,22,40);
+        border-radius: 5px;
+        padding: 25px;
+        box-shadow: 8px 10px;
+
+        display: flex;
+        white-space: pre-line;
+        margin-left:20%;
+        margin-right: 20%;
+        margin-top: 10px;
+        width: 50vw;
+        min-height: 75px;
+
+
+    `
+    const NotesHide = styled.textarea`
+        color: rgb(142,174,189);
+        background-color: rgb(15,22,40);
+        border-radius: 5px;
+        padding: 25px;
+        box-shadow: 8px 10px;
+        
+        display: none;
+        height: 100px;
+        margin-left:20%;
+        margin-right: 20%;
+        margin-top: 10px;
+        width: 50vw;
+
+    `
+    const H1 = styled.h1`
+        color: rgb(142,174,189);
+        background-color: rgb(15,22,40);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-left: 30%;
+        margin-right: 30%;
+        margin-top: 5vh;
+        margin-bottom: 10px;
+    
+        max-width: 30vw;
+        border-radius: 5px;
+        padding: 25px;
+        box-shadow: 8px 10px;
+    `
+    const H3 = styled.h3`
+        color: rgb(142,174,189);
+        background-color: rgb(15,22,40);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-left: 30%;
+        margin-right: 30%;
+        margin-top: 20px;
+        margin-bottom: 5vh;
+    
+        max-width: 30vw;
+        border-radius: 5px;
+        padding: 25px;
+        box-shadow: 8px 10px;
+    `
+    const TableWrapper = styled.div`
+        color: rgb(142,174,189);
+        background-color: rgb(15,22,40);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-left: 10%;
+        margin-right: 10%;
+        margin-top: 5vh;
+        margin-bottom: 5vh;
+        max-width: 80vw;
+
+        border-radius: 5px;
+        padding: 25px;
+        box-shadow: 8px 10px;
+        `
 const Block = () => {
     
     const name = localStorage.getItem('name');
@@ -37,7 +143,6 @@ const Block = () => {
     }
 
     function blockNote(e){
-        // console.log(e.key)
         e.preventDefault();
         let blockNoteIn = document.getElementById("blockNoteIn");
         let blockNoteShow = document.getElementById("blockNoteShow");
@@ -79,7 +184,7 @@ const Block = () => {
         if(lbsorkg == ''){
             lbsorkg = 'lb';
         }
-        const response = await fetch('http://localhost:1337/api/new_lift', {
+        const response = await fetch('https://powerprogress.herokuapp.com/api/new_lift', {
             method: 'POST',
             headers: {
             'Content-Type': 'application/json',
@@ -116,8 +221,7 @@ const Block = () => {
         const email = decoded.email
         let curLift = delData.lift;
         let curDate = delData.date;
-        // console.log(curLift, curDate);
-        const response = await fetch('http://localhost:1337/api/delete_lift', {
+        const response = await fetch('https://powerprogress.herokuapp.com/api/delete_lift', {
         method: 'POST',
         headers: {
             'x-access-token': localStorage.getItem('token'),
@@ -140,7 +244,7 @@ const Block = () => {
     
     async function getLifts() {
         // let block = localStorage.getItem('block');
-        const req = await fetch('http://localhost:1337/api/get_lift', {
+        const req = await fetch('https://powerprogress.herokuapp.com/api/get_lift', {
             headers: {
                 'x-access-token': localStorage.getItem('token'),
                 'block': localStorage.getItem('block')
@@ -151,7 +255,6 @@ const Block = () => {
        
         if(data.status === 'fine'){
             console.log("creating list");
-            console.log(data.data);
             clearTable();
             updateDataTable(data);
             setTotData(data.data, []);
@@ -172,7 +275,7 @@ const Block = () => {
         const decoded = jwt.verify(token, 'secret123')
         const email = decoded.email
 
-        const req = await fetch('http://localhost:1337/api/get_note', {
+        const req = await fetch('https://powerprogress.herokuapp.com/api/get_note', {
             headers: {
                 'x-access-token': localStorage.getItem('token'),
                 'block': localStorage.getItem('block'),
@@ -183,7 +286,6 @@ const Block = () => {
         const noteServ = await req.json();
        
         if(noteServ.status === 'fine'){
-            console.log(noteServ.data);
             setNote(noteServ.newNote, []);
         } else {
             alert(noteServ.error)
@@ -228,7 +330,6 @@ const Block = () => {
               rpeArr["6"] = 0.863;
               rpeArr["5.5"] = 0.848;
               rpeArr["5"] = 0.834;
-        console.log(rpe);
         if(rpe > 10 || rpe < 5){
           alert("put in a real rpe!");
           return;
@@ -270,7 +371,6 @@ const Block = () => {
         let blockNoteShow = document.getElementById("blockNoteShow");
         if(e.key === 'Escape'){
             let prevText = e.target.value;
-            console.log(prevText)
             blockNoteShow.innerHTML = prevText;
             setNote(prevText);
             updateNote(prevText);
@@ -281,7 +381,7 @@ const Block = () => {
     }
 
     async function toCSV() {
-        const req = await fetch('http://localhost:1337/api/getCSV', {
+        const req = await fetch('https://powerprogress.herokuapp.com/api/getCSV', {
         headers: {
             'x-access-token': localStorage.getItem('token')
         }
@@ -289,12 +389,10 @@ const Block = () => {
     })
     const data = await req.json();
     if(data.status === 'fine'){
-        console.log(data.data.data)
         if(data.data.data == ''){
         alert("You don't have any data");
         return;
         }
-        console.log(parseData(data.data.data));
         download(parseData(data.data.data));
         
     } else {
@@ -314,7 +412,7 @@ const Block = () => {
         if(newNote == ''){
             newNote = 'Input notes here';
         }
-        const response = await fetch('http://localhost:1337/api/update_note', {
+        const response = await fetch('https://powerprogress.herokuapp.com/api/update_note', {
                 method: 'POST',
                 headers: {
                 'Content-Type': 'application/json',
@@ -336,9 +434,7 @@ const Block = () => {
     }
 
 function updateDataTable(data){
-    console.log(data)
     const liftData = data.data;
-    console.log(liftData);
     const entries = []
     let firstNode = document.getElementById('liftData');
         while (firstNode.childNodes.length > 1) {
@@ -375,7 +471,7 @@ function updateDataTable(data){
             <td id="reps" contenteditable="true">${liftData[i]['reps']}</td>
             <td id="sets" contenteditable="true">${liftData[i]['sets']}</td>
             <td id="e1rm">${e1rm}</td>
-            <td id="delete" ><button id="delete">delete</button></td>
+            <td id="delete" ><Button id="delete">delete</button></td>
         </tr>
         `
     }
@@ -385,7 +481,7 @@ function updateDataTable(data){
         const value = e.innerHTML;
         let id = e.closest('tr').id;
         let varChanged = e.id
-        const response = await fetch('http://localhost:1337/api/update_lift', {
+        const response = await fetch('https://powerprogress.herokuapp.com/api/update_lift', {
                 method: 'POST',
                 headers: {
                 'Content-Type': 'application/json',
@@ -402,7 +498,7 @@ function updateDataTable(data){
         } else {
             console.log(data.error)
         }
-        const req = await fetch('http://localhost:1337/api/get_sheet', {
+        const req = await fetch('https://powerprogress.herokuapp.com/api/get_sheet', {
             headers: {
                 'x-access-token': localStorage.getItem('token'),
                 'block': localStorage.getItem('block')
@@ -435,13 +531,10 @@ function updateDataTable(data){
                     }
                 
                 }
-                console.log(idArr, varChangedArr)
                 if(idArr.includes(j) && dataSheetJson[i][j] == id){
-                    console.log("test")
                     rowTarget = i
                     colTarget = varChangedArr[idArr.indexOf(j)]
                     dataSheetJson[rowTarget][colTarget] = value;
-                    console.log(dataSheetJson);
                     updateTable(JSON.stringify(dataSheetJson));
                 }
                 
@@ -457,7 +550,7 @@ function updateDataTable(data){
             const decoded = jwt.verify(token, 'secret123')
             const email = decoded.email
             const block = localStorage.getItem('block')
-            const response = await fetch('http://localhost:1337/api/update_sheet', {
+            const response = await fetch('https://powerprogress.herokuapp.com/api/update_sheet', {
                 method: 'POST',
                 headers: {
                 'Content-Type': 'application/json',
@@ -490,26 +583,7 @@ function updateDataTable(data){
 
 
 
-    const Wrapper = styled.div`
-        margin-left: 10vw;
-        margin-right: 10vw;
     
-    `
-    const Title = styled.h1`
-        display: flex;
-        align-items: center;
-        justify-content: center;`
-
-    const Form = styled.div`
-        display: flex;
-        align-items: center;
-        padding: 10px;
-        margin: 5px;
-        box-shadow: 4px;
-    `
-    const Notes = styled.div`
-    
-    `
     return (
         <div>
             <div id="inputBlockData">
@@ -517,23 +591,25 @@ function updateDataTable(data){
                 <Wrapper>
                 <div>
                     <div>
-                        <Title>Welcome {name}</Title> 
-                        <Title>Block Name: {localStorage.getItem('block')}</Title> 
+                        <H1>Welcome {name}
+                         <br />
+                        Block Name: {localStorage.getItem('block')}</H1> 
                         {/* <button onClick={openSheet}>Program Sheet</button> */}
                         <br/>
                         <br/>
-                        <h3>Block Notes</h3>
-                        <Notes>
-                            <span 
+                        <H3>Block Notes</H3>
+                        <>
+                            <NotesShow 
                                 id="blockNoteShow" 
-                                style={{display: "flex", whiteSpace: "pre-line", marginLeft: "20px", marginRight: "20%", marginTop: "40px"}}  
+                                // style={{display: "flex", whiteSpace: "pre-line", marginLeft: "20px", marginRight: "20%", marginTop: "40px"}}  
                                 onClick={blockNote}>{note}
-                            </span>
-                            <textarea 
+                            </NotesShow>
+                            <NotesHide 
                                 id="blockNoteIn" 
-                                style={{display: "none", width: "90%", height: "100px", marginLeft: "20px", marginRight: "10%", marginTop: "20px"}} 
-                                onKeyDown={saveNote}/>
-                        </Notes>
+                                // style={{display: "none", width: "90%", height: "100px", marginLeft: "20px", marginRight: "10%", marginTop: "20px"}} 
+                                onKeyDown={saveNote}>
+                            </NotesHide>
+                        </>
                         
                 </div>
                 <br/>
@@ -565,9 +641,9 @@ function updateDataTable(data){
                 
                 </div>
                 </Wrapper>
-
-                <div id="testTable" class="table-editable" style={{maxHeight: "250px", overflowY: "auto", borderStyle: "solid", borderWidth: "2px",marginLeft: '5vw', marginRight: '5vw'}}>
-                    <table class="table" id="dataTable" onClick={removeRow} onInput={(e) => updateDatabase(e.target)}>
+                <div style={{maxHeight: "250px", overflowY: "auto"}}>
+                <TableWrapper id="testTable" class="table-editable" >
+                    <table class="table" id="dataTable" onClick={removeRow} onInput={(e) => updateDatabase(e.target)} >
                     <thead>
                         <tr>
                         <th>Date</th>
@@ -587,6 +663,7 @@ function updateDataTable(data){
 
                         </tbody>
                     </table>
+                </TableWrapper>
                 </div>
                 <br />
                 <div style={{display: "flex", justifyContent: "center"}}>
@@ -596,14 +673,14 @@ function updateDataTable(data){
                                         <option value="kg">kg</option>
                                     </select>
                 </div>
-                <div>
+                <TableWrapper>
                     <h2>Big 3</h2>
                     <Charts />
-                </div>
-                <div>
+                </TableWrapper>
+                <TableWrapper>
                     <h1>Accessories</h1>
                     <AccessoryCharts />
-                </div>
+                </TableWrapper>
                 <div>
                     <h1>Lift Calculations</h1>
                     <div className="calculationsTable"></div>

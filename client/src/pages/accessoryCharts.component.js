@@ -17,9 +17,12 @@ function AccessoryCharts(){
     // let liftData = [];
     let chartlbsorkg = localStorage.getItem('lborkg');    
     let stringTogether = '';
-    let totData = [];
-
+    // let totData = [];
+    const [colors, setColors] = useState('')
     const [liftData, setLiftData] = useState('')
+    const [totData, setTotData] = useState([])
+    // let totData = [];
+    const [lines, setLines] = useState([])
     function plateMath(weight, rpe, reps){
         const rpeArr = new Object;
               rpeArr["10"] = 1;
@@ -49,7 +52,7 @@ function AccessoryCharts(){
         } else {
             block = '';
         }
-        const req = await fetch('http://localhost:1337/api/get_lift', {
+        const req = await fetch('https://powerprogress.herokuapp.com/api/get_lift', {
             headers: {
                 'x-access-token': localStorage.getItem('token'),
                 'block': block,
@@ -67,109 +70,76 @@ function AccessoryCharts(){
        
     }
     
+    async function getColors(){
+        const req = await fetch('https://powerprogress.herokuapp.com/api/get_colors', {
+            headers: {
+                'x-access-token': localStorage.getItem('token'),
+            }
+        })
+        const colorArr = await req.json();
+        if(colorArr.status == 'good'){
+            console.log(colorArr.colors)
+        } else{
+            console.log(colorArr.error)
+        }
+        setColors(colorArr.colors)
+    }
+
     function createDataObject(data){
         let liftArr = []
         let chartDiv = document.getElementById('accessoryCharts')
-        
-        
         let e1rm;
         let curObj = {};
         let curDate;
-        let lineObj = [];
+        let curLine = [];
+        let curData = [];
+        let liftsArr = [];
+        let bothArrs = [];
+        let colorCounter = 0;
+        let colorIter = 0;
         for(const key in data){
             if(data.hasOwnProperty(key)){
-                if(key == 0){
-                    curDate = data[0].date;
-                }
-                if(curDate != data[key].date){
-                    totData.push(curObj);
-                    curObj = {};
-                    curDate = data[key].date
-                    curObj['date'] = curDate
-                } else {
-                    if(Object.keys(curObj).length == 0){
+                if(data[key].lift != "Pause Squat" && data[key].lift != "Competition Bench" && data[key].lift != "Conventional Deadlift"){
+                    if(key == 0){
+                        curDate = data[0].date;
+                    }
+                    if(curDate != data[key].date){
+                        curData.push(curObj);
+                        curObj = {};
+                        curDate = data[key].date
                         curObj['date'] = curDate
-                    } else if(Object.keys(curObj).indexOf(`${data[key].lift}`) == -1){
-                        curObj[`${data[key].lift}`] = data[key].e1rm
-                        lineObj.push(<Line connectNulls type="monotone" dataKey={data[key].lift} stroke="#82ca9d" />)
                     } else {
-                        continue;
+                        if(Object.keys(curObj).length == 0){
+                            curObj['date'] = curDate
+                        } else if(Object.keys(curObj).indexOf(`${data[key].lift}`) == -1){
+                            curObj[`${data[key].lift}`.split(" ").join("")] = parseInt(data[key].e1rm)
+                            if(liftsArr.indexOf(`${data[key].lift}`) == -1){
+                                if(colorCounter >= colors.length){
+                                    colorCounter = 0;
+                                }
+                                if(!colors[colorCounter]){
+                                    continue;
+                                } else{
+                                    liftsArr.push(`${data[key].lift}`);
+                                    curLine.push(<Line connectNulls type="monotone" dataKey={data[key].lift.split(" ").join("")} stroke={`#${colors[colorCounter].color}`} />)
+
+                                    colorCounter +=1;
+                                }
+                                
+                            }
+                        } else {
+                            continue;
+                        }
                     }
                 }
-                
+               
                 
             }
             
         }
-        // for(const key in data){
-        //     let liftData = [];
-        //     let dates = [];
-        //     if(data.hasOwnProperty(key)){
-        //         let curLift = data[key].lift
-        //         if(curLift == "Competition Squat" || curLift == "Competition Bench" || curLift == "Competition Deadlift"){
-        //             continue;
-        //         }
-        //         if(!(liftArr.includes(curLift))){
-        //             liftArr.push(curLift)
-        //             for(const lift in data){
-        //                 let curWeight;
-        //                 if(data.hasOwnProperty(lift)){
-        //                     let compareLift = data[lift].lift
-        //                     if(compareLift == curLift){
-        //                         if(dates.includes(data[lift].date)){
-        //                             continue;
-        //                         }
-        //                         if(chartlbsorkg == 'lb'){
-        //                             if(data[lift].lbsorkg == "kg"){
-        //                                 curWeight = toLB(data[lift].weight);
-        //                                 e1rm = plateMath(curWeight,data[lift].rpe,data[lift].reps)
-        //                                 liftData.push(e1rm)
-        //                                 dates.push(data[lift].date) 
-        //                             }else {
-        //                                 curWeight = data[lift].weight;
-        //                                 e1rm = plateMath(curWeight,data[lift].rpe,data[lift].reps)
-        //                                 liftData.push(e1rm)
-        //                                 dates.push(data[lift].date) 
-        //                             }
-        //                         } else {
-        //                             if(data[lift].lbsorkg == "lb"){
-        //                                 curWeight = toKG(data[lift].weight);
-        //                                 e1rm = plateMath(curWeight,data[lift].rpe,data[lift].reps)
-        //                                 liftData.push(e1rm)
-        //                                 dates.push(data[lift].date) 
-        //                             }else {
-        //                                 curWeight = data[lift].weight;
-        //                                 e1rm = plateMath(curWeight,data[lift].rpe,data[lift].reps)
-        //                                 liftData.push(e1rm)
-        //                                 dates.push(data[lift].date) 
-        //                         }     
-        //                     }
-        //                 }
-        //             }
-        //             }
-        //             const curData = {
-        //                 labels: dates,
-        //                 datasets: [{
-        //                     label: curLift,
-        //                     data:  liftData,
-        //                     backgroundColor: 'rgba(255, 99, 132, 0.2)',
-        //                     borderColor: 'rgba(81, 163, 0, 1)',
-        //                     color: 'rgba(239, 0, 0, 1)',
-        //                     fill: false,
-        //                     borderWidth: 1
-        //                 }]
-        //             };  
-        //             chartsArr.push(<div><Line class="col-xs-6" data={curData}/></div>)
-
-        //             // let newDiv = document.createElement('div')
-        //             // newDiv.id = curLift;
-        //             // newDiv.innerText = <Line class="col-xs-6" data={totData}/>
-        //             // chartDiv.appendChild(newDiv)
-
-        //             }
-        //         }
-        //     }
-            // return chartsArr;
+        bothArrs.push(curData);
+        bothArrs.push(curLine);
+        return bothArrs;
         }
     function toKG(weight){
         return weight/2.2;
@@ -180,14 +150,14 @@ function AccessoryCharts(){
     useEffect(() => {
         getLiftCharts();
       }, []);
+    useEffect(() => {
+        getColors();
+    }, []);
         return (
-            // <div id="accessoryCharts"style={{display: "grid", gridTemplateColumns: "1fr 1fr 1fr",width: "90vw", height: "60vh", marginLeft: "auto", marginRight: "auto"}}>
-            //     {createCharts(liftData)}
-            // </div>
             <LineChart
-                width={500}
-                height={300}
-                data={totData}
+                width={800}
+                height={500}
+                data={createDataObject(liftData)[0]}
                 margin={{
                     top: 5,
                     right: 30,
@@ -196,47 +166,13 @@ function AccessoryCharts(){
                 }}
             >
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
+            <XAxis dataKey="date" />
             <YAxis />
             <Tooltip />
             <Legend />
-                {createDataObject(liftData)}
-                {console.log(totData)}
+                {createDataObject(liftData)[1]}
             </LineChart>
 
         );
 }
 export default AccessoryCharts;
-
-// ADD GET LINES FUNCTION TO TURN THE DATA INTO A CHART
-
-
-// export default function App() {
-//   return (
-//     <LineChart
-//       width={500}
-//       height={300}
-//       data={data}
-//       margin={{
-//         top: 5,
-//         right: 30,
-//         left: 20,
-//         bottom: 5
-//       }}
-//     >
-//       <CartesianGrid strokeDasharray="3 3" />
-//       <XAxis dataKey="name" />
-//       <YAxis />
-//       <Tooltip />
-//       <Legend />
-//       <Line connectNulls
-//         type="monotone"
-//         dataKey="lift"
-//         stroke="#8884d8"
-//         activeDot={{ r: 8 }}
-//       />
-//       <Line connectNulls type="monotone" dataKey="uv" stroke="#82ca9d" />
-//       <Line connectNulls type="monotone" dataKey="amt" stroke="#82ca9d" />
-//     </LineChart>
-//   );
-// }
