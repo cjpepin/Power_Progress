@@ -22,8 +22,12 @@ Successfully deployed to Heroku!! Next step is to make the site/navbar functiona
 
 Ended up figuring out the scroll issue, so datapoints in the table for each block is not taking up the entire page. The actual style still needs much work, but the spreadsheet will fairly consistently autosave whenever clicked outside of the table and update the database with any changes. Currently a very slow way of doing things, but will be made more efficient soon.
 
-### Goals
+## 2/3/2022
 
-1. Adding a coaches form of the site where a coach can track the data of multiple lifters given certain credentials to access their data.
-2. Make the addition of data more streamlined.
-3. Add more functionality to the sheet itself/make it look more appealing.
+All the primary details have been fixed. Still some styling improvements to be done, but otherwise very happy with this semi-finished product. Users can have multiple training blocks, all with unique program sheets and an example sheet to display how workout program should be written to be processed correctly. 
+
+### Next implementations
+
+1. Security features
+2. Styling
+3. Mobile friendliness
