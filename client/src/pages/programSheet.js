@@ -4,16 +4,109 @@ import jspreadsheet from "jspreadsheet-ce";
 import jwt from 'jsonwebtoken'
 import "../../node_modules/jspreadsheet-ce/dist/jspreadsheet.css";
 import Navbar from '../components/navbar.component'
-import myForm from '../components/myForm'
+import styled from 'styled-components'
+
+// http://localhost:1337/
 // https://powerprogress.herokuapp.com/
-// http://localhost3000/
-// https://powerprogress.herokuapp.com/
+
+const Wrapper = styled.div`
+  color: rgb(142,174,189);
+  background-color: rgb(15,22,40);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-left: 38%;
+  margin-right: 38%;
+  margin-top: 5vh;
+  width: 325px;
+  height: 325px;
+
+  border-radius: 5px;
+  padding: 25px;
+  box-shadow: 8px 10px;
+`
+const H1 = styled.h1`
+    color: rgb(142,174,189);
+    background-color: rgb(15,22,40);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-left: 38%;
+    margin-right: 38%;
+    margin-top: 5vh;
+
+    border-radius: 5px;
+    padding: 25px;
+    box-shadow: 8px 10px;
+`
+const Form = styled.div`
+  color: rgb(142,174,189);
+  background-color: rgb(15,22,40);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 80vw;
+  margin-top: 20px;
+  margin-left: 15%;
+  margin-right: 15%;
+
+  border-radius: 5px;
+  padding: 25px;
+  box-shadow: 8px 10px;
+` 
+const Input = styled.input`
+  color: rgb(15,22,40);
+  background-color: rgb(142,174,189);
+  margin: 8px;
+
+  padding: 5px;
+  border-radius: 3px;
+  box-shadow: 5px 5px;
+  border: none;
+  outline: inherit;
+  &:hover {
+    background-color: rgb(142,174,189, 0.5);
+  }
+`
+const Button = styled.button`
+  color: rgb(15,22,40);
+  background-color: rgb(142,174,189);
+  margin: 8px;
+
+  padding: 5px;
+  border-radius: 3px;
+  box-shadow: 5px 5px;
+  border: none;
+  outline: inherit;
+  &:hover {
+    background-color: rgb(142,174,189, 0.5);
+  }
+`
+const Title = styled.span`
+  font-size: 35px;
+  color: rgb(142,174,189);
+  background-color: rgb(15,22,40);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-left: 38%;
+  margin-right: 38%;
+  margin-top: 22vh;
+  width: 325px;
+  height: 100px;
+
+  border-radius: 5px;
+  box-shadow: 8px 10px;
+`
+
 export default function App() {
     function checkUpdate(e) {
-        console.log(e.target)
-
         if(e.target.className != "selected" && e.target.className != "draggable" && e.target.className != "highlight-selected highlight highlight-top highlight-bottom highlight-left highlight-right" && e.target.className != "jexcel_content" && e.target.className != "jexcel_selectall" && e.target.className != "jexcel_corner" && e.target.style.width != "50px" && e.target.className != "copying copying-left copying-right highlight-selected highlight highlight-top highlight-bottom highlight-left highlight-right" && e.target.className != "highlight highlight-bottom highlight-left highlight-right"){
-            updateTable();
+            // updateTable();
+            console.log("being activated")
         }
     }
     const jRef = useRef(null);
@@ -25,6 +118,7 @@ export default function App() {
         if(!localStorage.getItem('block')){
             return;
         }
+        console.log(localStorage.getItem('block'))
         const req = await fetch('https://powerprogress.herokuapp.com/api/get_sheet', {
                 headers: {
                     'x-access-token': localStorage.getItem('token'),
@@ -34,6 +128,10 @@ export default function App() {
 
             const sheetData = await req.json();
             let options;
+            const sheetDiv = document.getElementById('spreadsheet')
+            if(sheetDiv.hasChildNodes()){
+                while ( sheetDiv.firstChild ) sheetDiv.removeChild( sheetDiv.firstChild );
+            }
             if(sheetData.status === 'fine'){
                 if(sheetData.data){
                     let newData = await sheetData.data.sheetData;
@@ -44,17 +142,15 @@ export default function App() {
                         data: newData,
                         minDimensions: [numRows, numCols]
                     };
-                } 
-            } else {
-                options = {
-                    data: [],
-                    minDimensions: [numRows, numCols]
-                // alert(sheetData.error + "test")
+                    jspreadsheet(jRef.current, options);
+                } else {
+                    options = {
+                        data: [],
+                        minDimensions: [15, 15]
+                        }
+                    jspreadsheet(jRef.current, options);
             }
-        }
-            if (!jRef.current.jspreadsheet) {
-                jspreadsheet(jRef.current, options);
-                }
+            } 
     }
 
     useEffect(() => {
@@ -106,7 +202,7 @@ export default function App() {
             })
     
             const data = await response.json();
-    
+            console.log(sheetData)
             // alert(data.status);
             if(data.status === 'sheet updated'){
                 console.log('SheetUpdated');
@@ -212,12 +308,14 @@ export default function App() {
         }
         let blockName = e.target.value;
         if(localStorage.getItem('block') != ''){
-            localStorage.removeItem('block');
+            // localStorage.removeItem('block');
             localStorage.setItem('block', blockName);
+            console.log(blockName)
             getSheet();
 
         } else{
             localStorage.setItem('block', blockName);
+            console.log(blockName)
             getSheet();
         }
     }
@@ -476,37 +574,56 @@ export default function App() {
             }
     }
 
-    async function updateHTMLTable(sheetData) {
-            const token = localStorage.getItem('token')
-            const decoded = jwt.verify(token, 'secret123')
-            const email = decoded.email
-            const block = localStorage.getItem('block')
-            const response = await fetch('https://powerprogress.herokuapp.com/api/update_sheet', {
-                method: 'POST',
+    async function getExampleWeek(){
+        const req = await fetch('https://powerprogress.herokuapp.com/api/get_sheet', {
                 headers: {
-                'Content-Type': 'application/json',
+                    'x-access-token': localStorage.getItem('token'),
+                    'block': "exampleSheetTest123"
                 },
-                body: JSON.stringify({
-                email,
-                block,
-                sheetData,
-                }),
             })
-    
-            const data = await response.json();
-    
-            // alert(data.status);
-            if(data.status === 'sheet updated'){
-                console.log('SheetUpdated');
-            } else{
-                console.log("Something went wrong" + data.error);
+
+            const sheetData = await req.json();
+            let options;
+            const sheetDiv = document.getElementById('spreadsheet')
+
+            while ( sheetDiv.firstChild ) sheetDiv.removeChild( sheetDiv.firstChild );
+
+            
+            if(sheetData.status === 'fine'){
+                if(sheetData.data){
+                    let newData = await sheetData.data.sheetData;
+                    newData = JSON.parse(newData);
+                    setData(newData)
+
+                    let readOnlyArr = []
+                    for(const key in newData){
+                        if(newData.hasOwnProperty(key)){
+                            if(key == 0){
+                                for(const col in newData[key]){
+                                    if(newData[key].hasOwnProperty(col)){
+                                        readOnlyArr.push({readOnly: true})
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    options = {
+                        data: newData,
+                        columns: readOnlyArr,
+                        minDimensions: [numRows, numCols]
+                    };
+                    jspreadsheet(jRef.current, options);
+                }
             }
-        }
+
+    }
     return (
-        <div onClick={checkUpdate} onInput={(e) => {updateDatabase(e.target)}}>
+        <div 
+        // onClick={checkUpdate} 
+        onInput={(e) => {updateDatabase(e.target)}}>
             <Navbar/>
         <div id="blocksList">
-            <h2>Block List</h2>
+            <H1>Block List</H1>
                 <div id="populatedBlocks" onClick={enterBlock}>
                 
                 </div>
@@ -518,8 +635,9 @@ export default function App() {
         <input type="button" onClick={removeCol} value="Remove column" />
         <input type="button" onClick={updateTable} value="Save Sheet" />
         <input type="button" onClick={populateIds} value="Populate Ids" />
+        <input type="button" onClick={getExampleWeek} value="Example Sheet" />
         <br/>
-        <div ref={jRef}/>
+        <div ref={jRef} id="spreadsheet"/>
         <br />
         </div>
     );

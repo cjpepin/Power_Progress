@@ -226,12 +226,12 @@ const ComplexData = () => {
             <div id="blocksWrapper">
             <H1>Block List</H1>
                 
-                <Form onSubmit={addNewBlock}>
+                <Form >
                     <span>Add Block:</span>
                     <br />
                     <Input type="text" onChange={(e) => setBlockName(e.target.value)} placeholder="Block Name"/>
                     <Input type="url" onChange={(e) => setBlockUrl(e.target.value)} placeholder="Google Sheets URL"/>
-                    <Button type="submit" id="newBlock" value="">Add New Block</Button>
+                    <Button type="submit" id="newBlock" onClick={addNewBlock}>Add New Block</Button>
                 </Form>
             </div>
             <div id="populatedBlocks" onClick={enterBlock}>

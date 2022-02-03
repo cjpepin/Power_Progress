@@ -61,7 +61,6 @@ const Button = styled.button`
   outline: inherit;
   &:hover {
     background-color: rgb(142,174,189, 0.5);
-  }
 `
 const Title = styled.span`
   font-size: 35px;
@@ -123,7 +122,7 @@ function App() {
     <>
 
     <Title>Power Progress</Title>
-    <h4>Current testing email: lookingback31415@gmail.com and password: 1234. Security features coming soon I promise!</h4>
+    <h4>Current testing email: lookingback31415@gmail.com and password: 1234. Security features coming soon I promise! This email has been used for testing, but any email/password combo should work!</h4>
     <Wrapper className="wrapper">
       
       <h1>Login</h1>

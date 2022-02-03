@@ -19,9 +19,9 @@ app.use(cors())
 app.use(express.json())
 app.use(express.static(path.join(__dirname, "client", "build")));
 
-const PORT = process.env.PORT 
-const secret = process.env.SECRET 
-mongoose.connect(process.env.MONGODB_URI)
+const PORT = process.env.PORT;
+const secret = process.env.SECRET; 
+mongoose.connect(process.env.MONGODB_URI );
 // mongoose.connect(process.env.MONGODB_URI, {useNewUrlParser: true });
 
 app.post('/api/register', async (req,res) => {
@@ -447,7 +447,7 @@ app.get('/api/get_sheet', async (req,res) => {
     
     const token = req.headers['x-access-token'];
     const block = req.headers['block'];
-    if(block){
+    if(block != 'exampleSheetTest123' && block){
         try {
             const decoded = jwt.verify(token, 'secret123')
             const email = decoded.email
@@ -460,7 +460,20 @@ app.get('/api/get_sheet', async (req,res) => {
             console.log(error)
             res.json({status: 'error', error: 'invalid token'})
         }
-    } else {
+    } else if(block == 'exampleSheetTest123'){
+        try {
+            const email = 'fakeEmail@powerprogress.com'
+            const sheetData = await Sheet.findOne({ email: email, block: block})
+            return res.json({status: 'fine',
+                             data: sheetData,
+                            })
+        } catch(error){
+            console.log(error)
+            res.json({status: 'error', error: 'invalid token'})
+        }
+        
+
+    }else {
         res.json({status: 'error', error: 'block doesnt exist?'})
         
     }

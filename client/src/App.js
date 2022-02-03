@@ -8,6 +8,7 @@ import Example from './pages/example';
 import ComplexData from './pages/blocks';
 import Block from './pages/block';
 import Sheet from './pages/programSheet';
+import './App.css'
 // import Navbar from './components/navbar'
 const App = () => {
     return(
@@ -22,6 +23,7 @@ const App = () => {
                     <Route path="/blocks" exact element={<ComplexData />}/>
                     <Route path="/block" exact element={<Block />}/>
                     <Route path="/programSheet" exact element={<Sheet />}/>
+                    <Route path="/faq" exact element={<Dashboard />}/>
                 </Routes>
             </Router>
         </div>

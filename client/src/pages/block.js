@@ -13,19 +13,15 @@ const Wrapper = styled.div`
         margin-right: 10vw;
     
     `
-    const Title = styled.h1`
-        display: flex;
-        align-items: center;
-        justify-content: center;`
-
     const Form = styled.div`
         color: rgb(142,174,189);
         background-color: rgb(15,22,40);
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-left: 5vw;
-        margin-right: 5vw;
+        margin-left: 1vw;
+        margin-right: 1vw;
+        margin-bottom: 25px;
 
         color: rgb(142,174,189);
         background-color: rgb(15,22,40);
@@ -45,7 +41,7 @@ const Wrapper = styled.div`
         margin-left:20%;
         margin-right: 20%;
         margin-top: 10px;
-        width: 50vw;
+        max-width: 50vw;
         min-height: 75px;
 
 
@@ -63,6 +59,8 @@ const Wrapper = styled.div`
         margin-right: 20%;
         margin-top: 10px;
         width: 50vw;
+        min-height: 75px;
+
 
     `
     const H1 = styled.h1`
@@ -116,6 +114,19 @@ const Wrapper = styled.div`
         padding: 25px;
         box-shadow: 8px 10px;
         `
+    const Button = styled.button`
+        color: rgb(15,22,40);
+        background-color: rgb(142,174,189);
+        margin: 8px;
+      
+        padding: 5px;
+        border-radius: 3px;
+        box-shadow: 5px 5px;
+        border: none;
+        outline: inherit;
+        &:hover {
+          background-color: rgb(142,174,189, 0.5);
+      `
 const Block = () => {
     
     const name = localStorage.getItem('name');
@@ -471,7 +482,7 @@ function updateDataTable(data){
             <td id="reps" contenteditable="true">${liftData[i]['reps']}</td>
             <td id="sets" contenteditable="true">${liftData[i]['sets']}</td>
             <td id="e1rm">${e1rm}</td>
-            <td id="delete" ><Button id="delete">delete</button></td>
+            <td id="delete" ><Button id="delete">delete</Button></td>
         </tr>
         `
     }
@@ -681,16 +692,9 @@ function updateDataTable(data){
                     <h1>Accessories</h1>
                     <AccessoryCharts />
                 </TableWrapper>
-                <div>
-                    <h1>Lift Calculations</h1>
-                    <div className="calculationsTable"></div>
-                </div>
                 
             </div>
-            <div id="googleSheetstesting">
 
-
-            </div>
                 
         </div>
     )
