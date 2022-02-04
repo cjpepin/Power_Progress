@@ -6,7 +6,7 @@ import "../../node_modules/jspreadsheet-ce/dist/jspreadsheet.css";
 import Navbar from '../components/navbar.component'
 import styled from 'styled-components'
 
-// http://localhost:1337/
+// https://powerprogress.herokuapp.com/
 // https://powerprogress.herokuapp.com/
 
 const Wrapper = styled.div`
@@ -581,7 +581,7 @@ export default function App() {
                     'block': "exampleSheetTest123"
                 },
             })
-
+            
             const sheetData = await req.json();
             let options;
             const sheetDiv = document.getElementById('spreadsheet')
@@ -594,7 +594,7 @@ export default function App() {
                     let newData = await sheetData.data.sheetData;
                     newData = JSON.parse(newData);
                     setData(newData)
-
+                    localStorage.setItem('block', 'example')
                     let readOnlyArr = []
                     for(const key in newData){
                         if(newData.hasOwnProperty(key)){
@@ -617,6 +617,25 @@ export default function App() {
             }
 
     }
+    function getAction(e){
+        if(localStorage.getItem('block') == 'example'){
+            return;
+        } else if(e.target.id == "addRow"){
+            addRow();
+        }else if(e.target.id == "addCol"){
+            addCol();
+        }else if(e.target.id == "remRow"){
+            removeRow();
+        }else if(e.target.id == "remCol"){
+            removeCol();
+        }else if(e.target.id == "updateTable"){
+            updateTable();
+        }else if(e.target.id == "populateIds"){
+            populateIds();
+        }else if(e.target.id == "getExampleWeek"){
+            getExampleWeek();
+        }
+    }
     return (
         <div 
         // onClick={checkUpdate} 
@@ -629,13 +648,13 @@ export default function App() {
                 </div>
         </div>
         
-        <input type="button" onClick={addRow} value="Add new row" />
-        <input type="button" onClick={addCol} value="Add new column" />
-        <input type="button" onClick={removeRow} value="Remove row" />
-        <input type="button" onClick={removeCol} value="Remove column" />
-        <input type="button" onClick={updateTable} value="Save Sheet" />
-        <input type="button" onClick={populateIds} value="Populate Ids" />
-        <input type="button" onClick={getExampleWeek} value="Example Sheet" />
+        <input type="button" id="addRow" onClick={getAction} value="Add new row" />
+        <input type="button" id="addCol" onClick={getAction} value="Add new column" />
+        <input type="button" id="remRow" onClick={getAction} value="Remove row" />
+        <input type="button" id="remCol" onClick={getAction} value="Remove column" />
+        <input type="button" id="updateTable" onClick={getAction} value="Save Sheet" />
+        <input type="button" id="populateIds" onClick={getAction} value="Populate Ids" />
+        <input type="button" id="getExampleWeek" onClick={getAction} value="Example Sheet" />
         <br/>
         <div ref={jRef} id="spreadsheet"/>
         <br />
