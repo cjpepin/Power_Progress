@@ -5,9 +5,10 @@ import jwt from 'jsonwebtoken'
 import "../../node_modules/jspreadsheet-ce/dist/jspreadsheet.css";
 import Navbar from '../components/navbar.component'
 import styled from 'styled-components'
+import DOMPurify from 'dompurify'
 
-// https://powerprogress.herokuapp.com/
-// https://powerprogress.herokuapp.com/
+// http://localhost:1337/
+// http://localhost:1337/
 
 const Wrapper = styled.div`
   color: rgb(142,174,189);
@@ -24,6 +25,20 @@ const Wrapper = styled.div`
 
   border-radius: 5px;
   padding: 25px;
+  box-shadow: 8px 10px;
+`
+const ButtonWrapper = styled.div`
+  color: rgb(142,174,189);
+  background-color: rgb(15,22,40);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 20%;
+  margin-right: 20%;
+  margin-top: 25px;
+
+  border-radius: 5px;
+  padding: 5px;
   box-shadow: 8px 10px;
 `
 const H1 = styled.h1`
@@ -70,20 +85,6 @@ const Input = styled.input`
     background-color: rgb(142,174,189, 0.5);
   }
 `
-const Button = styled.button`
-  color: rgb(15,22,40);
-  background-color: rgb(142,174,189);
-  margin: 8px;
-
-  padding: 5px;
-  border-radius: 3px;
-  box-shadow: 5px 5px;
-  border: none;
-  outline: inherit;
-  &:hover {
-    background-color: rgb(142,174,189, 0.5);
-  }
-`
 const Title = styled.span`
   font-size: 35px;
   color: rgb(142,174,189);
@@ -101,7 +102,19 @@ const Title = styled.span`
   border-radius: 5px;
   box-shadow: 8px 10px;
 `
+const Button = styled.input`
+  color: rgb(15,22,40);
+  background-color: rgb(142,174,189);
+  margin: 8px;
 
+  padding: 5px;
+  border-radius: 3px;
+  box-shadow: 5px 5px;
+  border: none;
+  outline: inherit;
+  &:hover {
+    background-color: rgb(142,174,189, 0.5);
+`
 export default function App() {
     function checkUpdate(e) {
         if(e.target.className != "selected" && e.target.className != "draggable" && e.target.className != "highlight-selected highlight highlight-top highlight-bottom highlight-left highlight-right" && e.target.className != "jexcel_content" && e.target.className != "jexcel_selectall" && e.target.className != "jexcel_corner" && e.target.style.width != "50px" && e.target.className != "copying copying-left copying-right highlight-selected highlight highlight-top highlight-bottom highlight-left highlight-right" && e.target.className != "highlight highlight-bottom highlight-left highlight-right"){
@@ -119,7 +132,7 @@ export default function App() {
             return;
         }
         console.log(localStorage.getItem('block'))
-        const req = await fetch('https://powerprogress.herokuapp.com/api/get_sheet', {
+        const req = await fetch('http://localhost:1337/api/get_sheet', {
                 headers: {
                     'x-access-token': localStorage.getItem('token'),
                     'block': localStorage.getItem('block')
@@ -184,12 +197,13 @@ export default function App() {
     };
     async function updateTable() {
         if(jRef.current.jexcel){
-            let sheetData = JSON.stringify(jRef.current.jexcel.getData())
+            let sheetData = DOMPurify.sanitize(JSON.stringify(jRef.current.jexcel.getData()))
+
             const token = localStorage.getItem('token')
             const decoded = jwt.verify(token, 'secret123')
             const email = decoded.email
             const block = localStorage.getItem('block')
-            const response = await fetch('https://powerprogress.herokuapp.com/api/update_sheet', {
+            const response = await fetch('http://localhost:1337/api/update_sheet', {
                 method: 'POST',
                 headers: {
                 'Content-Type': 'application/json',
@@ -239,20 +253,18 @@ export default function App() {
     }
     async function createLift(lift, sets, weight, lbsorkg, reps, rpe, date, id) {
         const token = localStorage.getItem('token')
-        const decoded = jwt.verify(token, 'secret123')
-        const email = decoded.email
         const block = localStorage.getItem('block')
         let e1rm = plateMath(rpe, reps, weight);
         if(lbsorkg == ''){
             lbsorkg = 'lb';
         }
-        const response = await fetch('https://powerprogress.herokuapp.com/api/new_lift', {
+        const response = await fetch('http://localhost:1337/api/new_lift', {
             method: 'POST',
             headers: {
             'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-            email,
+            token,
             lift,
             weight,
             lbsorkg,
@@ -279,16 +291,15 @@ export default function App() {
     }
     async function addLiftToLibrary(lift) {
         const token = localStorage.getItem('token')
-        const decoded = jwt.verify(token, 'secret123')
-        const email = decoded.email
+        
         // console.log(lift)
-        const response = await fetch('https://powerprogress.herokuapp.com/api/lift_list', {
+        const response = await fetch('http://localhost:1337/api/lift_list', {
             method: 'POST',
             headers: {
             'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-            email,
+            token,
             lift,
             }),
         })
@@ -306,7 +317,7 @@ export default function App() {
         if(e.target.id == "populatedBlocks"){
             return;
         }
-        let blockName = e.target.value;
+        let blockName = DOMPurify.sanitize(e.target.value);
         if(localStorage.getItem('block') != ''){
             // localStorage.removeItem('block');
             localStorage.setItem('block', blockName);
@@ -321,7 +332,7 @@ export default function App() {
     }
     async function populateBlocks(){
             
-        const req = await fetch('https://powerprogress.herokuapp.com/api/get_blocks', {
+        const req = await fetch('http://localhost:1337/api/get_blocks', {
             headers: {
                 'x-access-token': localStorage.getItem('token'),
             }
@@ -363,7 +374,7 @@ export default function App() {
     }, [])
     async function deleteWorkoutsCollection (){
         // console.log("test");
-        const req = await fetch('https://powerprogress.herokuapp.com/api/delete_lifts', {
+        const req = await fetch('http://localhost:1337/api/delete_lifts', {
                 headers: {
                     'x-access-token': localStorage.getItem('token'),
                     'block': localStorage.getItem('block')
@@ -471,12 +482,11 @@ export default function App() {
                 
             }
         }
-
-        // console.log(data.length)
+        updateTable();
         
     }
     async function updateDatabase(e) {
-        const value = e.value;
+        const value = DOMPurify.sanitize(e.value);
         if(e.value == ''){
             return;
         }
@@ -541,10 +551,10 @@ export default function App() {
                         colTarget = idArr[dateArr.indexOf(xCoord)]
                     }
                     const rowTarget = i
-                    const id = data[rowTarget][colTarget]
+                    const id = DOMPurify.sanitize(data[rowTarget][colTarget])
                     console.log(id)
                     let block = localStorage.getItem('block');
-                    const response = await fetch('https://powerprogress.herokuapp.com/api/update_lift', {
+                    const response = await fetch('http://localhost:1337/api/update_lift', {
                         method: 'POST',
                         headers: {
                         'Content-Type': 'application/json',
@@ -558,7 +568,6 @@ export default function App() {
                     })
 
                     const updatedSheet = await response.json();
-                    console.log(updatedSheet)
                     if(updatedSheet.status == 'lift updated'){
                         console.log(jRef.current.jspreadsheet.getData())
                         updateTable();
@@ -575,7 +584,7 @@ export default function App() {
     }
 
     async function getExampleWeek(){
-        const req = await fetch('https://powerprogress.herokuapp.com/api/get_sheet', {
+        const req = await fetch('http://localhost:1337/api/get_sheet', {
                 headers: {
                     'x-access-token': localStorage.getItem('token'),
                     'block': "exampleSheetTest123"
@@ -643,18 +652,20 @@ export default function App() {
             <Navbar/>
         <div id="blocksList">
             <H1>Block List</H1>
-                <div id="populatedBlocks" onClick={enterBlock}>
+                <ButtonWrapper id="populatedBlocks" onClick={enterBlock}>
                 
-                </div>
+                </ButtonWrapper>
         </div>
+        <ButtonWrapper>
+            <Button type="button" id="addRow" onClick={getAction} value="Add new row" />
+            <Button type="button" id="addCol" onClick={getAction} value="Add new column" />
+            <Button type="button" id="remRow" onClick={getAction} value="Remove row" />
+            <Button type="button" id="remCol" onClick={getAction} value="Remove column" />
+            <Button type="button" id="updateTable" onClick={getAction} value="Save Sheet" />
+            <Button type="button" id="populateIds" onClick={getAction} value="Populate Ids" />
+            <Button type="button" id="getExampleWeek" onClick={getAction} value="Example Sheet" />
+        </ButtonWrapper>
         
-        <input type="button" id="addRow" onClick={getAction} value="Add new row" />
-        <input type="button" id="addCol" onClick={getAction} value="Add new column" />
-        <input type="button" id="remRow" onClick={getAction} value="Remove row" />
-        <input type="button" id="remCol" onClick={getAction} value="Remove column" />
-        <input type="button" id="updateTable" onClick={getAction} value="Save Sheet" />
-        <input type="button" id="populateIds" onClick={getAction} value="Populate Ids" />
-        <input type="button" id="getExampleWeek" onClick={getAction} value="Example Sheet" />
         <br/>
         <div ref={jRef} id="spreadsheet"/>
         <br />

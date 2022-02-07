@@ -19,21 +19,21 @@ app.use(cors())
 app.use(express.json())
 app.use(express.static(path.join(__dirname, "client", "build")));
 
-const PORT = process.env.PORT;
-const secret = process.env.SECRET; 
-mongoose.connect(process.env.MONGODB_URI );
+const PORT = process.env.PORT || 1337;
+const secret = process.env.SECRET || 'secret123'
+mongoose.connect(process.env.MONGODB_URI || 'mongodb+srv://cjpepin:Sp!k300123@finalprojectcluster.zqgvb.mongodb.net/CreativeProjectDatabase?retryWrites=true&w=majority')
 // mongoose.connect(process.env.MONGODB_URI, {useNewUrlParser: true });
 
 app.post('/api/register', async (req,res) => {
-    // console.log(req.body)
     try {
         await User.create({
-            name: req.body.name,
-            email: req.body.email,
-            password: req.body.password,
+            name: req.body.cleanName,
+            email: req.body.cleanEmail,
+            password: req.body.hashedPassword,
         })
+
         res.json({status: 'good'})
-    } catch (err) {res.json({status: 'bad'});}
+    } catch (err) {res.json({status: 'bad', error: err});}
         
 
 });
@@ -41,16 +41,15 @@ app.post('/api/register', async (req,res) => {
 app.post('/api/login', async (req,res) => {
 
     const user = await User.findOne({
-        email: req.body.email,
-        password: req.body.password,
+        email: req.body.cleanEmail,
     })
     if (user) {
-
         const token = jwt.sign({
             name: user.name,
             email: user.email,
+            password: user.password,
         }, secret)
-        return res.json({status: 'ok', user: token, name: user.name})
+        return res.json({status: 'ok', user: token, name: user.name, password: user.password})
     } else {
         return res.json({status: 'error', user: false})
 
@@ -60,9 +59,11 @@ app.post('/api/login', async (req,res) => {
 
 app.post('/api/new_lift', async (req,res) => {
     // console.log(req.body);
-
+    const decoded = jwt.verify(req.body.token, secret)
+    const email = decoded.email
+    console.log(email)
     const exists = await Data.findOne({
-        email: req.body.email,
+        email: email,
         lift: req.body.lift,
         weight: req.body.weight,
         lbsorkg: req.body.lbsorkg,
@@ -73,6 +74,7 @@ app.post('/api/new_lift', async (req,res) => {
         e1rm: req.body.e1rm,
         block: req.body.block,
     })
+    console.log(exists)
     if(exists){
         console.log('exists');
         // res.json({status: 'Lift already exists'});
@@ -82,7 +84,7 @@ app.post('/api/new_lift', async (req,res) => {
     try {
         console.log("creating new lift");
         const lift = await Data.create({
-            email: req.body.email,
+            email: email,
             lift: req.body.lift,
             weight: req.body.weight,
             lbsorkg: req.body.lbsorkg,
@@ -482,9 +484,10 @@ app.get('/api/get_sheet', async (req,res) => {
 });
 
 app.post('/api/lift_list', async (req,res) => {
-
+    const decoded = jwt.verify(req.body.token, secret)
+    const email = decoded.email
     const exists = await Lift.findOne({
-        email: req.body.email,
+        email: email,
         lift: req.body.lift,
     })
     if(exists){

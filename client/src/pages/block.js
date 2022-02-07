@@ -195,7 +195,7 @@ const Block = () => {
         if(lbsorkg == ''){
             lbsorkg = 'lb';
         }
-        const response = await fetch('https://powerprogress.herokuapp.com/api/new_lift', {
+        const response = await fetch('http://localhost:1337/api/new_lift', {
             method: 'POST',
             headers: {
             'Content-Type': 'application/json',
@@ -232,7 +232,7 @@ const Block = () => {
         const email = decoded.email
         let curLift = delData.lift;
         let curDate = delData.date;
-        const response = await fetch('https://powerprogress.herokuapp.com/api/delete_lift', {
+        const response = await fetch('http://localhost:1337/api/delete_lift', {
         method: 'POST',
         headers: {
             'x-access-token': localStorage.getItem('token'),
@@ -255,7 +255,7 @@ const Block = () => {
     
     async function getLifts() {
         // let block = localStorage.getItem('block');
-        const req = await fetch('https://powerprogress.herokuapp.com/api/get_lift', {
+        const req = await fetch('http://localhost:1337/api/get_lift', {
             headers: {
                 'x-access-token': localStorage.getItem('token'),
                 'block': localStorage.getItem('block')
@@ -286,7 +286,7 @@ const Block = () => {
         const decoded = jwt.verify(token, 'secret123')
         const email = decoded.email
 
-        const req = await fetch('https://powerprogress.herokuapp.com/api/get_note', {
+        const req = await fetch('http://localhost:1337/api/get_note', {
             headers: {
                 'x-access-token': localStorage.getItem('token'),
                 'block': localStorage.getItem('block'),
@@ -392,7 +392,7 @@ const Block = () => {
     }
 
     async function toCSV() {
-        const req = await fetch('https://powerprogress.herokuapp.com/api/getCSV', {
+        const req = await fetch('http://localhost:1337/api/getCSV', {
         headers: {
             'x-access-token': localStorage.getItem('token')
         }
@@ -423,7 +423,7 @@ const Block = () => {
         if(newNote == ''){
             newNote = 'Input notes here';
         }
-        const response = await fetch('https://powerprogress.herokuapp.com/api/update_note', {
+        const response = await fetch('http://localhost:1337/api/update_note', {
                 method: 'POST',
                 headers: {
                 'Content-Type': 'application/json',
@@ -492,7 +492,7 @@ function updateDataTable(data){
         const value = e.innerHTML;
         let id = e.closest('tr').id;
         let varChanged = e.id
-        const response = await fetch('https://powerprogress.herokuapp.com/api/update_lift', {
+        const response = await fetch('http://localhost:1337/api/update_lift', {
                 method: 'POST',
                 headers: {
                 'Content-Type': 'application/json',
@@ -509,7 +509,7 @@ function updateDataTable(data){
         } else {
             console.log(data.error)
         }
-        const req = await fetch('https://powerprogress.herokuapp.com/api/get_sheet', {
+        const req = await fetch('http://localhost:1337/api/get_sheet', {
             headers: {
                 'x-access-token': localStorage.getItem('token'),
                 'block': localStorage.getItem('block')
@@ -561,7 +561,7 @@ function updateDataTable(data){
             const decoded = jwt.verify(token, 'secret123')
             const email = decoded.email
             const block = localStorage.getItem('block')
-            const response = await fetch('https://powerprogress.herokuapp.com/api/update_sheet', {
+            const response = await fetch('http://localhost:1337/api/update_sheet', {
                 method: 'POST',
                 headers: {
                 'Content-Type': 'application/json',
@@ -624,7 +624,7 @@ function updateDataTable(data){
                         
                 </div>
                 <br/>
-                <Form>
+                {/* <Form>
                     <input type="date" style={{minWidth: "40px;"}} onChange={(e) => setDate(e.target.value)}/>
                     <select onChange={(e) => setLift(e.target.value)}>
                         <option defaultValue="squat">Squat</option>
@@ -648,7 +648,7 @@ function updateDataTable(data){
                     <input type="number" name="rpe" placeholder="What was the RPE?" step="0.5"  onChange={(e) => setRpe(e.target.value)}/>
                     <input type="submit" value="Add Lift" onClick={createLift}/>
                     <input type="submit" value="Download CSV" onClick={toCSV}/>
-                </Form>
+                </Form> */}
                 
                 </div>
                 </Wrapper>

@@ -28,6 +28,7 @@ export default class Navbar extends Component{
                         <li><Link as={Link} to="/programSheet">Program Spreadsheet</Link></li>
                         <li><a href="#">Data Calculations Coming Soon!</a></li>
                         <li><Link as={Link} to="/faq">FAQ</Link></li>
+                        <li><Link as={Link} to="/about">About</Link></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li ><Link as={Link} to={"/login"} onClick={logout}><span class="glyphicon glyphicon-user"></span> Log Out</Link></li>

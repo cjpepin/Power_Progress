@@ -4,6 +4,10 @@ import styled from 'styled-components'
 import '../components/modules/login.css'
 // import Button from 'react-bootstrap/Button';
 import '../components/modules/login.css'
+import * as yup from 'yup'
+import DOMPurify from 'dompurify'
+
+const bcrypt = require('bcryptjs')
 
 const Wrapper = styled.div`
   color: rgb(142,174,189);
@@ -72,7 +76,7 @@ const Title = styled.span`
   justify-content: center;
   margin-left: 38%;
   margin-right: 38%;
-  margin-top: 22vh;
+  margin-top: 15vh;
   width: 325px;
   height: 100px;
 
@@ -85,29 +89,43 @@ function App() {
   const[email, setEmail] = useState('')
   const[password, setPassword] = useState('')
 
-  async function registerUser(event) {
-    event.preventDefault();
+  const schema = yup.object().shape({
+    password: yup.string()
+    .min(8, 'Enter 8 or more characters')
+    .max(20, 'Cannot be more than 20 characters'),
+    email: yup.string().email('Please enter a valid email address'),
+  })
+  
 
-    const response = await fetch('https://powerprogress.herokuapp.com/api/login', {
+  async function loginUser(event) {
+    event.preventDefault();
+    const cleanEmail = DOMPurify.sanitize(email)
+    const cleanPassword = DOMPurify.sanitize(password)
+    console.log('test')
+    const response = await fetch('http://localhost:1337/api/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        email,
-        password,
+        cleanEmail,
+        cleanPassword,
       }),
     })
 
     const data = await response.json()
     if(data.user) {
-      localStorage.setItem('token', data.user)
-      localStorage.setItem('name', data.name)
-      // alert('Login successful')
-      window.location.href = '/dashboard'
-    } else {
-      alert('Please check your username and password')
-    }
+      bcrypt.compare(password, data.password, function(err, res){
+        if(err){
+          alert(err)
+        } else if(res === true){
+          localStorage.setItem('token', data.user)
+          localStorage.setItem('name', data.name)
+          // alert('Login successful')
+          window.location.href = '/dashboard'
+        }
+      })
+    }else
     console.log(data)
   }
 
@@ -122,11 +140,11 @@ function App() {
     <>
 
     <Title>Power Progress</Title>
-    <h4>Current testing email: lookingback31415@gmail.com and password: 1234. Security features coming soon I promise! This email has been used for testing, but any email/password combo should work!</h4>
+    <h4>Current testing email: lookingback31415@gmail.com and password: 1234. Simple security features being implemented</h4>
     <Wrapper className="wrapper">
       
       <h1>Login</h1>
-      <Form class="form-inline" onSubmit={registerUser}>
+      <Form class="form-inline" onSubmit={loginUser}>
         <br />
         <div class="form-group">
         <Input 

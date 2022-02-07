@@ -107,7 +107,7 @@ const ComplexData = () => {
     }
     async function populateBlocks(){
         
-        const req = await fetch('https://powerprogress.herokuapp.com/api/get_blocks', {
+        const req = await fetch('http://localhost:1337/api/get_blocks', {
             headers: {
                 'x-access-token': localStorage.getItem('token'),
             }
@@ -164,7 +164,7 @@ const ComplexData = () => {
         } else{
             sheetURL = localStorage.getItem('url');
         }
-        const response = await fetch('https://powerprogress.herokuapp.com/api/new_block', {
+        const response = await fetch('http://localhost:1337/api/new_block', {
             method: 'POST',
             headers: {
             'Content-Type': 'application/json',
@@ -202,7 +202,7 @@ const ComplexData = () => {
   
     async function getLifts() {
         // let block = localStorage.getItem('block');
-        const req = await fetch('https://powerprogress.herokuapp.com/api/get_lift', {
+        const req = await fetch('http://localhost:1337/api/get_lift', {
             headers: {
                 'x-access-token': localStorage.getItem('token'),
                 'block': localStorage.getItem('block')
