@@ -19,9 +19,9 @@ app.use(cors())
 app.use(express.json())
 app.use(express.static(path.join(__dirname, "client", "build")));
 
-const PORT = process.env.PORT || 1337;
-const secret = process.env.SECRET || 'secret123'
-mongoose.connect(process.env.MONGODB_URI || 'mongodb+srv://cjpepin:Sp!k300123@finalprojectcluster.zqgvb.mongodb.net/CreativeProjectDatabase?retryWrites=true&w=majority')
+const PORT = process.env.PORT;
+const secret = process.env.SECRET 
+mongoose.connect(process.env.MONGODB_URI)
 // mongoose.connect(process.env.MONGODB_URI, {useNewUrlParser: true });
 
 app.post('/api/register', async (req,res) => {
@@ -107,7 +107,7 @@ app.get('/api/get_lift', async (req,res) => {
     const block = req.headers['block'];
     if(block){
         try {
-            const decoded = jwt.verify(token, 'secret123')
+            const decoded = jwt.verify(token, secret)
             const email = decoded.email
             const data = await Data.find({ email: email, block: block}).sort( { date: 1 , e1rm: 1} )
             console.log("getting lifts" + data);
@@ -120,7 +120,7 @@ app.get('/api/get_lift', async (req,res) => {
         }
     } else {
         try {
-            const decoded = jwt.verify(token, 'secret123')
+            const decoded = jwt.verify(token, secret)
             const email = decoded.email
             const data = await Data.find({ email: email}).sort( { date: 1 } )
             console.log(data);
@@ -141,7 +141,7 @@ app.get('/api/delete_lifts', async (req,res) => {
     const block = req.headers['block'];
     if(block){
         try {
-            const decoded = jwt.verify(token, 'secret123')
+            const decoded = jwt.verify(token, secret)
             const email = decoded.email
             await Data.deleteMany({ email: email, block: block}).sort( { date: 1 } )
             console.log("deleting lifts from " + email + " in " + block);
@@ -288,7 +288,7 @@ app.post('/api/new_block', async (req,res) => {
 app.get('/api/get_blocks', async (req,res) => {
     
     const token = req.headers['x-access-token'];
-    const decoded = jwt.verify(token, 'secret123')
+    const decoded = jwt.verify(token, secret)
     const email = decoded.email
 
     try {
@@ -349,7 +349,7 @@ app.get('/api/get_note', async (req,res) => {
 app.get('/api/getCSV',async (req,res) => {
     const token = req.headers['x-access-token']
     try {
-        const decoded = jwt.verify(token, 'secret123')
+        const decoded = jwt.verify(token, secret)
         const email = decoded.email
         let data = await Data.find({ email: email}).sort( { date: 1 } )
         data = JSON.parse(JSON.stringify(data));
@@ -375,7 +375,7 @@ app.post('/api/delete_lift', async (req,res) => {
     const token = req.headers['x-access-token']
 
     try {
-        const decoded = jwt.verify(token, 'secret123')
+        const decoded = jwt.verify(token, secret)
         const email = decoded.email
         // const date = decoded.date;
         const data = await Data.deleteOne({ email: email, lift: req.body.curLift, date: req.body.curDate});
@@ -399,7 +399,7 @@ app.post('/api/lift', async (req,res) => {
     const token = req.headers['x-access-token']
 
     try {
-        const decoded = jwt.verify(token, 'secret123')
+        const decoded = jwt.verify(token, secret)
         const email = decoded.email
         await Data.updateOne(
             { email: email}, 
@@ -451,7 +451,7 @@ app.get('/api/get_sheet', async (req,res) => {
     const block = req.headers['block'];
     if(block != 'exampleSheetTest123' && block){
         try {
-            const decoded = jwt.verify(token, 'secret123')
+            const decoded = jwt.verify(token, secret)
             const email = decoded.email
             const sheetData = await Sheet.findOne({ email: email, block: block})
             console.log("getting sheet for " +block);

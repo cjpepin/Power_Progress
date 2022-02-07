@@ -102,7 +102,7 @@ function App() {
     const cleanEmail = DOMPurify.sanitize(email)
     const cleanPassword = DOMPurify.sanitize(password)
     console.log('test')
-    const response = await fetch('http://localhost:1337/api/login', {
+    const response = await fetch('https://powerprogress.herokuapp.com/api/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
