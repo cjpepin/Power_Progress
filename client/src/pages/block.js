@@ -168,7 +168,7 @@ const Block = () => {
 
     function changeLborKg(e){
         e.preventDefault();
-        localStorage.setItem('lborkg', e.target.value)
+        localStorage.setItem('lbsorkg', e.target.value)
         window.location.reload();
     }
 
@@ -679,8 +679,8 @@ function updateDataTable(data){
                 <br />
                 <div style={{display: "flex", justifyContent: "center"}}>
                     Chart Weight in &nbsp; 
-                                    <select defaultValue={localStorage.getItem('lborkg')} onChange={(e) => changeLborKg(e)}>
-                                        <option value="lb">lb</option>
+                                    <select defaultValue={localStorage.getItem('lbsorkg')} onChange={(e) => changeLborKg(e)}>
+                                        <option value="lb">lbs</option>
                                         <option value="kg">kg</option>
                                     </select>
                 </div>

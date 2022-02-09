@@ -61,7 +61,6 @@ app.post('/api/new_lift', async (req,res) => {
     // console.log(req.body);
     const decoded = jwt.verify(req.body.token, secret)
     const email = decoded.email
-    console.log(email)
     const exists = await Data.findOne({
         email: email,
         lift: req.body.lift,
@@ -136,7 +135,6 @@ app.get('/api/get_lift', async (req,res) => {
 
 });
 app.get('/api/delete_lifts', async (req,res) => {
-    console.log("called")
     const token = req.headers['x-access-token'];
     const block = req.headers['block'];
     if(block){
@@ -274,7 +272,6 @@ app.post('/api/new_block', async (req,res) => {
     } else{
         try {
             console.log("creating new block");
-            console.log(req.body.email, req.body.block, req.body.sheetURL)
             await Block.create({
                 email: req.body.email,
                 blockName: req.body.block,
@@ -426,7 +423,6 @@ app.post('/api/update_sheet', async (req,res) => {
                             $set: {sheetData: req.body.sheetData},
             }
             console.log('updating sheet');
-            console.log(req.body.sheetData);
             await Sheet.updateOne(filter, toUpdate);
             res.json({status: 'sheet updated'});
         } catch (err) {
@@ -464,7 +460,7 @@ app.get('/api/get_sheet', async (req,res) => {
         }
     } else if(block == 'exampleSheetTest123'){
         try {
-            const email = 'fakeEmail@powerprogress.com'
+            const email = 'exampleUser@example.com'
             const sheetData = await Sheet.findOne({ email: email, block: block})
             return res.json({status: 'fine',
                              data: sheetData,
@@ -496,7 +492,7 @@ app.post('/api/lift_list', async (req,res) => {
         try {
             
             console.log("creating lift");
-            console.log(req.body.email, req.body.lift)
+            console.log(email, req.body.lift)
             await Lift.create({
                 email: req.body.email,
                 lift: req.body.lift,

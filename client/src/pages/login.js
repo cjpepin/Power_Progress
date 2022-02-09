@@ -30,6 +30,20 @@ const H1 = styled.h1`
   color: rgb(142,174,189);
   background-color: rgb(15,22,40);
 `
+const H4 = styled.h4`
+  color: rgb(142,174,189);
+  background-color: rgb(15,22,40);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 20%;
+  margin-right: 20%;
+  margin-top: 10px;
+
+  padding: 5px;
+  border-radius: 3px;
+  box-shadow: 5px 5px;
+`
 const Form = styled.form`
   color: rgb(142,174,189);
   background-color: rgb(15,22,40);
@@ -88,20 +102,13 @@ function App() {
 
   const[email, setEmail] = useState('')
   const[password, setPassword] = useState('')
-
-  const schema = yup.object().shape({
-    password: yup.string()
-    .min(8, 'Enter 8 or more characters')
-    .max(20, 'Cannot be more than 20 characters'),
-    email: yup.string().email('Please enter a valid email address'),
-  })
   
 
   async function loginUser(event) {
     event.preventDefault();
     const cleanEmail = DOMPurify.sanitize(email)
     const cleanPassword = DOMPurify.sanitize(password)
-    console.log('test')
+    
     const response = await fetch('https://powerprogress.herokuapp.com/api/login', {
       method: 'POST',
       headers: {
@@ -125,8 +132,7 @@ function App() {
           window.location.href = '/dashboard'
         }
       })
-    }else
-    console.log(data)
+    }else alert('Check your email/password')
   }
 
   function examplePage() {
@@ -140,7 +146,7 @@ function App() {
     <>
 
     <Title>Power Progress</Title>
-    <h4>Current testing email: lookingback31415@gmail.com and password: 1234. Simple security features being implemented</h4>
+    <H4>Current testing email: lookingback31415@gmail.com and password: TestPassword. Simple security features still being implemented</H4>
     <Wrapper className="wrapper">
       
       <h1>Login</h1>
@@ -163,8 +169,9 @@ function App() {
         <Input type="submit" value="Login"/>
         </div>
       </Form>
+      <span>New User?</span>
       <Input type="submit" value="Register" onClick={registerNewUser}/>
-       <Input type="submit" value="See Example Data" onClick={examplePage}/>
+       {/* <Input type="submit" value="See Example Data" onClick={examplePage}/> */}
      
     </Wrapper>
     </>

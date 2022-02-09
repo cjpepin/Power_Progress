@@ -148,7 +148,6 @@ export default function App() {
             if(sheetData.status === 'fine'){
                 if(sheetData.data){
                     let newData = await sheetData.data.sheetData;
-                    console.log(newData)
                     newData = JSON.parse(newData);
                     setData(newData)
                     options = {
@@ -216,7 +215,7 @@ export default function App() {
             })
     
             const data = await response.json();
-            console.log(sheetData)
+
             // alert(data.status);
             if(data.status === 'sheet updated'){
                 console.log('SheetUpdated');
@@ -280,9 +279,8 @@ export default function App() {
     
         const curData = await response.json();
         // alert(data.status);
-        if(curData.status === 'good' || curData.status === 'fine' ){
+        if(curData.status === 'good'){
             console.log("lifts added to mongo")
-            console.log(curData.id)
             return curData.id;
         } else if(curData.status === 'exists'){
             console.log(curData.status);
@@ -402,7 +400,6 @@ export default function App() {
             for(let i = 0; i <data.length; i++){
                 if(jRef.current.jexcel){
                     let curRow = jRef.current.jexcel.getRowData(i)
-    
                     if(i === 0){
                         for(let j = 0; j <= curRow.length; j++){
                             if(curRow[j] === "Lift"){
@@ -424,6 +421,7 @@ export default function App() {
                             }
                         }
                     }
+
                     let curLift;
                     let curSets;
                     let curReps;
@@ -433,7 +431,6 @@ export default function App() {
                     let curId;
                     let curLbsorKg;
                     for(let j=0; j< curRow.length; j++){
-        
                         // console.log(curLiftArr)
                             if(curLift && curSets && curReps && curWeight && curRPE && curDate && curLbsorKg && curId){
                                 continue;
@@ -455,7 +452,6 @@ export default function App() {
                             } else if(idArr.includes(j)){
                                 curId = jRef.current.jexcel.getCell([j,i]).innerHTML
                                 if(curLift != "Lift"  && curLift != '' && curSets != '' && curReps != '' && curWeight != '' && curRPE != '' && curDate != '' && curLbsorKg != ''){
-                                    
                                     // console.log(curLift, curSets, curReps, curWeight, curRPE, curDate, curLbsorKg)
                                     createLift(curLift, curSets, curWeight, curLbsorKg, curReps, curRPE, curDate).then(curData => {
                                             if(jRef.current){
@@ -465,6 +461,7 @@ export default function App() {
                                                 // }
                                             }
                                         });
+                                    console.log(curLiftArr);
                                     if(!curLiftArr.includes(curLift)){
                                         curLiftArr.push(curLift)
                                         addLiftToLibrary(curLift);
@@ -492,7 +489,6 @@ export default function App() {
         }
         const xCoord = parseInt(e.closest('td').dataset.x);
         const yCoord = parseInt(e.closest('td').dataset.y);
-        console.log(xCoord,yCoord)
         let varChanged;
         let liftArr = [];
         let setsArr = [];
@@ -569,7 +565,7 @@ export default function App() {
 
                     const updatedSheet = await response.json();
                     if(updatedSheet.status == 'lift updated'){
-                        console.log(jRef.current.jspreadsheet.getData())
+                        // console.log(jRef.current.jspreadsheet.getData())
                         updateTable();
                         console.log('update success')
                         break;
@@ -594,7 +590,8 @@ export default function App() {
             const sheetData = await req.json();
             let options;
             const sheetDiv = document.getElementById('spreadsheet')
-
+            console.log('test2')
+        
             while ( sheetDiv.firstChild ) sheetDiv.removeChild( sheetDiv.firstChild );
 
             
@@ -642,6 +639,7 @@ export default function App() {
         }else if(e.target.id == "populateIds"){
             populateIds();
         }else if(e.target.id == "getExampleWeek"){
+            console.log('test1')
             getExampleWeek();
         }
     }

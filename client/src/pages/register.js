@@ -91,12 +91,12 @@ function App() {
   const[email, setEmail] = useState('')
   const[password, setPassword] = useState('')
   const[hashedPassword, setHashedPassword] = useState('')
-
+  const[error, setError] = useState('')
   const schema = yup.object().shape({
     name: yup.string().required().min(1, 'Please enter a name'),
     password: yup.string()
-    .min(8, 'Enter 8 or more characters')
-    .max(20, 'Cannot be more than 20 characters'),
+    .min(8, 'Password must be 8 or more characters')
+    .max(20, 'Password cannot be more than 20 characters'),
     email: yup.string().email('Please enter a valid email address'),
   })
 
@@ -105,32 +105,44 @@ function App() {
     const cleanEmail = DOMPurify.sanitize(email)
     const cleanPassword = DOMPurify.sanitize(password)
     const cleanName = DOMPurify.sanitize(name)
-    
-    const saltRounds = 10 // or heroku variable;
-    bcrypt.genSalt(saltRounds, function(err, salt) {
-      bcrypt.hash(cleanPassword, salt, async function(err, hash) {
-        const response = await fetch('https://powerprogress.herokuapp.com/api/register', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            cleanName,
-            cleanEmail,
-            hashedPassword: hash,
-          }),
-        })
 
-        const data = await response.json()
-        console.log(data.status)
-        if(data.status === 'good'){
-          navigate('/login')
-        } else {
-          alert(data.err)
-        }
+    schema.validate({name: cleanName, password: cleanPassword, email: cleanEmail}).then(function(value) {
+      console.log(value); // returns car object
+      const saltRounds = 10 // or heroku variable;
+      bcrypt.genSalt(saltRounds, function(err, salt) {
+        bcrypt.hash(cleanPassword, salt, async function(err, hash) {
+          const response = await fetch('https://powerprogress.herokuapp.com/api/register', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              cleanName,
+              cleanEmail,
+              hashedPassword: hash,
+            }),
+          })
 
+          const data = await response.json()
+          console.log(data.status)
+          if(data.status === 'good'){
+            navigate('/login')
+          } else {
+            alert(data.error)
+          }
+
+        });
       });
+    
+    })
+    .catch(function(err) {
+      setError(err);
+      alert(err)
+      console.log(err, cleanName, cleanEmail, cleanPassword)
+      return;
     });
+   
+    
     
 
     
@@ -165,7 +177,7 @@ function App() {
           type="password"
           placeholder="Password"
         />
-      
+      {/* <span>{error}</span> */}
         <Input type="submit" value="Register"/>
       </Form>
       <Input type="submit" onClick={returnToLogin} value='Return To Login' />

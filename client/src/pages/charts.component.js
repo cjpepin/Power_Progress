@@ -110,7 +110,15 @@ function Charts(){
                         if(Object.keys(curObj).length == 0){
                             curObj['date'] = curDate
                         } else if(Object.keys(curObj).indexOf(`${data[key].lift}`) == -1){
-                            curObj[`${data[key].lift}`.split(" ").join("")] = parseInt(data[key].e1rm)
+                            if(localStorage.getItem('lbsorkg') == data[key].lbsorkg){
+                                curObj[`${data[key].lift}`.split(" ").join("")] = parseInt(data[key].e1rm)
+                            } else if(localStorage.getItem('lbsorkg') != data[key].lbsorkg){
+                                if(data[key].lbsorkg == 'kg'){
+                                    curObj[`${data[key].lift}`.split(" ").join("")] = parseInt(data[key].e1rm*2.2)
+                                } else if(data[key].lbsorkg == 'lb'){
+                                    curObj[`${data[key].lift}`.split(" ").join("")] = parseInt(data[key].e1rm/2.2)
+                                }
+                            }
                             if(liftsArr.indexOf(`${data[key].lift}`) == -1){
                                 if(colorCounter >= colors.length){
                                     colorCounter = 0;
