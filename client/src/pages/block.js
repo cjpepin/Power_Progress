@@ -127,6 +127,7 @@ const Wrapper = styled.div`
         &:hover {
           background-color: rgb(142,174,189, 0.5);
       `
+
 const Block = () => {
     
     const name = localStorage.getItem('name');
@@ -183,46 +184,6 @@ const Block = () => {
                 const curDate = curData[key].date;
                 
             }
-        }
-    }
-
-    async function createLift() {
-        const token = localStorage.getItem('token')
-        const decoded = jwt.verify(token, 'secret123')
-        const email = decoded.email
-        const block = localStorage.getItem('block')
-        let e1rm = plateMath();
-        if(lbsorkg == ''){
-            lbsorkg = 'lb';
-        }
-        const response = await fetch('https://powerprogress.herokuapp.com/api/new_lift', {
-            method: 'POST',
-            headers: {
-            'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-            email,
-            lift,
-            weight,
-            lbsorkg,
-            reps,
-            sets,
-            rpe,
-            date,
-            e1rm,
-            block,
-            }),
-        })
-    
-        const data = await response.json();
-        // alert(data.status);
-        if(data.status === 'good' || data.status === 'fine' ){
-            alert('Lift added');
-            getLifts();
-            alert('reloading window');
-            window.location.reload();
-        } else{
-            alert("Make sure all fields are filled out");
         }
     }
 
@@ -299,7 +260,7 @@ const Block = () => {
         if(noteServ.status === 'fine'){
             setNote(noteServ.newNote, []);
         } else {
-            alert(noteServ.error)
+            console.log('New Block New Note')
         }
     }
 
@@ -440,7 +401,7 @@ const Block = () => {
             if(data.status === 'note updated'){
                 console.log('note updated')
             } else{
-                alert(data.error);
+                console.log('New Block New Note')
             }
     }
 
@@ -593,7 +554,33 @@ function updateDataTable(data){
     }, []);
 
 
+    async function deleteBlock(e){
+        e.preventDefault();
+        console.log('test')
+        const token = localStorage.getItem('token')
+        const decoded = jwt.verify(token, 'secret123')
+        const block = localStorage.getItem('block')
 
+        const response = await fetch('https://powerprogress.herokuapp.com/api/delete_block', {
+            method: 'POST',
+            headers: {
+            'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+            token,
+            block,
+            }),
+        })
+        const data = await response.json();
+        console.log(data)
+        if(data.status == 'good'){
+            alert('block deleted successfully');
+            localStorage.removeItem('block');
+            window.location.href = '/blocks';
+        } else {
+            console.log(data.error);
+        }
+    }
     
     return (
         <div>
@@ -601,6 +588,8 @@ function updateDataTable(data){
                 <Navbar />
                 <Wrapper>
                 <div>
+            <Button onClick={deleteBlock}>Delete Block</Button>
+
                     <div>
                         <H1>Welcome {name}
                          <br />
@@ -612,12 +601,10 @@ function updateDataTable(data){
                         <>
                             <NotesShow 
                                 id="blockNoteShow" 
-                                // style={{display: "flex", whiteSpace: "pre-line", marginLeft: "20px", marginRight: "20%", marginTop: "40px"}}  
                                 onClick={blockNote}>{note}
                             </NotesShow>
                             <NotesHide 
-                                id="blockNoteIn" 
-                                // style={{display: "none", width: "90%", height: "100px", marginLeft: "20px", marginRight: "10%", marginTop: "20px"}} 
+                                id="blockNoteIn"  
                                 onKeyDown={saveNote}>
                             </NotesHide>
                         </>

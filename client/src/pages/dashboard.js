@@ -60,8 +60,6 @@ const TableWrapper = styled.div`
 `
 
 const Dashboard = () => {
-    console.log(React)
-    console.log(ReactFromModule) 
     if(localStorage.getItem('block')){
         localStorage.removeItem('block');
         console.log("block removed")
@@ -261,32 +259,6 @@ const Dashboard = () => {
       getLifts();
       console.log(lbsorkg);
     }, []);
-
-  
-
-  // function getAllExercises() {
-  //   const req = await fetch('https://powerprogress.herokuapp.com/api/get_all', {
-  //           headers: {
-  //               'x-access-token': localStorage.getItem('token')
-  //           }
-  //       })
-
-  //       const data = await req.json();
-  //       if(data.status === 'fine'){
-  //           console.log("creating list");
-  //           console.log(data.data);
-  //           clearTable();
-  //           updateTable(data);
-  //           setTotData(data, []);
-  //           // setWeight(data.data.weight);
-  //           // setLbsorkg(data.data.lbsorkg);
-  //           // setReps(data.data.reps);
-  //           // setRpe(data.data.rpe);
-  //           // setDate(data.data.date);
-  //       } else {
-  //           alert(data.error + "test")
-  //       }
-  // }
 
   function logout(){
     window.localStorage.clear();

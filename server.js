@@ -20,8 +20,8 @@ app.use(express.json())
 app.use(express.static(path.join(__dirname, "client", "build")));
 
 const PORT = process.env.PORT;
-const secret = process.env.SECRET 
-mongoose.connect(process.env.MONGODB_URI)
+const secret = process.env.SECRET
+mongoose.connect(process.env.MONGODB_URI )
 // mongoose.connect(process.env.MONGODB_URI, {useNewUrlParser: true });
 
 app.post('/api/register', async (req,res) => {
@@ -49,9 +49,9 @@ app.post('/api/login', async (req,res) => {
             email: user.email,
             password: user.password,
         }, secret)
-        return res.json({status: 'ok', user: token, name: user.name, password: user.password})
+        res.json({status: 'ok', user: token, name: user.name, password: user.password})
     } else {
-        return res.json({status: 'error', user: false})
+        res.json({status: 'error', user: false})
 
     }
 
@@ -110,7 +110,7 @@ app.get('/api/get_lift', async (req,res) => {
             const email = decoded.email
             const data = await Data.find({ email: email, block: block}).sort( { date: 1 , e1rm: 1} )
             console.log("getting lifts" + data);
-            return res.json({status: 'fine',
+            res.json({status: 'fine',
                              data: data,
                             })
         } catch(error){
@@ -123,7 +123,7 @@ app.get('/api/get_lift', async (req,res) => {
             const email = decoded.email
             const data = await Data.find({ email: email}).sort( { date: 1 } )
             console.log(data);
-            return res.json({status: 'fine',
+            res.json({status: 'fine',
                              data: data,
                             })
         } catch(error){
@@ -143,7 +143,7 @@ app.get('/api/delete_lifts', async (req,res) => {
             const email = decoded.email
             await Data.deleteMany({ email: email, block: block}).sort( { date: 1 } )
             console.log("deleting lifts from " + email + " in " + block);
-            return res.json({status: 'fine',
+            res.json({status: 'fine',
                              result: 'lifts all deleted',
                             })
         } catch(error){
@@ -291,7 +291,7 @@ app.get('/api/get_blocks', async (req,res) => {
     try {
         let blocks = await Block.find({ email: email})
         console.log(blocks);
-        return res.json({status: 'fine',
+        res.json({status: 'fine',
                             blocks: blocks,
                         })
     } catch(error){
@@ -299,6 +299,30 @@ app.get('/api/get_blocks', async (req,res) => {
         res.json({status: 'error', error: error})
     }
 });
+app.post('/api/delete_block', async (req,res) => {
+    console.log('deleting stuff')
+    const token = req.body.token;
+    const decoded = jwt.verify(token, secret)
+    const email = decoded.email
+    console.log(email, req.body.block)
+    if(req.body.block){
+        try {
+            await Lift.deleteMany({email: email, block: req.body.block})
+            await Sheet.deleteOne({email: email, block: req.body.block})
+            await Note.deleteOne({email: email, block: req.body.block})
+            await Data.deleteMany({email: email, block: req.body.block})
+            await Block.deleteOne({email: email, blockName: req.body.block})
+            res.json({status: 'good'})
+        } catch(error){
+            console.log(error)
+            res.json({status: 'error', error: error})
+        }
+    } else{
+        res.json({status: 'error', error: 'No block'})
+         
+    }
+    
+})
 app.get('/api/get_note', async (req,res) => {
     
     const token = req.headers['x-access-token'];
@@ -318,7 +342,7 @@ app.get('/api/get_note', async (req,res) => {
             let newNote = await Note.findOne(filter)
             newNote = newNote.note
             console.log("getting new note" + newNote);
-            return res.json({status: 'fine',
+            res.json({status: 'fine',
                              newNote: newNote,
                             })
         } catch(error){
@@ -357,7 +381,7 @@ app.get('/api/getCSV',async (req,res) => {
     
         // Return the CSV file as string:
         
-        return res.json({status: 'fine',
+        res.json({status: 'fine',
                          data: csv,
                         })
     } catch(error){
@@ -377,10 +401,10 @@ app.post('/api/delete_lift', async (req,res) => {
         // const date = decoded.date;
         const data = await Data.deleteOne({ email: email, lift: req.body.curLift, date: req.body.curDate});
         if (data.deletedCount === 1) {
-            return res.json({status: 'Found and deleted',
+            res.json({status: 'Found and deleted',
                         })
           } else {
-            return res.json({status: 'Failed delete',
+            res.json({status: 'Failed delete',
         })
           }
         
@@ -402,7 +426,7 @@ app.post('/api/lift', async (req,res) => {
             { email: email}, 
             { $set: { lift: req.body.lift}})
 
-        return res.json({status: 'ok'})
+        res.json({status: 'ok'})
     } catch(error){
         console.log(error)
         res.json({status: 'error', error: 'invalid token'})
@@ -426,7 +450,7 @@ app.post('/api/update_sheet', async (req,res) => {
             await Sheet.updateOne(filter, toUpdate);
             res.json({status: 'sheet updated'});
         } catch (err) {
-            {res.json({status: 'bad', error: err + 2})}
+            res.json({status: 'bad', error: err + 2})
         }
     } else{
         try {
@@ -437,7 +461,9 @@ app.post('/api/update_sheet', async (req,res) => {
                 sheetData: req.body.sheetData,
             })
             res.json({status: 'sheet updated'});
-        } catch (err) {res.json({status: 'bad', error: err + 1})}
+        } catch (err) {
+            res.json({status: 'bad', error: err})
+        }
 } 
 
 });
@@ -451,7 +477,7 @@ app.get('/api/get_sheet', async (req,res) => {
             const email = decoded.email
             const sheetData = await Sheet.findOne({ email: email, block: block})
             console.log("getting sheet for " +block);
-            return res.json({status: 'fine',
+            res.json({status: 'fine',
                              data: sheetData,
                             })
         } catch(error){
@@ -462,18 +488,15 @@ app.get('/api/get_sheet', async (req,res) => {
         try {
             const email = 'exampleUser@example.com'
             const sheetData = await Sheet.findOne({ email: email, block: block})
-            return res.json({status: 'fine',
+            res.json({status: 'fine',
                              data: sheetData,
                             })
         } catch(error){
             console.log(error)
             res.json({status: 'error', error: 'invalid token'})
         }
-        
-
     }else {
         res.json({status: 'error', error: 'block doesnt exist?'})
-        
     }
     
 
@@ -509,10 +532,8 @@ app.get('/api/get_colors', async (req,res) => {
         })
         res.json({status: 'good', colors: colors}); 
     } catch (err){
-        {res.json({status: 'bad', error: err})}
+        res.json({status: 'bad', error: err});
     }
-    
-
 });
 
 if(process.env.NODE_ENV === 'production'){

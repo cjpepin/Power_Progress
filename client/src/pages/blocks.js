@@ -4,23 +4,6 @@ import Navbar from '../components/navbar.component'
 import jwt from 'jsonwebtoken'
 import styled from 'styled-components'
 
-const Wrapper = styled.div`
-  color: rgb(142,174,189);
-  background-color: rgb(15,22,40);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin-left: 38%;
-  margin-right: 38%;
-  margin-top: 5vh;
-  width: 325px;
-  height: 325px;
-
-  border-radius: 5px;
-  padding: 25px;
-  box-shadow: 8px 10px;
-`
 const H1 = styled.h1`
     color: rgb(142,174,189);
     background-color: rgb(15,22,40);
@@ -79,28 +62,24 @@ const Button = styled.button`
     background-color: rgb(142,174,189, 0.5);
   }
 `
-const Title = styled.span`
-  font-size: 35px;
+
+const ButtonWrapper = styled.div`
   color: rgb(142,174,189);
   background-color: rgb(15,22,40);
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-left: 38%;
-  margin-right: 38%;
-  margin-top: 22vh;
-  width: 325px;
-  height: 100px;
+  margin-left: 15%;
+  margin-right: 15%;
+  margin-top: 25px;
 
   border-radius: 5px;
+  padding: 10px;
   box-shadow: 8px 10px;
 `
-
-
 const ComplexData = () => {
     const [blockName, setBlockName] = useState('');
-    const [blockUrl, setBlockUrl] = useState('');
+    // const [blockUrl, setBlockUrl] = useState('');
     if(localStorage.getItem('block')){
         localStorage.removeItem('block');
         console.log("block removed")
@@ -131,7 +110,7 @@ const ComplexData = () => {
                     } else{
                         blockList.push(curBlock);
                         const newBlock = document.createElement('Button');
-                        newBlock.id = totData[key.sheetURL];
+                        // newBlock.id = totData[key.sheetURL];
                         newBlock.value = curBlock;
                         newBlock.innerHTML = curBlock;
                         blockDiv.prepend(newBlock);
@@ -153,17 +132,17 @@ const ComplexData = () => {
         e.preventDefault();
         // let blockName = document.getElementBy
         localStorage.setItem('block', blockName);
-        localStorage.setItem('url', blockUrl)
+        // localStorage.setItem('url', blockUrl)
         const token = localStorage.getItem('token')
         const decoded = jwt.verify(token, 'secret123')
         const email = decoded.email
         let block = localStorage.getItem('block');
-        let sheetURL
-        if(!localStorage.getItem('url')){
-            sheetURL = ''
-        } else{
-            sheetURL = localStorage.getItem('url');
-        }
+        // let sheetURL
+        // if(!localStorage.getItem('url')){
+        //     sheetURL = ''
+        // } else{
+        //     sheetURL = localStorage.getItem('url');
+        // }
         const response = await fetch('https://powerprogress.herokuapp.com/api/new_block', {
             method: 'POST',
             headers: {
@@ -172,14 +151,13 @@ const ComplexData = () => {
             body: JSON.stringify({
             email,
             block,
-            sheetURL,
             }),
         })
 
         const data = await response.json();
         // alert(data.status);
         if(data.status === 'good' || data.status === 'fine' ){
-            alert('block creates');
+            alert('Block Created');
             window.location.reload();
         } else{
             alert(data.error);
@@ -230,13 +208,16 @@ const ComplexData = () => {
                     <span>Add Block:</span>
                     <br />
                     <Input type="text" onChange={(e) => setBlockName(e.target.value)} placeholder="Block Name"/>
-                    <Input type="url" onChange={(e) => setBlockUrl(e.target.value)} placeholder="Google Sheets URL"/>
+                    {/* <Input type="url" onChange={(e) => setBlockUrl(e.target.value)} placeholder="Google Sheets URL"/> */}
                     <Button type="submit" id="newBlock" onClick={addNewBlock}>Add New Block</Button>
                 </Form>
             </div>
-            <div id="populatedBlocks" onClick={enterBlock}>
+            <ButtonWrapper>
+                <div id="populatedBlocks" onClick={enterBlock}>
                 
-            </div>
+                </div>
+            </ButtonWrapper>
+            
 
             
         </div>

@@ -452,7 +452,7 @@ export default function App() {
                             } else if(idArr.includes(j)){
                                 curId = jRef.current.jexcel.getCell([j,i]).innerHTML
                                 if(curLift != "Lift"  && curLift != '' && curSets != '' && curReps != '' && curWeight != '' && curRPE != '' && curDate != '' && curLbsorKg != ''){
-                                    // console.log(curLift, curSets, curReps, curWeight, curRPE, curDate, curLbsorKg)
+                                    console.log(curLift, curSets, curReps, curWeight, curRPE, curDate, curLbsorKg)
                                     createLift(curLift, curSets, curWeight, curLbsorKg, curReps, curRPE, curDate).then(curData => {
                                             if(jRef.current){
                                                 // if(jRef.current.jexcel.getCell([j,i]).innerHTML == '' || jRef.current.jexcel.getCell([j,i]).innerHTML == 'undefined' ){
@@ -547,32 +547,35 @@ export default function App() {
                         colTarget = idArr[dateArr.indexOf(xCoord)]
                     }
                     const rowTarget = i
-                    const id = DOMPurify.sanitize(data[rowTarget][colTarget])
-                    console.log(id)
-                    let block = localStorage.getItem('block');
-                    const response = await fetch('https://powerprogress.herokuapp.com/api/update_lift', {
-                        method: 'POST',
-                        headers: {
-                        'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                        block,
-                        id,
-                        value,
-                        varChanged,
-                        }),
-                    })
-
-                    const updatedSheet = await response.json();
-                    if(updatedSheet.status == 'lift updated'){
-                        // console.log(jRef.current.jspreadsheet.getData())
-                        updateTable();
-                        console.log('update success')
-                        break;
-                    } else {
-                        console.log(updatedSheet.error)
-                        break;
+                    if( DOMPurify.sanitize(data[rowTarget][colTarget])){
+                        const id = DOMPurify.sanitize(data[rowTarget][colTarget])
+                        console.log(id)
+                        let block = localStorage.getItem('block');
+                        const response = await fetch('https://powerprogress.herokuapp.com/api/update_lift', {
+                            method: 'POST',
+                            headers: {
+                            'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                            block,
+                            id,
+                            value,
+                            varChanged,
+                            }),
+                        })
+    
+                        const updatedSheet = await response.json();
+                        if(updatedSheet.status == 'lift updated'){
+                            // console.log(jRef.current.jspreadsheet.getData())
+                            updateTable();
+                            console.log('update success')
+                            break;
+                        } else {
+                            console.log(updatedSheet.error)
+                            break;
+                        }
                     }
+                    
                 }
                 
             }
