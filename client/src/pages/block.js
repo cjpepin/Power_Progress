@@ -588,8 +588,6 @@ function updateDataTable(data){
                 <Navbar />
                 <Wrapper>
                 <div>
-            <Button onClick={deleteBlock}>Delete Block</Button>
-
                     <div>
                         <H1>Welcome {name}
                          <br />
@@ -681,8 +679,7 @@ function updateDataTable(data){
                 </TableWrapper>
                 
             </div>
-
-                
+            <Button onClick={deleteBlock}>Delete Block</Button>
         </div>
     )
 }
